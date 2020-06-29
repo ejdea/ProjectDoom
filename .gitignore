@@ -1,6 +1,4 @@
-App/
-c_sharp/
-notes/
-Test/
 ImageGen/.idea/
 ImageGen/__pycache__
+ImageGen/*.png
+ImageGen/*.bmp
