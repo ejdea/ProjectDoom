@@ -225,7 +225,7 @@ class MazeGen:
         y = self.root.winfo_rooty() + self.canvas.winfo_y()
         x1 = x + self.canvas.winfo_width()
         y1 = y + self.canvas.winfo_height()
-        ImageGrab.grab().crop((x, y, x1, y1)).save(file_name)
+        ImageGrab.grab().crop((x, y, x1, y1)).save(self.file_name)
         return
 
     def __del__(self):
@@ -233,17 +233,18 @@ class MazeGen:
 
 
 if __name__ == '__main__':
-    gen_random = False
-    for token in sys.argv:
-        if token == '-r':
-            gen_random = True
-    nodes = sys.argv[1]
-    count = int(sys.argv[2])
-    file_name_base = "maze"
-    for i in range(count):
-        file_name = file_name_base + str(i) + ".png"
-        maze = MazeGen(file_name, int(nodes), gen_random)
-        del maze
+    gen = MazeGen("test.png", 15)
+    #gen_random = False
+    #for token in sys.argv:
+    #    if token == '-r':
+    #        gen_random = True
+    #nodes = sys.argv[1]
+    #count = int(sys.argv[2])
+    #file_name_base = "maze"
+    #for i in range(count):
+    #    file_name = file_name_base + str(i) + ".png"
+    #    maze = MazeGen(file_name, int(nodes), gen_random)
+    #    del maze
 
 
 
