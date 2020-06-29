@@ -89,6 +89,9 @@ class Cell:
             self._remove_wall(canvas, direction)
         return
 
+    def remove_wall_dir(self, canvas: Canvas, direction: int):
+        self._remove_wall(canvas, direction)
+
     def remove_wall_pair(self, canvas, direction, other):
         # remove this wall
         canvas.itemconfigure(self.render_walls[direction], fill="white")

@@ -15,6 +15,7 @@ class MazeGen:
         self.root = Tk()
         self.file_name = file_name
 
+        # window spacing
         self.width = 800
         self.height = 800
         self.render_width = 1000
@@ -139,6 +140,70 @@ class MazeGen:
 
     def make_exits(self):
         # TODO: Finish
+        # select two nodes along the edges of the self.cells container
+        # node is on an edge if (x == 0 || x == self.num_cells_x - 1) || (y == 0 || y == self.num_cells_y - 1)
+
+        # pick if x or y will be the edge
+        x_edge_choices = [True, False]
+        x_choice = random.choice(x_edge_choices)
+
+        # if x is edge, select possible edge value
+        if x_choice:
+            y_choice = random.randint(0, self.num_cells_y - 1)
+            x_choice = random.choice([0, self.num_cells_x - 1])
+        else:
+            x_choice = random.randint(0, self.num_cells_x - 1)
+            y_choice = random.choice([0, self.num_cells_y - 1])
+
+        # get edge node
+        exit_node = self.cells[(x_choice * self.num_cells_x) + y_choice]
+        x_edge = (x_choice == 0 or x_choice == self.num_cells_x - 1)
+        if x_edge:
+            if x_choice == 0:
+                # left edge, delete left wall
+                exit_node_delete_dir = Cell.left
+            else:
+                # right edge, delete right wall
+                exit_node_delete_dir = Cell.right
+        else:
+            # y was the edge
+            if y_choice == 0:
+                # top edge, delete top wall
+                exit_node_delete_dir = Cell.top
+            else:
+                exit_node_delete_dir = Cell.bottom
+
+        x_edge_choices = [True, False]
+        x_choice = random.choice(x_edge_choices)
+
+        # if x is edge, select possible edge value
+        if x_choice:
+            y_choice = random.randint(0, self.num_cells_y - 1)
+            x_choice = random.choice([0, self.num_cells_x - 1])
+        else:
+            x_choice = random.randint(0, self.num_cells_x - 1)
+            y_choice = random.choice([0, self.num_cells_y - 1])
+
+        # get second edge node
+        start_node = self.cells[(x_choice * self.num_cells_x) + y_choice]
+        x_edge = (x_choice == 0 or x_choice == self.num_cells_x - 1)
+        if x_edge:
+            if x_choice == 0:
+                # left edge, delete left wall
+                start_node_delete_dir = Cell.left
+            else:
+                # right edge, delete right wall
+                start_node_delete_dir = Cell.right
+        else:
+            # y was the edge
+            if y_choice == 0:
+                # top edge, delete top wall
+                start_node_delete_dir = Cell.top
+            else:
+                start_node_delete_dir = Cell.bottom
+
+        exit_node.remove_wall_dir(self.canvas, exit_node_delete_dir)
+        start_node.remove_wall_dir(self.canvas, start_node_delete_dir)
         return
 
     def run(self):
@@ -151,8 +216,10 @@ class MazeGen:
         return screen_x, screen_y
 
     def to_image(self):
+        # ensure window is updated to display tkinter canvas
         self.root.update()
         self.root.update_idletasks()
+        # timing to ensure a snip can be obtained
         time.sleep(0.2)
         x = self.root.winfo_rootx() + self.canvas.winfo_x()
         y = self.root.winfo_rooty() + self.canvas.winfo_y()
