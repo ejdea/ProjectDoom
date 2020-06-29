@@ -22,15 +22,19 @@ class Cell:
     both_mode = 7
 
     # Default drawing mode is image_mode ( 6 )
-    def __init__(self, x_pos: float, y_pos: float, maze: MazeGen, canvas: Canvas, draw: ImageDraw, mode=6):
+    def __init__(self, index, x_pos: float, y_pos: float, maze: MazeGen, canvas: Canvas, draw: ImageDraw, mode=6):
         # graph information
+        self.index = index
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.neighbor_lookup = {}
         self.visited = False
 
+        self.set = {self}
+
         # Render information
         self.wall_state = [True] * 4
+        self.walls = [Cell.top, Cell.right, Cell.bottom, Cell.left]
         self.render_walls = []
         self.center_render_component = None
         self.draw_lookup = {}
@@ -44,6 +48,13 @@ class Cell:
 
         # generate wall coords on creation
         self.create_wall_coords()
+
+    def get_walls(self):
+        to_return = []
+        for i in range(len(self.walls)):
+            if self.wall_state[i]:
+                to_return.append(self.walls[i])
+        return to_return
 
     def create_wall_coords(self):
         offset_x = self.maze.wall_length_x
@@ -129,14 +140,14 @@ class Cell:
         if self.wall_state[Cell.left]:
             self.image_draw.line(self.wall_coords[Cell.left], MazeGen.black)
 
-    def draw_center(self, maze: MazeGen):
+    def draw_center(self):
         """
         Debug function, draws center of node
         :param maze:
         :return:
         """
-        x0, y0 = maze.world_to_screen(self.x_pos, self.y_pos)
-        self.center_render_component = self.canvas.create_oval(x0 - maze.pixel_center, y0 - maze.pixel_center, x0 + maze.pixel_center, y0+ maze.pixel_center, fill="Black")
+        x0, y0 = self.maze.world_to_screen(self.x_pos, self.y_pos)
+        self.center_render_component = self.canvas.create_oval(x0 - self.maze.pixel_center, y0 - self.maze.pixel_center, x0 + self.maze.pixel_center, y0+ self.maze.pixel_center, fill="Black")
         return
 
     def get_relative_direction(self, other):
