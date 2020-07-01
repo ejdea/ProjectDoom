@@ -1,31 +1,30 @@
-/**
- * @author Martin Edmunds
- * Date: 06/30/2020
- * Project: Doodle Maze
- * 
- * Description:
- * 
- * Image is expected to be somewhat of a maze where the walls are colored black with everything else being white
- * 
- * This class is designed to filter noise and transform the raw photo into a picture that can be processed by
- * HeightMapBuilder
- * 
- * */
-
 package image.markup;
 
 import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import image.HeightMapBuilder;
+import image.heightmap.HeightMap;
 
 import java.awt.image.*;
 
+
+/**
+ * Prepare an image for HeightMap Generation
+ * 
+ * This class is designed to filter noise and transform the raw photo into a picture that can be processed by the
+ * HeightMap class
+ * 
+ * <b>Image is expected to be somewhat of a maze where the walls are colored black with everything else being white</b>
+ * 
+ * @author Martin Edmunds
+ * @version 1.0
+ * @since 2020-07-01
+ * 
+ * */
 public class ImageMarkup {
 	
 	private Mat img;
-	
 	
 	/**
 	 * Constructor: attempts to load file for processing
@@ -36,7 +35,7 @@ public class ImageMarkup {
 	public ImageMarkup(String filename) throws CvException {
 		this.img = Imgcodecs.imread(filename, Imgcodecs.IMREAD_GRAYSCALE);
 		//resize image to 1025x1025 : resolution needed for height map
-		Imgproc.resize(this.img,  this.img,  new Size(HeightMapBuilder.DEFAULT_RESOLUTION, HeightMapBuilder.DEFAULT_RESOLUTION));
+		Imgproc.resize(this.img,  this.img,  new Size(HeightMap.DEFAULT_RESOLUTION, HeightMap.DEFAULT_RESOLUTION));
 		return;
 	}
 	
@@ -45,7 +44,6 @@ public class ImageMarkup {
 	 * 
 	 * @param size_x kernel size in x dim
 	 * @param size_y kernel size in y dim
-	 * @return None
 	 * */
 	public void Blur(int size_x, int size_y) {
 		if(size_x != size_y) {
@@ -57,6 +55,18 @@ public class ImageMarkup {
 			}
 		}
 		Imgproc.GaussianBlur( this.img, this.img, new Size(size_x, size_y), 0, 0, Core.BORDER_DEFAULT );
+	}
+	
+	/**
+	 * Performs multiple 9x9 blurs and clamps within two standard deviations to reduce noise in image
+	 * 
+	 * @param num_times number of times to perform filtering
+	 * */
+	public void Filter(int num_times) {
+		for(int i = 0; i < num_times; i++) {
+			this.Blur(9, 9);
+			this.ClampSTD(-2);
+		}
 	}
 	
 	/**
@@ -90,8 +100,10 @@ public class ImageMarkup {
 	 * @return double returns the pixel standard deviation of the image
 	 * */
 	public double GetStdDev() {
+		int width = this.img.width();
+		int height = this.img.height();
 		double average = this.GetAveragePixel();
-		int num_elements = this.img.width() * this.img.height();
+		int num_elements = width * height;
 		double pre_total = 0;
 		
 		//copy image to temp byte array for faster processing
@@ -99,13 +111,13 @@ public class ImageMarkup {
 		byte[] tmp = new byte[num_bytes];
 		this.img.get(0, 0, tmp);
 		
-		double values[] = new double[this.img.width() * this.img.height()];
+		double values[] = new double[width * height];
 		//Standard deviation formula
-		for(int j = 0; j < this.img.width(); j++) {
-			for (int i = 0; i < this.img.height(); i++) {
-				double pixel_value = (byte)(tmp[(j*this.img.width()) + i]) & 0xFF;
-				values[(j * this.img.width()) + i] = (pixel_value - average) * (pixel_value - average);
-				pre_total += values[(j * this.img.width()) + i];
+		for(int j = 0; j < width; j++) {
+			for (int i = 0; i < height; i++) {
+				double pixel_value = (byte)(tmp[(j*width) + i]) & 0xFF;
+				values[(j * width) + i] = (pixel_value - average) * (pixel_value - average);
+				pre_total += values[(j * width) + i];
 			}
 		}
 		
@@ -121,12 +133,15 @@ public class ImageMarkup {
 		
 		BufferedImage bi_return = new BufferedImage(this.img.width(), this.img.height(), BufferedImage.TYPE_BYTE_GRAY);
 		byte[] data = ((DataBufferByte) bi_return.getRaster().getDataBuffer()).getData();
+		this.img.get(0, 0, data);
 		
-		for(int j = 0; j < this.img.width(); j++) {
-			for (int i = 0; i < this.img.height(); i++) {
-				data[(j * this.img.width()) + i] = (byte)(this.img.get(j, i)[0]);
+		/*
+		for(int j = 0; j < width; j++) {
+			for (int i = 0; i < height; i++) {
+				data[(j * width) + i] = (byte)(this.img.get(j, i)[0]);
 			}
 		}
+		*/
 		
 		return bi_return;
 		
@@ -136,7 +151,7 @@ public class ImageMarkup {
 	 * Default Clamp call that clamps the image to within 1 standard deviation
 	 * 
 	 * 
-	 * @return None
+	 * 
 	 * */
 	public void ClampSTD() {
 		this.ClampSTD(1);
@@ -144,11 +159,10 @@ public class ImageMarkup {
 	
 	/**
 	 * Clamps the pixel values in the image against a value:
-	 * pixels < value = 0
-	 * pixels >= value = 255
+	 * Pixels less than the threshold are set to 0. Everything else is set to 255.
 	 * 
 	 * 
-	 * @return None
+	 * @param value the value to be clamped against
 	 * */
 	public void Clamp(double value) 
 	{	
@@ -180,7 +194,7 @@ public class ImageMarkup {
 	 * Clamps the pixel values in the image against a multiple of the standard deviation
 	 * 
 	 * 
-	 * @return None
+	 * @param num_std number of standard deviations to clamp to
 	 * */
 	public void ClampSTD(int num_std) {
 		double value = this.GetAveragePixel();
@@ -192,7 +206,7 @@ public class ImageMarkup {
 	 * Clamps the pixel values in the image against the average pixel of the image
 	 * 
 	 * 
-	 * @return None
+	 * 
 	 * */
 	public void ClampA() {
 		double average_pixel = this.GetAveragePixel();
@@ -204,7 +218,7 @@ public class ImageMarkup {
 	 * Performs an OpenCV Sobel Line Detection function on the image
 	 * 
 	 * 
-	 * @return None
+	 * 
 	 * */
 	public void Sobel() {
 		int scale = 1;
@@ -230,7 +244,7 @@ public class ImageMarkup {
 	 * Inverts the pixel values of the image
 	 * 
 	 * 
-	 * @return None
+	 * 
 	 * */
 	public void Invert() {
 		Core.bitwise_not(this.img, this.img);
