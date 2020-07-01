@@ -1,5 +1,5 @@
 /*
- * Author: Martin Edmunds
+ * @author Martin Edmunds
  * Date: 06/30/2020
  * Project: Doodle Maze
  * 
@@ -14,7 +14,9 @@
  * */
 
 package image;
+
 import org.opencv.core.Core;
+import org.opencv.core.CvException;
 import org.opencv.highgui.HighGui;
 
 import image.markup.*;
@@ -32,9 +34,27 @@ public class Entry {
 	  	HighGui.namedWindow(window_name, HighGui.WINDOW_AUTOSIZE);
 		
 	  	
-		ImageMarkup editor = new ImageMarkup("res/hand_maze.jpg");
+		ImageMarkup editor;
+		try {
+			editor = new ImageMarkup("res/hand_maze.jpg");
+		} catch (CvException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("Unable to find the requested file.");
+			
+			return;
+		}
 		HighGui.imshow(window_name, editor.GetImg());
 		HighGui.waitKey();
+		
+		editor.ClampSTD(-1);
+		
+		HighGui.imshow(window_name, editor.GetImg());
+		HighGui.waitKey();
+		
+		System.exit(0);;
+		
+		/*
 		
 		//filter image
 		for(int i = 0; i < 11; i++) {
@@ -51,6 +71,7 @@ public class Entry {
 		HeightMapBuilder builder = new HeightMapBuilder(editor.GetBufferedImage());
 		builder.WriteHeightmap();
 		
+		*/
 		
 		//HighGui.imshow(window_name, editor.GetImg());
 		//HighGui.waitKey();

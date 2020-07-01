@@ -20,6 +20,8 @@ import java.io.*;
 import javax.imageio.*;
 
 public class HeightMapBuilder {
+	public static int DEFAULT_RESOLUTION = 1025;
+	
 	//(255, 255, 255) = 0xFFFFFF
 	private static int white_pixel_int = -1;
 	//number of bytes of depth (16 - bit)

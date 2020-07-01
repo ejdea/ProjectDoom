@@ -1,3 +1,8 @@
 ImageGen/.idea
-ImageGen/__pychache__
-
+ImageGen/__pycache__
+ImageGen/*.png
+ImageGen/*.jpg
+ImageGen/*.tif
+ImageGen/*.tiff
+HeightMapGenerator/res
+HeightMapGenerator/bin
