@@ -7,8 +7,6 @@ import org.opencv.highgui.HighGui;
 import image.markup.*;
 
 /**
- * Sample Usage Only
- * 
  * Example Class Only
  * 
  * @author Martin Edmunds
