@@ -21,7 +21,6 @@ import javax.imageio.*;
 public class HeightMap {
 	public static int DEFAULT_RESOLUTION = 1025;
 	
-	//(255, 255, 255) = 0xFFFFFF
 	private static int white_pixel_int = -1;
 	//number of bytes of depth (16 - bit)
 	private static int depth = 2;
@@ -92,12 +91,11 @@ public class HeightMap {
 				
 				// -1 = white = heightmap = 0x0100 0x01, 0x00
 				// else = black = heightmap = 0x0000 0x00, 0x00
+				this.byte_buffer[byte_index] = 0x00;
 				if(img.getRGB(j, i) == white_pixel_int) {
-					this.byte_buffer[byte_index] = 0x00;
 					this.byte_buffer[byte_index + 1] = 0x00;
 				}
 				else {
-					this.byte_buffer[byte_index] = 0x00;
 					this.byte_buffer[byte_index + 1] = 0x01;
 				}
 				byte_index += depth;
