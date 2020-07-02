@@ -58,7 +58,7 @@ public class Entry {
 		}
 		
 		System.out.println("Done.");
-		System.exit(0);;
+		System.exit(0);
 		
 	}
 
