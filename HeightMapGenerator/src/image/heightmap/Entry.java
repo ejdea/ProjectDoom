@@ -41,7 +41,7 @@ public class Entry {
 		HighGui.waitKey();
 		
 		//filter the image with 10 iterations
-		img.Filter(10);
+		img.Filter(5);
 		
 		HighGui.imshow(window_name, img.GetImg());
 		HighGui.waitKey();
