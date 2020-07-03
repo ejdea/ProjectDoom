@@ -5,10 +5,10 @@
 5    android:versionName="3.4.3" >
 6
 7    <uses-sdk
-7-->Y:\dev\Capstone_offline\MobileImage\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
+7-->Y:\dev\Capstone\DoodleMaze\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
 8        android:minSdkVersion="8"
-8-->Y:\dev\Capstone_offline\MobileImage\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
+8-->Y:\dev\Capstone\DoodleMaze\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
 9        android:targetSdkVersion="21" />
-9-->Y:\dev\Capstone_offline\MobileImage\openCVLibrary343\src\main\AndroidManifest.xml:7:15-44
+9-->Y:\dev\Capstone\DoodleMaze\openCVLibrary343\src\main\AndroidManifest.xml:7:15-44
 10
 11</manifest>

@@ -1,89 +1,206 @@
 package com.imgae.imageedit;
 
+import org.opencv.android.Utils;
 import org.opencv.core.*;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
-import android.graphics.BitmapFactory;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+/**
+ * Class used for android -> OpenCV operations and height map generation.
+ *
+ * @author Martin Edmunds
+ * @since 2020-07-03
+ * @version 1.1
+ */
 public class ImageMarkup {
 
     public static int DEFAULT_RESOLUTION = 1025;
     private static int DEFAULT_DEPTH = 2;
 
     public Mat img;
-    private byte[] height_map;
+    private byte[] height_map = null;
 
     /**
-     * Constructor: attempts to load file for processing
-     *
-     * @param filename The image file to attempt to be loaded
-     * @throws CvException On missing file
-     * */
-    public ImageMarkup(String filename) throws CvException {
-        this.img = Imgcodecs.imread(filename, Imgcodecs.IMREAD_GRAYSCALE);
-        //resize image to 1025x1025 : resolution needed for height map
-        Imgproc.resize(this.img,  this.img,  new Size(DEFAULT_RESOLUTION, DEFAULT_RESOLUTION));
-        this.height_map = new byte[this.img.width() * this.img.height() * DEFAULT_DEPTH];
-    }
-
-    /**
-     * Constructor: attempts to load file for processing
+     * Constructor: Converts an existing Mat img into the a 1025x1025 1-channel greyscale image
      *
      * @throws CvException On missing file
      * */
     public ImageMarkup(Mat img) throws CvException {
         this.img = new Mat();
         img.copyTo(this.img);
-        Imgproc.cvtColor(this.img, this.img, Imgproc.COLOR_RGB2GRAY);
 
-        this.img.convertTo(this.img, CvType.CV_8UC1);
+        //convert image to gray scale
+        ConvertTo1CGray();
+
         //resize image to 1025x1025 : resolution needed for height map
         Imgproc.resize(this.img,  this.img,  new Size(DEFAULT_RESOLUTION, DEFAULT_RESOLUTION));
-        this.height_map = new byte[this.img.width() * this.img.height() * DEFAULT_DEPTH];
+
+    }
+
+    /**
+     * Constructor: Converts an existing Bitmap into the a 1025x1025 1-channel greyscale image
+     *
+     * @throws CvException On missing file
+     * @throws NullPointerException On bitmap -> map conversion errors
+     * */
+    public ImageMarkup(Bitmap bitmap) throws CvException, NullPointerException{
+        this.img = new Mat();
+
+        //convert Android color bitmap to 1-channel grayscale
+        Utils.bitmapToMat(bitmap, this.img);
+        if(this.img == null){
+            throw new NullPointerException("Unable to convert bitmap to mat!");
+        }
+        ConvertTo1CGray();
+        if(this.img == null){
+            throw new NullPointerException("Unable to convert bitmap to mat!");
+        }
+        Resize(DEFAULT_RESOLUTION, DEFAULT_RESOLUTION);
+    }
+
+    /**
+     * Constructor: Converts an existing Bitmap into the a (x, y) 1-channel greyscale image
+     *
+     * @throws CvException On missing file
+     * @throws NullPointerException On bitmap -> map conversion errors
+     * */
+    public ImageMarkup(Bitmap bitmap, int x, int y) throws CvException, NullPointerException{
+        this.img = new Mat();
+
+        //convert Android color bitmap to 1-channel grayscale
+        Utils.bitmapToMat(bitmap, this.img);
+        if(this.img == null){
+            throw new NullPointerException("Unable to convert bitmap to mat!");
+        }
+        ConvertTo1CGray();
+        if(this.img == null){
+            throw new NullPointerException("Unable to convert bitmap to mat!");
+        }
+        Resize(x, y);
+    }
+
+    /**
+     * Converts the current mat image to a 1-channel grayscale image
+     *
+     * @throws CvException on invalid conversion
+     * @throws NullPointerException on invalid conversion
+     * */
+    public void ConvertTo1CGray() throws CvException, NullPointerException{
+        Imgproc.cvtColor(this.img, this.img, Imgproc.COLOR_RGB2GRAY);
+        this.img.convertTo(this.img, CvType.CV_8UC1);
+    }
+
+    /**
+     * Resize the current img
+     *
+     * @param x target width of the image
+     * @param y target height of the image
+     * */
+    public void Resize(int x, int y){
+        Imgproc.resize(this.img, this.img,  new Size(x, y));
+    }
+
+    /**
+     * Constructs the heightmap of the image. Format of the heightmap is a 16-bit 1-channel raw file.
+     *
+     * 1025x1025
+     *
+     * @throws CvException on resize error
+     * @throws IndexOutOfBoundsException on byte copy error
+     * */
+    public void GenerateHeightMap() throws CvException, IndexOutOfBoundsException{
+        this.GenerateHeightMap(1025, 1025);
     }
 
     /**
      * Constructs the heightmap of the image. Format of the heightmap is a 16-bit 1-channel raw file.
      *
      *
+     * @param x width of the heightmap (must be between 0 and img.width)
+     * @param y width of the heightmap (must be between 0 and img.height)
      *
+     * @throws CvException on resize error
+     * @throws IndexOutOfBoundsException on byte copy error
      * */
-    public void GenerateMap() throws IndexOutOfBoundsException{
-        byte[] tmp = new byte[img.width() * img.height()];
-        this.img.get(0, 0, tmp);
+    public void GenerateHeightMap(int x, int y) throws CvException, IndexOutOfBoundsException{
+
+        // 0 <= x, y <= this.img.dim()
+        if(x <= 0 || y <= 0){
+            x = DEFAULT_RESOLUTION;
+            y = DEFAULT_RESOLUTION;
+        }
+        if(x > this.img.width() || y > this.img.height()){
+            x = this.img.width();
+            y = this.img.height();
+        }
+
+        //create copy of current Mat
+        Mat src = new Mat();
+        this.img.copyTo(src);
+
+        //convert the image to x, y if not already done
+        if(src.width() != x || src.height() != y){
+            Imgproc.resize(src, src, new Size(x, y));
+        }
+
+        //create tmp copy array for fast pixel access
+        byte[] tmp = new byte[src.width() * src.height()];
+        byte[] height_map = new byte[src.width() * src.height() * DEFAULT_DEPTH];
+
+
+        src.get(0, 0, tmp);
 
         int byte_index = 0;
         for(int i = 0; i < tmp.length; i++){
             int value = (byte)tmp[i] & 0xFF;
-            this.height_map[byte_index] = 0x00;
+            height_map[byte_index] = 0x00;
             if(value == 255){
-                this.height_map[byte_index + 1] = 0x00;
+                height_map[byte_index + 1] = 0x00;
             }
             else{
-                this.height_map[byte_index + 1] = 0x01;
+                height_map[byte_index + 1] = 0x01;
             }
             byte_index += DEFAULT_DEPTH;
         }
 
-        /* CHANGED FROM: NEED TO TEST
-        for(int j = 0; j < img.getWidth(); j++) {
-            for(int i = 0; i < img.getHeight(); i++) {
-
-                // -1 = white = heightmap = 0x0100 0x01, 0x00
-                // else = black = heightmap = 0x0000 0x00, 0x00
-                this.height_map[byte_index] = 0x00;
-                if(img.getRGB(j, i) == white_pixel_int) {
-                    this.byte_buffer[byte_index + 1] = 0x00;
-                }
-                else {
-                    this.height_map[byte_index + 1] = 0x01;
-                }
-                byte_index += depth;
-            }
-        }
-        */
+        this.height_map = height_map;
     }
+
+    /**
+     * Writes the currently generated heightmap to a file location based on the context which called this
+     * context_dir/app_height_maps/filename
+     *
+     * Example: com.example.imageedit/files/app_height_maps/file.raw
+     *
+     * @param context parent context
+     * @param filename name of the file (*.raw)
+     *
+     * @throws NullPointerException if the heightmap hasn't been generated
+     * @throws IOException on file write error
+     */
+    public void WriteHeightMap(Context context, String filename) throws NullPointerException, IOException{
+        if(this.height_map == null){
+            throw new NullPointerException("Heightmap needs to be generated first!");
+        }
+
+        File dir = new File(context.getFilesDir(), "app_height_maps");
+        if(!dir.exists()){
+            dir.mkdir();
+        }
+        File out = new File(dir, filename);
+        OutputStream outputStream = new FileOutputStream(out);
+        outputStream.write(this.height_map);
+        outputStream.flush();
+        outputStream.close();
+    }
+
 
     /**
      * Blurs the image using GaussianBlur with a (size_x, size_y) kernel
@@ -161,43 +278,14 @@ public class ImageMarkup {
         //Standard deviation formula
         for(int j = 0; j < width; j++) {
             for (int i = 0; i < height; i++) {
-                double pixel_value = (byte)(tmp[(j*width) + i]) & 0xFF;
-                values[(j * width) + i] = (pixel_value - average) * (pixel_value - average);
-                pre_total += values[(j * width) + i];
+                double pixel_value = (byte)(tmp[(j*height) + i]) & 0xFF;
+                values[(j * height) + i] = (pixel_value - average) * (pixel_value - average);
+                pre_total += values[(j * height) + i];
             }
         }
 
         return Math.sqrt(((double)(1.0 / num_elements) * pre_total));
     }
-
-
-    /*
-
-    /**
-     * Returns the current Mat image as a BufferedImage usable by the Java 2D module
-     *
-     * @return BufferedImage Mat converted to BufferedImage
-     *
-    public Bitmap GetBufferedImage() {
-
-        BufferedImage bi_return = new BufferedImage(this.img.width(), this.img.height(), BufferedImage.TYPE_BYTE_GRAY);
-        byte[] data = ((DataBufferByte) bi_return.getRaster().getDataBuffer()).getData();
-        this.img.get(0, 0, data);
-
-		/*
-		for(int j = 0; j < width; j++) {
-			for (int i = 0; i < height; i++) {
-				data[(j * width) + i] = (byte)(this.img.get(j, i)[0]);
-			}
-		}
-
-
-        return bi_return;
-
-    }
-
-
-    */
 
     /**
      * Default Clamp call that clamps the image to within 1 standard deviation
@@ -228,12 +316,12 @@ public class ImageMarkup {
 
         for(int j = 0; j < width; j++) {
             for (int i = 0; i < height; i++) {
-                double pixel = (byte)((tmp[(j*width) + i])) & 0xFF;
+                double pixel = (byte)((tmp[(j*height) + i])) & 0xFF;
                 if(pixel < value) {
-                    tmp[(j * width) + i] = 0;
+                    tmp[(j * height) + i] = 0;
                 }
                 else {
-                    tmp[(j * width) + i] = (byte)255;
+                    tmp[(j * height) + i] = (byte)255;
                 }
 
             }
@@ -263,7 +351,6 @@ public class ImageMarkup {
     public void ClampA() {
         double average_pixel = this.GetAveragePixel();
         this.Clamp(average_pixel);
-        return;
     }
 
     /**
@@ -330,5 +417,21 @@ public class ImageMarkup {
      * */
     public Mat GetImg() {
         return this.img;
+    }
+
+    /**
+     * Returns Android bitmap
+     *
+     * @throws CvException on invalid conversion
+     * @throws NullPointerException on invalid conversion
+     * */
+    public Bitmap GetBitmap() throws CvException, NullPointerException{
+        Bitmap map = null;
+        map = Bitmap.createBitmap(this.img.cols(), this.img.rows(), Bitmap.Config.ARGB_8888);
+        if(map == null){
+            throw new NullPointerException();
+        }
+        Utils.matToBitmap(this.img, map);
+        return map;
     }
 }

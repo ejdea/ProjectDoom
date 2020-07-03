@@ -27,6 +27,8 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AlertDialog;
 import com.imgae.imageedit.ImageMarkup;
 
+import java.io.IOException;
+
 public class BuildMazeActivity extends Activity implements OnTouchListener {
 
     private static final String  TAG              = "MainActivity";
@@ -181,24 +183,23 @@ public class BuildMazeActivity extends Activity implements OnTouchListener {
     }
 
     private void GenerateHeightMap(){
-        this.mat_img = new Mat();
-        Utils.bitmapToMat(this.bitmap_img, this.mat_img);
-        ImageView image = (ImageView) findViewById(R.id.imageView1);
+        ImageView image_container = (ImageView) findViewById(R.id.imageView1);
+        ImageMarkup img = new ImageMarkup(this.bitmap_img, 1025, 1025);
 
-        image.setImageBitmap(this.bitmap_img);
+        img.Filter(10);
+        img.GenerateHeightMap();
 
-        ImageMarkup tmp = new ImageMarkup(this.mat_img);
+        /*
+        try{
+            img.WriteHeightMap(this, "mobile_height_map.raw");
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+        */
 
-        tmp.Filter(10);
+        image_container.setImageBitmap(img.GetBitmap());
 
-        Bitmap map = null;
-        map = Bitmap.createBitmap(tmp.img.cols(), tmp.img.rows(), Bitmap.Config.ARGB_8888);
-        Utils.matToBitmap(tmp.img, map);
-        image.setImageBitmap(map);
-
-        tmp.GenerateMap();
-
-        //write to file
 
         Log.d(TAG, "Bitmap converted to Mat");
     }
