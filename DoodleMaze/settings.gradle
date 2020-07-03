@@ -1,2 +1,3 @@
 include ':app'
-rootProject.name = "DoodleMaze"
+rootProject.name = "ImageEdit"
+include ':openCVLibrary343'

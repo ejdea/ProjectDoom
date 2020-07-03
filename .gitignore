@@ -7,3 +7,5 @@ ImageGen/*.tiff
 HeightMapGenerator/res
 HeightMapGenerator/bin
 UnityComponent/
+DoodleMaze/.idea/
+DoodleMaze/openCVLibrary343/
