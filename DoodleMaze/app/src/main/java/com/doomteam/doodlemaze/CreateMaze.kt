@@ -18,7 +18,6 @@ import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
 
-const val IMAGE_CAPTURE_REQUEST_CODE = 1000
 const val TAG_INFO = "INFO"
 
 class CreateMaze : AppCompatActivity() {
@@ -70,40 +69,10 @@ class CreateMaze : AppCompatActivity() {
             .start(this)
     }
 
-    /*fun onClickCaptureMaze(view: View) {
-        // Check if camera and write permission is available
-        if (!this.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            Toast.makeText(this,
-                "No camera available. Please enable camera permissions.",
-                Toast.LENGTH_LONG).show()
-        }
-
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (cameraIntent.resolveActivity((packageManager)) != null) {
-            startActivityForResult(cameraIntent, IMAGE_CAPTURE_REQUEST_CODE)
-        }
-    }*/
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        Log.d(TAG_INFO, "requestCode = $requestCode")
-        Log.d(TAG_INFO, "CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE = " + CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE)
-        Log.d(TAG_INFO, "CROP_IMAGE_ACTIVITY_REQUEST_CODE = " + CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
-
         when (requestCode) {
-            /*CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE -> {
-                if (resultCode != RESULT_OK) {
-                    Log.d(TAG_INFO, "Error occurred during image capture (Code $resultCode)")
-                    return
-                }
-
-                if (data != null) {
-                    // Get the image captured
-                    val imageBitmap = data.extras?.get("data") as Bitmap
-                    mazeImageView.setImageBitmap(imageBitmap)
-                }
-            }*/
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                 if (resultCode != RESULT_OK) {
                     Log.d(TAG_INFO, "Error occurred when image cropping (Code $resultCode)")
@@ -133,8 +102,6 @@ class CreateMaze : AppCompatActivity() {
                 Log.d(TAG_INFO, "Unrecognized request code $requestCode")
             }
         }
-
-        Log.d(TAG_INFO, "onActivityResult END")
     }
 
     override fun onResume() {
