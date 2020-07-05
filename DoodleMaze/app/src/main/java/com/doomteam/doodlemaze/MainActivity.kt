@@ -12,12 +12,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openLoadMazeScreen(view: View) {
-        val loadMazeIntent = Intent (this, LoadMaze::class.java)
+        val loadMazeIntent = Intent(this, LoadMaze::class.java)
         startActivity(loadMazeIntent)
     }
 
     fun openCreateMazeScreen(view: View) {
-        val createMazeIntent = Intent (this, BuildMazeActivity::class.java)
+        val createMazeIntent = Intent(this, CreateMaze::class.java)
         startActivity(createMazeIntent)
+    }
+
+    fun onClickExit(view: View) {
+        finishAffinity()
     }
 }

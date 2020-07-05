@@ -228,7 +228,7 @@ public class ImageMarkup extends android.app.Activity{
     public void Filter(int num_times) {
         for(int i = 0; i < num_times; i++) {
             this.Blur(9, 9);
-            this.ClampSTD(-2);
+            this.ClampSTD(-1);
         }
     }
 

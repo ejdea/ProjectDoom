@@ -5,10 +5,9 @@
 5    android:versionName="3.4.3" >
 6
 7    <uses-sdk
-7-->D:\Development\Doom Fix\Doom Fix Final\ProjectDoom\DoodleMaze\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
 8        android:minSdkVersion="27"
-8-->D:\Development\Doom Fix\Doom Fix Final\ProjectDoom\DoodleMaze\openCVLibrary343\src\main\AndroidManifest.xml:7:5-47
+8-->E:\Git\OSU\CS467\ProjectDoom\DoodleMaze\openCVLibrary343\src\main\AndroidManifest.xml
 9        android:targetSdkVersion="30" />
-9-->D:\Development\Doom Fix\Doom Fix Final\ProjectDoom\DoodleMaze\openCVLibrary343\src\main\AndroidManifest.xml:7:15-44
+9-->E:\Git\OSU\CS467\ProjectDoom\DoodleMaze\openCVLibrary343\src\main\AndroidManifest.xml
 10
 11</manifest>

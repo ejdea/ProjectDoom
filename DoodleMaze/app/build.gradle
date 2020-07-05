@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "com.example.doodlemaze"
+        applicationId "com.doomteam.doodlemaze"
         minSdkVersion 27
         targetSdkVersion 30
         versionCode 1
@@ -45,4 +45,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    // Android Image Cropper
+    // Reference: https://github.com/ArthurHub/Android-Image-Cropper
+    api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 }

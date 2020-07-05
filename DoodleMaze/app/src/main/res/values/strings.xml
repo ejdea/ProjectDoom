@@ -1,4 +1,5 @@
 <resources>
+    <!-- Main Activity String -->
     <string name="app_name">Doodle Maze</string>
     <string name="doodle_maze">Doodle Maze</string>
     <string name="create_maze">Create Maze</string>
@@ -18,14 +19,9 @@
     </string-array>
     <string name="title_activity_main2">MainActivity</string>
 
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_test">TestActivity</string>
-    <string name="title_activity_load_maze">LoadMaze</string>
+    <!-- Create Maze Activity String -->
+    <string name="buildMaze">Build Maze</string>
+    <string name="createNewMaze">Create New Maze</string>
+    <string name="Cancel">Cancel</string>
+    <string name="mazeImageView">Maze Contents</string>
 </resources>

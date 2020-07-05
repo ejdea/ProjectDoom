@@ -62,6 +62,7 @@
         android:id="@+id/exit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onClickExit"
         android:text="@string/exit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
