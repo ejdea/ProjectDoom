@@ -7,3 +7,4 @@ ImageGen/*.tiff
 HeightMapGenerator/res
 HeightMapGenerator/bin
 UnityComponent/
+.idea/

@@ -10,6 +10,7 @@
     <string name="thumb_desc">Maze Thumbnail</string>
     <string name="play_maze">Play</string>
     <string name="scores">Scores</string>
+    <string name="action_settings">Settings</string>
 
     <string-array name="maze_options">
         <item>Play</item>

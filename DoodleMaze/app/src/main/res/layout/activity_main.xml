@@ -24,6 +24,7 @@
         android:id="@+id/create_maze"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="openCreateMazeScreen"
         android:text="@string/create_maze"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
