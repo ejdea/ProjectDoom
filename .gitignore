@@ -6,5 +6,8 @@ ImageGen/*.tif
 ImageGen/*.tiff
 HeightMapGenerator/res
 HeightMapGenerator/bin
-UnityComponent/
+UnityComponent/Library
+UnityComponent/Logs
+UnityComponent/ProjectSettings
+UnityComponent/Temp
 .idea/
