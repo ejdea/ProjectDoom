@@ -76,6 +76,7 @@ public class ModifyTerrain : MonoBehaviour
     }
 
     /*
+     Coroutine that reads a file from the stored jar file path located at Assets/StreamingAssets
      https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest.html
      */
     IEnumerator ReadFromStreamingAssets(string file_name)
