@@ -45,20 +45,23 @@ public class ModifyTerrain : MonoBehaviour
     {
         int h = _TerrainData.heightmapResolution;
         int w = _TerrainData.heightmapResolution;
+        //1D tmp float data
         float[] f_data = new float[h * w];
+        //2D float data to be passed to Terrain.SetHeights()
         float[,] data = new float[h, w];
-        int k = 0;
         
+        int k = 0;
         //combine 16-bit length values into a float between 0 - 1
         for (int i = 0; i < b_data.Length; i += 2)
         {
             var d = 0;
-            d += (b_data[i + 1] << 8);
-            d = d | (b_data[i]);
-            f_data[k] = (float)d / 0xFFFF;
+            d += (b_data[i + 1] << 8);      //add first 8 bits of unsigned data (ex: 0xAB) (Little Endian Order)
+            d = d | (b_data[i]);            //add second 8 bits of unsigned data (ex: 0x11) (Little Endian Order) (d = 0xAB11)
+            f_data[k] = (float)d / 0xFFFF;  //convert unsigned short into 0 - 1 float value by dividing by max unsigned short
             k++;
         }
-
+        
+        //Build 2D float data from 1D tmp array
         for (int y = 0; y < h; y++)
         {
             for (int x = 0; x < w; x++)
