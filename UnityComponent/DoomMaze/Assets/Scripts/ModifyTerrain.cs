@@ -1,10 +1,19 @@
-﻿using System.Collections;
+/*
+Authors: Martin Edmunds
+Project: Project Doom
+Date: 07/07/2020
+Version: 1.0
+*/﻿
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using System.IO;
 using UnityEngine;
 using System.Security.Cryptography;
 
+/*
+Class that builds a terrain from a heightmap that's stored in the Assets/StreamingAssets folder
+*/
 public class ModifyTerrain : MonoBehaviour
 {
 
