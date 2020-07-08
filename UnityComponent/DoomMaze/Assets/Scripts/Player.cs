@@ -1,9 +1,19 @@
-﻿using System.Collections;
+/*
+Authors: Martin Edmunds
+Project: Project Doom
+Date: 07/07/2020
+Version: 1.0
+*/﻿
+
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Threading;
 using UnityEngine;
 
+/*
+Class that controls the player object
+*/
 public class Player : MonoBehaviour
 {
     public GameObject m_sphere;
@@ -51,25 +61,25 @@ public class Player : MonoBehaviour
 
 #elif UNITY_EDITOR
         //get input from input manager
-        float verticle_force = Input.GetAxis("Vertical") * m_speed;
+        float vertical_force = Input.GetAxis("Vertical") * m_speed;
         float horizontal_force = Input.GetAxis("Horizontal") * m_speed;
 
-        verticle_force *= Time.deltaTime;
+        vertical_force *= Time.deltaTime;
         horizontal_force *= Time.deltaTime;
 
         //apply input
-        m_body.AddForce(Vector3.forward * verticle_force);
+        m_body.AddForce(Vector3.forward * vertical_force);
         m_body.AddForce(Vector3.right * horizontal_force);
 #else
         //get input from input manager
-        float verticle_force = Input.GetAxis("Vertical") * m_speed;
+        float vertical_force = Input.GetAxis("Vertical") * m_speed;
         float horizontal_force = Input.GetAxis("Horizontal") * m_speed;
 
-        verticle_force *= Time.deltaTime;
+        vertical_force *= Time.deltaTime;
         horizontal_force *= Time.deltaTime;
 
         //apply input
-        m_body.AddForce(Vector3.forward * verticle_force);
+        m_body.AddForce(Vector3.forward * vertical_force);
         m_body.AddForce(Vector3.right * horizontal_force);
 #endif
     }
