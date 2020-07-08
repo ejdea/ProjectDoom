@@ -1,7 +1,17 @@
-﻿using System.Globalization;
+/*
+Authors: Martin Edmunds
+Project: Project Doom
+Date: 07/07/2020
+Version: 1.0
+*/﻿
+
+using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+Class that controls the menu screen logic
+*/
 public class PlayScript : MonoBehaviour
 {
     public Button playButton;
@@ -14,6 +24,9 @@ public class PlayScript : MonoBehaviour
 
     public StartScript script;
 
+    /*
+    Swaps currently enabled camera to the maze camera
+    */
     void ToggleCamera()
     {
         mazeCamera.enabled = !mazeCamera.enabled;
@@ -28,7 +41,7 @@ public class PlayScript : MonoBehaviour
 
     void Start()
     {
-        //disable start button and sllider
+        //disable start button and slider
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
@@ -45,6 +58,7 @@ public class PlayScript : MonoBehaviour
         ToggleCamera();
         DisableButtons();
 
+        //enable start buttons
         startButton.gameObject.SetActive(true);
         sizeSlider.gameObject.SetActive(true);
         script.SetRunFlag(true);
