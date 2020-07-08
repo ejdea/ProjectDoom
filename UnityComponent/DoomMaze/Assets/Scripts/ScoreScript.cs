@@ -1,9 +1,19 @@
-﻿using System.Collections;
+/*
+Authors: Martin Edmunds
+Project: Project Doom
+Date: 07/07/2020
+Version: 1.0
+*/
+
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+Class that controls the scoring for the game
+*/
 public class ScoreScript : MonoBehaviour
 {
     public GameObject text_parent;
@@ -23,6 +33,7 @@ public class ScoreScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //only keep track of score if the game started
         if (game_started)
         {
             current_time += Time.deltaTime;
