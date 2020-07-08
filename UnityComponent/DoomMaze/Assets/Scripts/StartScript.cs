@@ -1,4 +1,11 @@
-﻿using System;
+/*
+Authors: Martin Edmunds
+Project: Project Doom
+Date: 07/07/2020
+Version: 1.0
+*/﻿
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -7,6 +14,10 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+Script to control the start up sequence of the game 
+IN-DEVELOPMENT
+*/
 public class StartScript : MonoBehaviour
 {
     public Button startButton;
@@ -57,7 +68,13 @@ public class StartScript : MonoBehaviour
     void Update()
     {
         //PRE-GAME OBJECT POSITIONING CODE
-        //while the game hasn't started, allow the user to move around the pieces in the world
+        /*
+        This code allows the user to move the the game pieces around in the world. This code is placeholder
+        until the positions of these pieces can be determined with CV.
+        
+        Allows interactivity where the user can select an item, if the item isn't terrain it's colored to display
+        what is currently selected. The user can then select another location to place the object there.
+        */
         if (!game_started && script_start_flag)
         {
             //check if mouse is over an object when click is released
@@ -71,7 +88,7 @@ public class StartScript : MonoBehaviour
                     prev_selected = selected;
                     selected = hit.transform.gameObject;
                     Terrain ter = selected.GetComponent<Terrain>();
-                    if(!isTerrain(selected))//selected != mazeTerrain)
+                    if(!isTerrain(selected))
                     {
                         var render = selected.GetComponent<Renderer>();
                         if(selected != prev_selected)
@@ -82,7 +99,7 @@ public class StartScript : MonoBehaviour
                     }
                     else
                     {
-                        if(prev_selected != null && !isTerrain(prev_selected))//prev_selected != mazeTerrain)
+                        if(prev_selected != null && !isTerrain(prev_selected))
                         {
                             var render = prev_selected.GetComponent<Renderer>();
                             render.material.SetColor("_Color", prev_color);
@@ -109,9 +126,6 @@ public class StartScript : MonoBehaviour
         }
     }
 
-    /*
-     Will need to be modified for mobile port
-     */
     private Ray GetRay()
     {
         RaycastHit hit;
@@ -119,10 +133,13 @@ public class StartScript : MonoBehaviour
         return ray;
     }
 
-
+    /*
+    Function that scales the player's sphere in accordance to the slider
+    */
     void OnSliderChange(Slider slider)
     {
         Transform t = playerSphere.GetComponent<Transform>();
+        //allow user to scale ball between (1 - scale_factor)
         float new_scale = 1 + (slider.value * scale_factor);
         t.localScale = new Vector3(new_scale, new_scale, new_scale);
     }
