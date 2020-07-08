@@ -1,8 +1,18 @@
-﻿using System.CodeDom;
+/*
+Authors: ...
+Project: Project Doom
+Date: 07/07/2020
+Version: 1.0
+*/
+
+using System.CodeDom;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+Script that handles game logic whenever the player reaches the end of the maze
+*/
 public class EndScript : MonoBehaviour
 {
 
