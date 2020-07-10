@@ -34,7 +34,6 @@ public class StartScript : MonoBehaviour
 
     private bool game_started = false;
     private bool player_selected = false;
-    private bool box_selected = false;
     private bool script_start_flag = false;
 
     Color prev_color;
