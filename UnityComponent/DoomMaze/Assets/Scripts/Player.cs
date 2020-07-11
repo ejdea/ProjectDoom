@@ -45,8 +45,10 @@ public class Player : MonoBehaviour
 
     }
 
-    void SetPosition(float x, float y)
+    public void SetPosition(float x, float z)
     {
+        UnityEngine.Vector3 pos = new UnityEngine.Vector3(x, transform.position.y, z);
+        transform.position = pos;
     }
 
     public void EnableMovement()

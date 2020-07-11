@@ -33,7 +33,6 @@ public class StartScript : MonoBehaviour
     private float scale_factor = 5;
 
     private bool game_started = false;
-    private bool player_selected = false;
     private bool script_start_flag = false;
 
     Color prev_color;
@@ -127,7 +126,6 @@ public class StartScript : MonoBehaviour
 
     private Ray GetRay()
     {
-        RaycastHit hit;
         Ray ray = current_camera.ScreenPointToRay(Input.mousePosition);
         return ray;
     }
@@ -149,22 +147,29 @@ public class StartScript : MonoBehaviour
     {
         game_started = true;
 
-        //remove drag
+        // Remove drag
         var body = playerSphere.GetComponent<Rigidbody>();
         body.drag = 0;
 
-        //start score timer
+        // Start score timer
         Text text_c = score.GetComponent<Text>();
         text_c.enabled = true;
         ScoreScript script = score.GetComponent<ScoreScript>();
         script.StartScoreCounter();
 
-        //disable start button and slider
+        // Disable start button and slider
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
-        //enable player input
+        // Get Player object
         Player p_script = playerSphere.GetComponent<Player>();
+
+        // PLACEHOLDER: Get start position of the ball
+
+        // Set start position of the ball
+        p_script.SetPosition(25.0f, 50.0f);
+
+        // Enable player input
         p_script.EnableMovement();
     }
 
