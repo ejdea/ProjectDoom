@@ -1,9 +1,9 @@
 /*
-Authors: Martin Edmunds
-Project: Project Doom
-Date: 07/07/2020
-Version: 1.0
-*/﻿
+ * Authors: Martin Edmunds, Edmund Dea, Lee Rice
+ * Project: Project Doom
+ * Date: 07/07/2020
+ * Version: 1.0
+ */
 
 using System.Globalization;
 using UnityEngine;
@@ -11,8 +11,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 /*
-Class that controls the menu screen logic
-*/
+ * Class that controls the menu screen logic
+ */
 public class PlayScript : MonoBehaviour
 {
     public Button playButton;

@@ -1,4 +1,11 @@
-﻿using System.Collections;
+﻿/*
+ * Authors: Martin Edmunds, Edmund Dea, Lee Rice
+ * Project: Project Doom
+ * Date: 07/07/2020
+ * Version: 1.0
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;

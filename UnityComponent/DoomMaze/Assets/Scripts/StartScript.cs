@@ -1,9 +1,9 @@
 /*
-Authors: Martin Edmunds
-Project: Project Doom
-Date: 07/07/2020
-Version: 1.0
-*/﻿
+ * Authors: Martin Edmunds, Edmund Dea, Lee Rice
+ * Project: Project Doom
+ * Date: 07/07/2020
+ * Version: 1.0
+ */
 
 using System;
 using System.Collections;
@@ -15,9 +15,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-Script to control the start up sequence of the game 
-IN-DEVELOPMENT
-*/
+ * Script to control the start up sequence of the game 
+ * IN-DEVELOPMENT
+ */
 public class StartScript : MonoBehaviour
 {
     public Button startButton;
@@ -132,9 +132,7 @@ public class StartScript : MonoBehaviour
         return ray;
     }
 
-    /*
-    Function that scales the player's sphere in accordance to the slider
-    */
+    // Function that scales the player's sphere in accordance to the slider
     void OnSliderChange(Slider slider)
     {
         Transform t = playerSphere.GetComponent<Transform>();
@@ -143,10 +141,9 @@ public class StartScript : MonoBehaviour
         t.localScale = new Vector3(new_scale, new_scale, new_scale);
     }
 
-    /*
-    Occurs when user presses the 'start' button.
-    At this point the user is expected to select their size
-     
+    /* 
+     * Occurs when user presses the 'start' button.
+     * At this point the user is expected to select their size     
      */
     void TaskOnClick()
     {
