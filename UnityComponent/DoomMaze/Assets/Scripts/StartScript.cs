@@ -34,32 +34,29 @@ public class StartScript : MonoBehaviour
 
     private bool game_started = false;
     private bool script_start_flag = false;
-
     Color prev_color;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        //add listener to startButton
+        // Add listener to startButton
         startButton.onClick.AddListener(TaskOnClick);
         Text text_c = score.GetComponent<Text>();
         text_c.enabled = false;
 
-        //start slider with half value
+        // Start slider with half value
         sizeSlider.value = 0.5f;
         OnSliderChange(sizeSlider);
 
-        //bind slider value change method
+        // Bind slider value change method
         sizeSlider.onValueChanged.AddListener(delegate
         {
             OnSliderChange(sizeSlider);
         });
 
-        //ensure that the ball doesn't move too much when the user is placing it
+        // Ensure that the ball doesn't move too much when the user is placing it
         var body = playerSphere.GetComponent<Rigidbody>();
         body.drag = 100;
-
     }
 
     // Update is called once per frame

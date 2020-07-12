@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
     private const float m_speed = 3000.0f;
 
     // Maximum velocity of the ball
-    private const float maxVelocity = 150.0f;
+    private const float maxVelocity = 80.0f;
 
 #if UNITY_ANDROID
     // Additional down force to ensure ball doesnt go flying
@@ -46,11 +46,28 @@ public class Player : MonoBehaviour
     private AudioSource audioSource;
     private Rigidbody ballRb;
 
+    GameObject scriptHolder;
+    private AudioSource bgMusicAudioSource;
+    [SerializeField] AudioClip[] bgMusic;
+
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         ballRb = GetComponent<Rigidbody>();
+        scriptHolder = GameObject.FindWithTag("ScriptHolder");
+        bgMusicAudioSource = scriptHolder.GetComponent<AudioSource>();
+    }
+
+    private void playBackgroundMusic()
+	{
+        if (input_enabled && !bgMusicAudioSource.isPlaying)
+		{
+            // Play background music
+            int bgMusicIndex = UnityEngine.Random.Range(0, bgMusic.Length);
+            AudioClip clip = bgMusic[bgMusicIndex];
+            bgMusicAudioSource.PlayOneShot(clip);
+        }
     }
 
     public void SetPosition(float x, float z)
@@ -100,8 +117,9 @@ public class Player : MonoBehaviour
         float clampZ = Mathf.Clamp(transform.position.z, mazeCameraRect.yMin + ballHeight, mazeCameraRect.yMax - ballHeight);
 #else
         // Restrict player from moving out of the camera view and from jumping over walls
+        float maxHeight = ballHeight / 2;
         float clampX = Mathf.Clamp(transform.position.x, -40.0f + ballWidth, 140.0f - ballWidth);
-        float clampY = Mathf.Clamp(transform.position.y, 0.0f, ballHeight / 2);
+        float clampY = Mathf.Clamp(transform.position.y, maxHeight, maxHeight);
         float clampZ = Mathf.Clamp(transform.position.z, 3.5f + ballHeight, 96.5f - ballHeight);
 #endif
         transform.position = new UnityEngine.Vector3(clampX, clampY, clampZ);
@@ -167,6 +185,7 @@ public class Player : MonoBehaviour
         if (input_enabled)
         {
             Move();
+            playBackgroundMusic();
         }
     }
 }
