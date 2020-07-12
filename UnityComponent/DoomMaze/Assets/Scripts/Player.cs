@@ -7,6 +7,7 @@
 
 //#define DYNAMICALLY_CLAMP_POSITION
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -22,14 +23,17 @@ public class Player : MonoBehaviour
     public GameObject m_sphere;
     public Rigidbody m_body;
 
-    //default speed value that gives decent control over the ball
-    private float m_speed = 3000.0f;
+    // Default speed value that gives decent control over the ball
+    private const float m_speed = 3000.0f;
+
+    // Maximum velocity of the ball
+    private const float maxVelocity = 150.0f;
 
 #if UNITY_ANDROID
-    //additional down force to ensure ball doesnt go flying
+    // Additional down force to ensure ball doesnt go flying
     private float down_force = -50.0f;
 
-    //factor to speed up the mobile sensor
+    // Factor to speed up the mobile sensor
     private float accel_factor = 5.0f;
 #endif
 
@@ -38,11 +42,15 @@ public class Player : MonoBehaviour
 
     private Camera mazeCamera;
     private float ballWidth, ballHeight;
+    private UnityEngine.Vector3 prevPosition;
+    private AudioSource audioSource;
+    private Rigidbody ballRb;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        audioSource = GetComponent<AudioSource>();
+        ballRb = GetComponent<Rigidbody>();
     }
 
     public void SetPosition(float x, float z)
@@ -88,14 +96,15 @@ public class Player : MonoBehaviour
 
 #if DYNAMICALLY_CLAMP_POSITION
         float clampX = Mathf.Clamp(transform.position.x, mazeCameraRect.xMin + ballWidth, mazeCameraRect.xMax - ballWidth);
+        float clampY = Mathf.Clamp(transform.position.y, ballHeight / 2, ballHeight / 2);
         float clampZ = Mathf.Clamp(transform.position.z, mazeCameraRect.yMin + ballHeight, mazeCameraRect.yMax - ballHeight);
 #else
         // Restrict player from moving out of the camera view and from jumping over walls
         float clampX = Mathf.Clamp(transform.position.x, -40.0f + ballWidth, 140.0f - ballWidth);
-        float clampY = Mathf.Clamp(transform.position.y, ballHeight / 2, ballHeight / 2);
+        float clampY = Mathf.Clamp(transform.position.y, 0.0f, ballHeight / 2);
         float clampZ = Mathf.Clamp(transform.position.z, 3.5f + ballHeight, 96.5f - ballHeight);
-        transform.position = new UnityEngine.Vector3(clampX, clampY, clampZ);
 #endif
+        transform.position = new UnityEngine.Vector3(clampX, clampY, clampZ);
 
 #if UNITY_ANDROID
         //get input from accelerometer
@@ -128,15 +137,36 @@ public class Player : MonoBehaviour
         m_body.AddForce(Vector3.forward * vertical_force);
         m_body.AddForce(Vector3.right * horizontal_force);
 #endif
+        // Set maximum ball velocity
+        ballRb.velocity = UnityEngine.Vector3.ClampMagnitude(ballRb.velocity, maxVelocity);
+
+        // Play audio for rolling ball
+        float velocityDelta = ballRb.velocity.magnitude / maxVelocity;
+        audioSource.volume = velocityDelta;
+        audioSource.pitch = velocityDelta;
+
+        if (transform.position.x != prevPosition.x ||
+            transform.position.z != prevPosition.z)
+        {
+            if (!audioSource.isPlaying)
+			{
+                audioSource.Play();
+            }
+        }
+		else
+		{
+            audioSource.Stop();
+        }
+
+        prevPosition = transform.position;
     }
 
-    // Update is called once per frame
-    void Update()
+    // Update is called every fixed framerate frame
+    private void FixedUpdate()
     {
         if (input_enabled)
         {
             Move();
         }
     }
-
 }

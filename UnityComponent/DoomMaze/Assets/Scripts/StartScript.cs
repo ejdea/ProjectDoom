@@ -161,12 +161,10 @@ public class StartScript : MonoBehaviour
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
-        // Get Player object
-        Player p_script = playerSphere.GetComponent<Player>();
-
         // PLACEHOLDER: Get start position of the ball
 
         // Set start position of the ball
+        Player p_script = playerSphere.GetComponent<Player>();
         p_script.SetPosition(25.0f, 50.0f);
 
         // Enable player input
