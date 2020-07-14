@@ -1,9 +1,9 @@
 /*
-Authors: Martin Edmunds
-Project: Project Doom
-Date: 07/07/2020
-Version: 1.0
-*/﻿
+ * Authors: Martin Edmunds, Edmund Dea, Lee Rice
+ * Project: Project Doom
+ * Date: 07/07/2020
+ * Version: 1.0
+ */
 
 using System;
 using System.Collections;
@@ -15,9 +15,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-Script to control the start up sequence of the game 
-IN-DEVELOPMENT
-*/
+ * Script to control the start up sequence of the game 
+ * IN-DEVELOPMENT
+ */
 public class StartScript : MonoBehaviour
 {
     public Button startButton;
@@ -33,35 +33,30 @@ public class StartScript : MonoBehaviour
     private float scale_factor = 5;
 
     private bool game_started = false;
-    private bool player_selected = false;
-    private bool box_selected = false;
     private bool script_start_flag = false;
-
     Color prev_color;
 
     // Start is called before the first frame update
     void Start()
     {
-
-        //add listener to startButton
+        // Add listener to startButton
         startButton.onClick.AddListener(TaskOnClick);
         Text text_c = score.GetComponent<Text>();
         text_c.enabled = false;
 
-        //start slider with half value
+        // Start slider with half value
         sizeSlider.value = 0.5f;
         OnSliderChange(sizeSlider);
 
-        //bind slider value change method
+        // Bind slider value change method
         sizeSlider.onValueChanged.AddListener(delegate
         {
             OnSliderChange(sizeSlider);
         });
 
-        //ensure that the ball doesn't move too much when the user is placing it
+        // Ensure that the ball doesn't move too much when the user is placing it
         var body = playerSphere.GetComponent<Rigidbody>();
         body.drag = 100;
-
     }
 
     // Update is called once per frame
@@ -128,14 +123,11 @@ public class StartScript : MonoBehaviour
 
     private Ray GetRay()
     {
-        RaycastHit hit;
         Ray ray = current_camera.ScreenPointToRay(Input.mousePosition);
         return ray;
     }
 
-    /*
-    Function that scales the player's sphere in accordance to the slider
-    */
+    // Function that scales the player's sphere in accordance to the slider
     void OnSliderChange(Slider slider)
     {
         Transform t = playerSphere.GetComponent<Transform>();
@@ -144,31 +136,35 @@ public class StartScript : MonoBehaviour
         t.localScale = new Vector3(new_scale, new_scale, new_scale);
     }
 
-    /*
-    Occurs when user presses the 'start' button.
-    At this point the user is expected to select their size
-     
+    /* 
+     * Occurs when user presses the 'start' button.
+     * At this point the user is expected to select their size     
      */
     void TaskOnClick()
     {
         game_started = true;
 
-        //remove drag
+        // Remove drag
         var body = playerSphere.GetComponent<Rigidbody>();
         body.drag = 0;
 
-        //start score timer
+        // Start score timer
         Text text_c = score.GetComponent<Text>();
         text_c.enabled = true;
         ScoreScript script = score.GetComponent<ScoreScript>();
         script.StartScoreCounter();
 
-        //disable start button and slider
+        // Disable start button and slider
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
-        //enable player input
+        // PLACEHOLDER: Get start position of the ball
+
+        // Set start position of the ball
         Player p_script = playerSphere.GetComponent<Player>();
+        p_script.SetPosition(25.0f, 50.0f);
+
+        // Enable player input
         p_script.EnableMovement();
     }
 

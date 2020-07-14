@@ -1,9 +1,10 @@
 /*
-Authors: Martin Edmunds
-Project: Project Doom
-Date: 07/07/2020
-Version: 1.0
-*/﻿
+ * Authors: Martin Edmunds, Edmund Dea, Lee Rice
+ * Project: Project Doom
+ * Date: 07/07/2020
+ * Version: 1.0
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using System;
@@ -12,8 +13,8 @@ using UnityEngine;
 using System.Security.Cryptography;
 
 /*
-Class that builds a terrain from a heightmap that's stored in the Assets/StreamingAssets folder
-*/
+ * Class that builds a terrain from a heightmap that's stored in the Assets/StreamingAssets folder
+ */
 public class ModifyTerrain : MonoBehaviour
 {
 
@@ -22,7 +23,7 @@ public class ModifyTerrain : MonoBehaviour
     private TerrainData _TerrainData;
 
     /*
-     Read a binary file and return an array with the read data
+     * Read a binary file and return an array with the read data
      */
     byte[] ReadBytes(string aFileName)
     {
@@ -39,8 +40,8 @@ public class ModifyTerrain : MonoBehaviour
     }
 
     /*
-    Builds a height map from the binary data passed from ReadStreamingAssets, or ReadBytes
-    */
+     * Builds a height map from the binary data passed from ReadStreamingAssets, or ReadBytes
+     */
     void BuildMap(byte[] b_data)
     {
         int h = _TerrainData.heightmapResolution;
@@ -76,8 +77,8 @@ public class ModifyTerrain : MonoBehaviour
     }
 
     /*
-     Coroutine that reads a file from the stored jar file path located at Assets/StreamingAssets
-     https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest.html
+     * Coroutine that reads a file from the stored jar file path located at Assets/StreamingAssets
+     * https://docs.unity3d.com/ScriptReference/Networking.UnityWebRequest.html
      */
     IEnumerator ReadFromStreamingAssets(string file_name)
     {
