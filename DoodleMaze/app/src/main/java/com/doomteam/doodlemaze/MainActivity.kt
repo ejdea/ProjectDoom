@@ -20,7 +20,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Authenticate the user
+        authenticateUser()
+    }
+
+    private fun authenticateUser()
+    {
         val intent = Intent(this, AuthenticateActivity::class.java)
         startActivityForResult(intent, RC_AUTH)
     }

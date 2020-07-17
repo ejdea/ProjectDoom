@@ -420,6 +420,16 @@ public class ImageMarkup extends android.app.Activity{
     }
 
     /**
+     * Returns 1025x1025x16bit height map
+     *
+     *
+     * @return raw byte array height map
+     * */
+    public byte[] GetHeightMap() {
+        return this.height_map;
+    }
+
+    /**
      * Returns Android bitmap
      *
      * @throws CvException on invalid conversion

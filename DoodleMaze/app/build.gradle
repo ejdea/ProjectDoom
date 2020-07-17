@@ -52,6 +52,7 @@ dependencies {
     //Firebase products used in this app:
     implementation 'com.google.firebase:firebase-auth:19.3.2'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
 
     // Android Image Cropper
     // Reference: https://github.com/ArthurHub/Android-Image-Cropper
