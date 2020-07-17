@@ -506,7 +506,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562263859}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 65.76972, y: 94.053085, z: 89.99456}
+  m_LocalPosition: {x: 49.2, y: 94.053085, z: 44.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -797,7 +797,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   m_LocalRotation: {x: 0.64283997, y: -0.19530395, z: 0.4594746, w: 0.58094424}
-  m_LocalPosition: {x: 6.76, y: 26.62, z: 45.52}
+  m_LocalPosition: {x: 34.43, y: 10, z: 45.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -981,7 +981,7 @@ MeshRenderer:
   m_GameObject: {fileID: 784119805}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -990,7 +990,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: bdadbd86e36176342bd968015867f5e5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2030,7 +2030,7 @@ TerrainCollider:
   m_GameObject: {fileID: 1663885743}
   m_Material: {fileID: 0}
   m_Enabled: 1
-  m_TerrainData: {fileID: 15600000, guid: ab615583b4213474681c85e7c38eec36, type: 2}
+  m_TerrainData: {fileID: 15600000, guid: e4d3ee74d121286458d4bf370a30023b, type: 2}
   m_EnableTreeColliders: 1
 --- !u!218 &1663885745
 Terrain:

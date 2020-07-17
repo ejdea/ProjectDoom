@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
 
     GameObject scriptHolder;
     private AudioSource bgMusicAudioSource;
-    [SerializeField] AudioClip[] bgMusic;
+    [SerializeField] AudioClip[] bgMusic = null;
 
     // Start is called before the first frame update
     void Start()
@@ -161,7 +161,6 @@ public class Player : MonoBehaviour
         // Play audio for rolling ball
         float velocityDelta = ballRb.velocity.magnitude / maxVelocity;
         audioSource.volume = velocityDelta;
-        audioSource.pitch = velocityDelta;
 
         if (transform.position.x != prevPosition.x ||
             transform.position.z != prevPosition.z)

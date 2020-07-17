@@ -158,11 +158,12 @@ public class StartScript : MonoBehaviour
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
-        // PLACEHOLDER: Get start position of the ball
+        // Get start position of the ball
+        Vector2 ballStartPos = new Vector2(25.0f, 50.0f);
 
         // Set start position of the ball
         Player p_script = playerSphere.GetComponent<Player>();
-        p_script.SetPosition(25.0f, 50.0f);
+        p_script.SetPosition(ballStartPos.x, ballStartPos.y);
 
         // Enable player input
         p_script.EnableMovement();
