@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1079187059196",
+    "firebase_url": "https://doodle-maze-2020.firebaseio.com",
+    "project_id": "doodle-maze-2020",
+    "storage_bucket": "doodle-maze-2020.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079187059196:android:6b1e729db4bdb9edf68279",
+        "android_client_info": {
+          "package_name": "com.doomteam.androiddoodlemaze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079187059196-55i44b6catpqkkb75f1b9r7lilh91uhu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqkg5evYopuSEEFBYiDMGbMoHERzcX7Uo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079187059196-55i44b6catpqkkb75f1b9r7lilh91uhu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079187059196:android:e33f509cbabd95e6f68279",
+        "android_client_info": {
+          "package_name": "com.doomteam.unitydoodlemaze"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1079187059196-55i44b6catpqkkb75f1b9r7lilh91uhu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqkg5evYopuSEEFBYiDMGbMoHERzcX7Uo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1079187059196-55i44b6catpqkkb75f1b9r7lilh91uhu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
