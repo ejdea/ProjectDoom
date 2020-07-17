@@ -12,6 +12,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    private const int startSceneIdx = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,8 +28,27 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadNextScene()
     {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex + 1);
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+
+        if (nextSceneIndex >= SceneManager.sceneCountInBuildSettings)
+            nextSceneIndex = SceneManager.sceneCountInBuildSettings - 1;
+
+        SceneManager.LoadScene(nextSceneIndex);
+    }
+
+    public void LoadPrevScene()
+    {
+        int prevSceneIndex = SceneManager.GetActiveScene().buildIndex - 1;
+
+        if (prevSceneIndex < 0)
+            prevSceneIndex = 0;
+
+        SceneManager.LoadScene(prevSceneIndex);
+    }
+
+    public void StartScene()
+    {
+        SceneManager.LoadScene(startSceneIdx);
     }
 
     public void QuitGame()

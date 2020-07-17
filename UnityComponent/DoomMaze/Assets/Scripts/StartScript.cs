@@ -163,10 +163,15 @@ public class StartScript : MonoBehaviour
 
         // Set start position of the ball
         Player p_script = playerSphere.GetComponent<Player>();
-        p_script.SetPosition(ballStartPos.x, ballStartPos.y);
+        //p_script.SetPosition(ballStartPos.x, ballStartPos.y);
 
         // Enable player input
         p_script.EnableMovement();
+
+        // Enable end box
+        GameObject endBox = GameObject.Find("EndBox");
+        EndScript endScript = endBox.GetComponent<EndScript>();
+        endScript.enableEndBox(true);
     }
 
 

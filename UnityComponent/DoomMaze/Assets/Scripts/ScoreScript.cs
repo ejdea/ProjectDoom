@@ -1,5 +1,5 @@
 /*
-Authors: Martin Edmunds
+Authors: Martin Edmunds, Edmund Dea, Lee Rice
 Project: Project Doom
 Date: 07/07/2020
 Version: 1.0

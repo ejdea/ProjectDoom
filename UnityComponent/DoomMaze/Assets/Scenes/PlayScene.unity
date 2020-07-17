@@ -157,7 +157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -458.4, y: 182.9}
+  m_AnchoredPosition: {x: -403.9, y: 182.9}
   m_SizeDelta: {x: 224.86359, y: 64.06906}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &92628085
@@ -838,7 +838,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -445, y: 249}
+  m_AnchoredPosition: {x: -392.5, y: 249}
   m_SizeDelta: {x: 208.69147, y: 52.791748}
   m_Pivot: {x: 0.5000001, y: 0.5}
 --- !u!114 &771285334
@@ -913,6 +913,7 @@ GameObject:
   - component: {fileID: 784119806}
   - component: {fileID: 784119813}
   - component: {fileID: 784119814}
+  - component: {fileID: 784119815}
   m_Layer: 0
   m_Name: PlayerSphere
   m_TagString: Untagged
@@ -1148,6 +1149,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!122 &784119815
+Halo:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784119805}
+  m_Enabled: 1
+  m_Color:
+    serializedVersion: 2
+    rgba: 4294442887
+  m_Size: 2
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1938,7 +1951,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -431.7, y: -266.66}
+  m_AnchoredPosition: {x: -354.3, y: -259.9}
   m_SizeDelta: {x: 320.73608, y: 66.67776}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1583041554
