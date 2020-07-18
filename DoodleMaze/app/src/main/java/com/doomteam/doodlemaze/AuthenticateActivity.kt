@@ -28,7 +28,7 @@ class AuthenticateActivity : AppCompatActivity(){
 
         //flag used for testing, if set to true the app will always force the authFlow without checking if
         //an existing user is logged in
-        private const val DEBUG = true
+        private const val DEBUG = false
 
     }
 
