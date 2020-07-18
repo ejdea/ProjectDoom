@@ -43,7 +43,6 @@ public class AuthScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //FirebaseApp.DefaultInstance.SetEditorDatabaseUrl("https://doodle-maze-2020.firebaseio.com/");
         Firebase.Storage.FirebaseStorage storage = Firebase.Storage.FirebaseStorage.DefaultInstance;
         // Get the root reference location of the database.
         storage_ref = storage.GetReferenceFromUrl("gs://doodle-maze-2020.appspot.com");

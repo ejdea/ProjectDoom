@@ -162,7 +162,6 @@ public class StartScript : MonoBehaviour
 
         // Set start position of the ball
         Player p_script = playerSphere.GetComponent<Player>();
-        //p_script.SetPosition(25.0f, 50.0f);
 
         // Enable player input
         p_script.EnableMovement();

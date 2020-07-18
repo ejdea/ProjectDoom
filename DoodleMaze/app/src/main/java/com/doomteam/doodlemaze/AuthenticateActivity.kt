@@ -71,11 +71,13 @@ class AuthenticateActivity : AppCompatActivity(){
         val password = findViewById<EditText>(R.id.password_field).text.toString()
 
         //validate input
-        if(!validateEntry(email, password))
+        val code = validateEntry(email, password)
+        when (code)
         {
-            displayErrorToast("Invalid Username/Password")
-            return
+            1 -> displayErrorToast("Invalid Username/Password")
+            2 -> displayErrorToast("Please use password with more than 8 characters")
         }
+        if(code != 0) { return }
 
         //attempt sign in
         auth.signInWithEmailAndPassword(email, password)
@@ -85,6 +87,7 @@ class AuthenticateActivity : AppCompatActivity(){
                     Log.d(TAG, "SignIn:success")
                     checkSignIn()
                 } else {
+                    var e  = task.exception
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)
                     displayErrorToast("Authentication Failed")
@@ -99,11 +102,13 @@ class AuthenticateActivity : AppCompatActivity(){
         val password = findViewById<EditText>(R.id.password_field).text.toString()
 
         //validate input
-        if(!validateEntry(email, password))
+        val code = validateEntry(email, password)
+        when (code)
         {
-            displayErrorToast("Invalid Username/Password")
-            return
+            1 -> displayErrorToast("Invalid Username/Password")
+            2 -> displayErrorToast("Please use password with more than 8 characters")
         }
+        if(code != 0) { return }
 
         //attempt account creation
         auth.createUserWithEmailAndPassword(email, password)
@@ -120,15 +125,15 @@ class AuthenticateActivity : AppCompatActivity(){
             }
     }
 
-    private fun validateEntry(email: String?, password: String?): Boolean {
+    private fun validateEntry(email: String?, password: String?): Int {
         if(email == null || password == null || email == "" || password == ""){
-            return false
+            return 1
         }
         //required for Firebase password
-        if(password.length < 8){
-            return false
+        if(password.length <= 8){
+            return 2
         }
-        return true
+        return 0
     }
 
     private fun displayErrorToast(message: String) {

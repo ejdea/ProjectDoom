@@ -4,6 +4,10 @@ ImageGen/*.png
 ImageGen/*.jpg
 ImageGen/*.tif
 ImageGen/*.tiff
+HeightMapGenerator/
+DoodleMaze/app/src/main/jniLibs/
+UnityComponent/DoomMaze/Assets/Firebase/
+UnityComponent/DoomMaze/*.csproj
 HeightMapGenerator/res
 HeightMapGenerator/bin
 UnityComponent/DoomMaze/Library
