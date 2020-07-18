@@ -8,12 +8,20 @@ To order to reduce the size of this repository, our team removed some larger fil
 
 Please use the following steps to restore those files:
 
-1. ) Complete the steps from the following page to install the OpenCV 3.4.3 library: https://android.jlelse.eu/a-beginners-guide-to-setting-up-opencv-android-library-on-android-studio-19794e220f3c
+1.) Complete the steps from the following page to install the OpenCV 3.4.3 library: https://android.jlelse.eu/a-beginners-guide-to-setting-up-opencv-android-library-on-android-studio-19794e220f3c
 
-2. ) Install the following Firebase SDKs in accordance with the steps here: https://firebase.google.com/docs/unity/setup#manual_installation
- a) FirebaseAnalytics.unitypackage
- b) FirebaseAuth.unitypackage
- c) FirebaseStorage.unitypackage
+2.) Install the following Firebase SDKs in accordance with the steps here: https://firebase.google.com/docs/unity/setup#manual_installation
+   a. You can download the Firebase Unity SDK here: https://firebase.google.com/download/unity
+   b. Extract firebase_unity_sdk_6.15.2.zip
+   c. There are 3 .unitypackage files in these directories:
+      1. firebase_unity_sdk_6.15.2\firebase_unity_sdk\dotnet4\FirebaseAnalytics.unitypackage
+      2. firebase_unity_sdk_6.15.2\firebase_unity_sdk\dotnet4\FirebaseAuth.unitypackage
+      3. firebase_unity_sdk_6.15.2\firebase_unity_sdk\dotnet4\FirebaseStorage.unitypackage
+   d. Import the 3 .unitypackage's to Unity
+      1. Open Unity
+      2. Click Assets -> Import Package -> Custom Package
+      3. Select the respective .unitypackage that you need to import
+      4. Unity will extract the .unitypackage. When it is done, Unity will list all the files in a popup. Then, click the Import button.
 
 ________________________________________________________
 
