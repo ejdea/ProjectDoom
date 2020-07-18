@@ -17,14 +17,21 @@ Please use the following steps to restore those files:
 2b. Extract firebase_unity_sdk_6.15.2.zip
 
 2c. There are 3 .unitypackage files in these directories:
+
 2c1. firebase_unity_sdk_6.15.2\firebase_unity_sdk\dotnet4\FirebaseAnalytics.unitypackage
+
 2c2. firebase_unity_sdk_6.15.2\firebase_unity_sdk\dotnet4\FirebaseAuth.unitypackage
+
 2c3. firebase_unity_sdk_6.15.2\firebase_unity_sdk\dotnet4\FirebaseStorage.unitypackage
 
 2d. Import the 3 .unitypackage's to Unity
+
 2d1. Open Unity
+
 2d2. Click Assets -> Import Package -> Custom Package
+
 2d3. Select the respective .unitypackage that you need to import
+
 2d4. Unity will extract the .unitypackage. When it is done, Unity will list all the files in a popup. Then, click the Import button.
 
 ________________________________________________________
