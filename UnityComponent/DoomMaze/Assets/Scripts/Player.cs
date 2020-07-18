@@ -125,7 +125,7 @@ public class Player : MonoBehaviour
 
 #if UNITY_ANDROID
         //get input from accelerometer
-        Vector3 movement = new Vector3 (Input.acceleration.x, down_force, Input.acceleration.y);
+        UnityEngine.Vector3 movement = new UnityEngine.Vector3(Input.acceleration.x, down_force, Input.acceleration.y);
         float force = m_speed * Time.deltaTime * accel_factor;
 
         m_body.AddForce(movement * force);

@@ -6,11 +6,8 @@
  */
 
 using System.Collections;
-using System.Collections.Generic;
-using System;
 using System.IO;
 using UnityEngine;
-using System.Security.Cryptography;
 
 /*
  * Class that builds a terrain from a heightmap that's stored in the Assets/StreamingAssets folder
@@ -21,6 +18,8 @@ public class ModifyTerrain : MonoBehaviour
     public GameObject TerrainObj;
     public Material default_mat;
     private TerrainData _TerrainData;
+    public byte[] heightMapData;
+    public static bool doneLoading = false;
 
     /*
      * Read a binary file and return an array with the read data
@@ -34,7 +33,7 @@ public class ModifyTerrain : MonoBehaviour
         }
         catch
         {
-            UnityEngine.Debug.Log("Failed to load terrain file");
+            Debug.Log("Failed to load terrain file");
         }
         return to_return;
     }
@@ -42,7 +41,7 @@ public class ModifyTerrain : MonoBehaviour
     /*
      * Builds a height map from the binary data passed from ReadStreamingAssets, or ReadBytes
      */
-    void BuildMap(byte[] b_data)
+    public void BuildMap(byte[] b_data)
     {
         int h = _TerrainData.heightmapResolution;
         int w = _TerrainData.heightmapResolution;
@@ -108,7 +107,6 @@ public class ModifyTerrain : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         _TerrainData = new TerrainData();
         _TerrainData.heightmapResolution = 1024;
         _TerrainData.baseMapResolution = 1024;
@@ -122,12 +120,38 @@ public class ModifyTerrain : MonoBehaviour
 
         _TerrainCollider.terrainData = _TerrainData;
         _Terrain2.terrainData = _TerrainData;
+        
+        GenerateTerrain();
 
-        //path to read data from
-        string path = Path.Combine(Application.streamingAssetsPath + "/mobile_height_map.raw");
+    }
 
-        StartCoroutine(ReadFromStreamingAssets("mobile_height_map.raw"));
 
+    /*
+     * Generates terrain from Firebase storage
+     * 
+     */
+    public void GenerateTerrain()
+    {
+        if(AuthScript.heightData != null)
+        {
+            BuildMap(AuthScript.heightData);
+        }
+        else
+        {
+            Debug.LogError("Unable to generate terrain from firebase data!");
+        }
+    }
+
+    public void GenerateTerrain(byte[] data)
+    {
+
+        BuildMap(data);
+
+    }
+
+    public void SetHeightMapData(byte[] data)
+    {
+        this.heightMapData = data;
     }
 
     // Update is called once per frame

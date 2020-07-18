@@ -17,6 +17,13 @@ import kotlinx.android.synthetic.main.activity_create_maze.*
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.ktx.storageMetadata
 
 const val TAG_INFO = "INFO"
 
@@ -31,6 +38,11 @@ class CreateMaze : AppCompatActivity() {
                 Log.d(TAG_INFO, "OpenCV loaded successfully")
             }
         }
+
+        var currentImage: ImageMarkup? = null
+        const val app_folder = "app_height_maps";
+        const val height_map_name = "mobile_height_map.raw"
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,8 +64,46 @@ class CreateMaze : AppCompatActivity() {
         finish()
     }
 
+    /**
+     * Uploads the currently cropped maze heightmap to Firebase Storage
+     *
+     */
     fun onClickBuildMaze(view: View) {
         Log.d(TAG_INFO, "onClickBuildMaze")
+
+        // Get storage reference
+        val storage = Firebase.storage
+        val sRef = storage.reference
+
+        // Retrieve user info from intent
+        val user:String? = intent.getStringExtra("current_user")
+            ?: //user made it here without logging in
+            return
+
+        val heightMapRef: StorageReference? = sRef.child(app_folder).child(user!!).child(
+            height_map_name);
+
+        if(heightMapRef == null || currentImage == null)
+        {
+            // If the currentImage is null, an error occurred while processing heightmap
+            // If the heightMapRef is null, an error occurred while connecting to Firebase storage
+            return
+        }
+
+        // Write height map to {app_folder}/{user_id}/mobile_height_map.raw
+        val uploadTask = heightMapRef.putBytes(currentImage!!.GetHeightMap())
+        uploadTask.addOnFailureListener{
+            // Unable to upload the file
+            // TODO: Add handler, but for now just restart process
+            Log.d(TAG_INFO, "Upload failed!")
+            cropImage()
+
+        }.addOnSuccessListener {
+            // Done
+            finish()
+            Log.d(TAG_INFO, "Upload done!")
+        }
+
     }
 
     fun onClickCreateNewMaze(view: View) {
@@ -90,8 +140,9 @@ class CreateMaze : AppCompatActivity() {
 
                         // Generate height map from bitmap
                         val croppedBmp = generateHeightMap(bmp)
-
+                        // Display the heightmap to the user
                         mazeImageView.setImageBitmap(croppedBmp)
+
                     }
                     else -> {
                         Log.d(TAG_INFO, "Error occurred during image cropping ($result.error)")
@@ -132,10 +183,10 @@ class CreateMaze : AppCompatActivity() {
             Log.d(TAG_INFO, "WARNING: imageBitmap == null")
         }
 
-        val img = ImageMarkup(imageBitmap, imageBitmap.width, imageBitmap.height)
-        img.Filter(10)
-        img.GenerateHeightMap()
+        currentImage = ImageMarkup(imageBitmap, imageBitmap.width, imageBitmap.height)
+        currentImage!!.Filter(10)
+        currentImage!!.GenerateHeightMap()
 
-        return img.GetBitmap()
+        return currentImage!!.GetBitmap()
     }
 }

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'  // Google Services plugin
 
 android {
     compileSdkVersion 30
@@ -44,6 +45,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // Add the Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-analytics:17.4.4'
+
+    //Firebase products used in this app:
+    implementation 'com.google.firebase:firebase-auth:19.3.2'
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
 
     // Android Image Cropper
     // Reference: https://github.com/ArthurHub/Android-Image-Cropper

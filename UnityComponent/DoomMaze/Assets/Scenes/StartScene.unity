@@ -323,6 +323,17 @@ MonoBehaviour:
           m_StringArgument: TaskOnClick
           m_BoolArgument: 0
         m_CallState: 1
+      - m_Target: {fileID: 11500000, guid: 9059b31047bfbbd4fa7ca0bd267b674e, type: 3}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &291930923
 MonoBehaviour:
   m_ObjectHideFlags: 0

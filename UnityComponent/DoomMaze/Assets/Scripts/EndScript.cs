@@ -5,9 +5,6 @@ Date: 07/07/2020
 Version: 1.0
 */
 
-using System.CodeDom;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
