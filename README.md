@@ -55,3 +55,11 @@ Alternative Steps:
 3b. git am 0002-UnityComponent-Add-Firebase-Auth-Database-and-Storag.patch
 
 3c. git am 0003-DoodleMaze-Add-jniLibs.patch
+
+
+Building Android Unity APK:
+In order to build the Android APK, the build scene order needs to be set.
+1) After loading the project in Unity, Choose Build and Run from the file dropdown menu
+2) Remove any scenes other than AuthScene, StartScene, PlayScene, and EndScene
+3) Drag and drop the scenes into the following order from top to bottom: AuthScene, StartScene, PlayScene, and EndScene.
+4) Choose Build to complete the process
