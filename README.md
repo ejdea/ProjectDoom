@@ -15,3 +15,16 @@ Please use the following steps to restore those files:
  b) FirebaseAuth.unitypackage
  c) FirebaseStorage.unitypackage
 
+________________________________________________________
+
+Alternative Steps:
+
+1) Download 3 patches at https://drive.google.com/file/d/1JonYoQBXA2gMFOdisGGDx4Axc3uYO-na/view?usp=sharing
+2) Extract the 3 patches to the root of the ProjectDoom directory
+   a. ProjectDoom\0001-Uninstall-Git-LFS.patch
+   b. ProjectDoom\0002-UnityComponent-Add-Firebase-Auth-Database-and-Storag.patch
+   c. ProjectDoom\0003-DoodleMaze-Add-jniLibs.patch
+3) Apply the 3 patches
+   a. git am 0001-Uninstall-Git-LFS.patch
+   b. git am 0002-UnityComponent-Add-Firebase-Auth-Database-and-Storag.patch
+   c. git am 0003-DoodleMaze-Add-jniLibs.patch
