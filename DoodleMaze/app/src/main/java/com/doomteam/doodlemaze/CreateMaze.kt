@@ -102,8 +102,17 @@ class CreateMaze : AppCompatActivity() {
             // Done
             finish()
             Log.d(TAG_INFO, "Upload done!")
-        }
 
+            // Launch Unity
+            Log.d(TAG_INFO, "Launch Unity")
+            val unityIntent:Intent? = applicationContext.packageManager.getLaunchIntentForPackage("com.doomteam.unitydoodlemaze")
+            unityIntent?.addCategory(Intent.CATEGORY_LAUNCHER)
+            if (unityIntent != null) {
+                applicationContext.startActivity(unityIntent)
+            } else {
+                Log.d(TAG_INFO, "unityIntent == null")
+            }
+        }
     }
 
     fun onClickCreateNewMaze(view: View) {
