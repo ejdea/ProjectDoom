@@ -1,24 +1,23 @@
 /*
-Authors: ...
+Authors: Martin Edmunds, Edmund Dea, Lee Rice
 Project: Project Doom
 Date: 07/07/2020
 Version: 1.0
 */
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-/*
-Script that handles game logic whenever the player reaches the end of the maze
-*/
+
+// Script that handles game logic whenever the player reaches the end of the maze
 public class EndScript : MonoBehaviour
 {
-
-    private bool should_game_end = false;
+    private bool isEnabled = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -27,21 +26,21 @@ public class EndScript : MonoBehaviour
         
     }
 
-    // Set the end flag to ensure that end game code won't be ran prematurely
-    public void SetEndFlag(bool value)
+    // Set whether the end box is enabled
+    public void enableEndBox(bool status)
     {
-        should_game_end = value;
+        isEnabled = status;
     }
 
-    /*
-     For some reason unity triggers this on load. I've wrapped the event with a flag that can be set
-     to 'true' after the game officially starts.
+    /* Unity triggers this on load. I've wrapped the event with a flag
+     * that can be set to 'true' after the game officially starts.
      */
     private void OnTriggerEnter(Collider other)
     {
-        if(should_game_end == true)
+        if (isEnabled)
         {
-            UnityEngine.Debug.Log("End game!!!");
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex + 1);
         }
     }
 
