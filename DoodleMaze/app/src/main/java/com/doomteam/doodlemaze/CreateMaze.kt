@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.graphics.Point
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -11,19 +13,18 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_create_maze.*
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.initialize
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
-import com.google.firebase.storage.ktx.storageMetadata
+
 
 const val TAG_INFO = "INFO"
 
@@ -40,6 +41,7 @@ class CreateMaze : AppCompatActivity() {
         }
 
         var currentImage: ImageMarkup? = null
+        const val HEIGHTMAP_RESOLUTION = 1025
         const val app_folder = "app_height_maps";
         const val height_map_name = "mobile_height_map.raw"
 
@@ -142,15 +144,9 @@ class CreateMaze : AppCompatActivity() {
                 val result = CropImage.getActivityResult(data)
                 when (resultCode) {
                     Activity.RESULT_OK -> {
-                        val resultUri: Uri = result.uri
 
-                        // Convert image to Bitmap
-                        val bmp = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
-
-                        // Generate height map from bitmap
-                        val croppedBmp = generateHeightMap(bmp)
-                        // Display the heightmap to the user
-                        mazeImageView.setImageBitmap(croppedBmp)
+                        // Image retrieved from source, start image processing
+                        detectText(result.uri)
 
                     }
                     else -> {
@@ -187,12 +183,116 @@ class CreateMaze : AppCompatActivity() {
         }
     }
 
-    private fun generateHeightMap(imageBitmap: Bitmap): Bitmap {
+
+    private fun detectText(resultUri: Uri){
+
+        // Convert image to Bitmap
+        var bmp = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
+        // resize bitmap to 4k x 4k maintaining aspect ratio
+        bmp = resizeBmp(bmp)
+
+        val image = InputImage.fromBitmap(bmp, 0)
+        val recognizer = TextRecognition.getClient()
+
+        // Start OCR task to look for start/end features
+        val result = recognizer.process(image)
+            .addOnSuccessListener { visionText ->
+                //process results
+                var startBoxTopLeft: Point? = null
+                var startBoxBottomRight: Point? = null
+                var endBoxTopLeft: Point? = null
+                var endBoxBottomRight: Point? = null
+                for (block in visionText.textBlocks) {
+                    for (line in block.lines) {
+                        for (element in line.elements) {
+                            val elementText = element.text
+                            val elementCornerPoints = element.cornerPoints
+                            if(elementText[0] == 'X' || elementText[0] == 'x') {
+                                startBoxTopLeft = elementCornerPoints!![0]
+                                startBoxBottomRight = elementCornerPoints[2]
+                            }
+                            else if(elementText[0] == 'O' || elementText[0] == 'o')
+                            {
+                                endBoxTopLeft = elementCornerPoints!![0]
+                                endBoxBottomRight = elementCornerPoints[2]
+                            }
+                        }
+                    }
+                }
+
+                if(startBoxTopLeft != null && startBoxBottomRight != null && endBoxTopLeft != null && endBoxBottomRight != null)
+                {
+                    Log.d(TAG_INFO, "Text recognition succeeded!")
+
+                    // Generate height map from the image with features correctly recognized
+                    generateHeightMap(bmp, HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
+                    removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, bmp.width, bmp.height)
+
+                    // Display converted height map with features removed
+                    mazeImageView.setImageBitmap(currentImage!!.GetBitmap())
+
+                }
+                else{
+                    Log.d(TAG_INFO, "Character not located, try cropping again")
+                    cropImage()
+                }
+
+
+            }
+            .addOnFailureListener{ e ->
+                Log.d(TAG_INFO, "Text recognition failed")
+            }
+
+        return
+    }
+
+    private fun resizeBmp(bmp: Bitmap): Bitmap{
+        val maxHeight = 4000
+        val maxWidth = 4000
+        val scale: Float = Math.min(
+            maxHeight.toFloat() / bmp.width,
+            maxWidth.toFloat() / bmp.height
+        )
+
+        val matrix = Matrix()
+        matrix.postScale(scale, scale)
+
+        return Bitmap.createBitmap(
+            bmp,
+            0,
+            0,
+            bmp.width,
+            bmp.height,
+            matrix,
+            true
+        )
+    }
+
+    private fun removeBoundingBoxes(startBoxTopLeft: Point?, startBoxBottomRight: Point?, endBoxTopLeft: Point?, endBoxBottomRight: Point?, maxWidth: Int, maxHeight: Int){
+        //convert pixel locations to 1025x1025 space
+        val sTLx = (((startBoxTopLeft!!.x).toFloat() / maxWidth.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
+        val sTLy =  (((startBoxTopLeft.y).toFloat() / maxHeight.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
+        val sBRx = (((startBoxBottomRight!!.x).toFloat() / maxWidth.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
+        val sBRy =  (((startBoxBottomRight.y).toFloat() / maxHeight.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
+
+        val eTLx = (((endBoxTopLeft!!.x).toFloat() / maxWidth.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
+        val eTLy =  (((endBoxTopLeft.y).toFloat() / maxHeight.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
+        val eBRx = (((endBoxBottomRight!!.x).toFloat() / maxWidth.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
+        val eBRy =  (((endBoxBottomRight.y).toFloat() / maxHeight.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
+
+        // remove the content in the bounding boxes mark
+        currentImage!!.Resize(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
+        currentImage!!.RemoveBoundingBox(sTLx, sTLy, sBRx, sBRy, -10, -10)
+        currentImage!!.RemoveBoundingBox(eTLx, eTLy, eBRx, eBRy, -10, -10)
+
+    }
+
+    private fun generateHeightMap(imageBitmap: Bitmap?, width: Int, height: Int): Bitmap {
         if (imageBitmap == null) {
             Log.d(TAG_INFO, "WARNING: imageBitmap == null")
         }
 
-        currentImage = ImageMarkup(imageBitmap, imageBitmap.width, imageBitmap.height)
+        currentImage = ImageMarkup(imageBitmap, width, height)
         currentImage!!.Filter(10)
         currentImage!!.GenerateHeightMap()
 

@@ -430,6 +430,75 @@ public class ImageMarkup extends android.app.Activity{
     }
 
     /**
+     * Returns 1025x1025 Android bitmap
+     *
+     * @throws CvException on invalid conversion
+     * @throws NullPointerException on invalid conversion
+     * */
+    public Bitmap Get1025Bitmap() throws CvException, NullPointerException{
+        Bitmap map = Bitmap.createBitmap(DEFAULT_RESOLUTION, DEFAULT_RESOLUTION, Bitmap.Config.ARGB_8888);
+        if(this.img.cols() == DEFAULT_RESOLUTION && this.img.rows() == DEFAULT_RESOLUTION) {
+            //no resizing needed
+            Utils.matToBitmap(this.img, map);
+        }
+        else{
+            //Create 1025 mat from existing mat
+            Mat src = new Mat();
+            this.img.copyTo(src);
+
+            //convert the image to x, y if not already done
+            Imgproc.resize(src, src, new Size(DEFAULT_RESOLUTION, DEFAULT_RESOLUTION));
+            Utils.matToBitmap(src, map);
+        }
+        return map;
+    }
+
+    /**
+     * Removes pixel information from a bounding box specified by the arguments
+     *
+     *
+     * @param x1 left box position
+     * @param y1 top box position
+     * @param x2 right box position
+     * @param y2 bottom box position
+     * @param offset_x pixel offset x-dim to start pixel removal
+     * @param offset_y pixel offset y-dim to start pixel removal
+     * */
+    public void RemoveBoundingBox(int x1, int y1, int x2, int y2, int offset_x, int offset_y){
+        int min_x = Math.min(x1, x2); int min_y = Math.min(y1, y2);
+        int max_x = Math.max(x1, x2); int max_y = Math.max(y1, y2);
+
+        // can't set an offset more than the midpoint of the box
+        if((((max_x + min_x) / 2) < offset_x) || (((max_y + min_y) / 2) < 2*offset_y))
+        {
+            return;
+        }
+
+        // can't set an offset less than the minimum values of the bitmap
+        if(min_y - offset_y < 0 || min_x - offset_x < 0)
+        {
+            return;
+        }
+
+        int width = this.img.width();
+        int height = this.img.height();
+
+        //copy image to temp byte array for faster processing
+        int num_bytes = (int)(this.img.total() * this.img.channels());
+        byte[] tmp = new byte[num_bytes];
+        this.img.get(0, 0, tmp);
+
+        for(int j = min_y + offset_y; j < max_y - offset_y; j++) {
+            for (int i = min_x + offset_x; i < max_x - offset_x; i++) {
+                tmp[(j * height) + i] = (byte)255;
+            }
+        }
+
+        this.img.put(0, 0, tmp);
+
+    }
+
+    /**
      * Returns Android bitmap
      *
      * @throws CvException on invalid conversion
