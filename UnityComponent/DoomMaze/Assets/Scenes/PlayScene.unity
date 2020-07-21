@@ -477,7 +477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4878123932665600, guid: c5fa5a80a5beccc44a99075e80de9292, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.27
+      value: -0.16
       objectReference: {fileID: 0}
     - target: {fileID: 4878123932665600, guid: c5fa5a80a5beccc44a99075e80de9292, type: 3}
       propertyPath: m_LocalPosition.z
@@ -526,6 +526,16 @@ PrefabInstance:
     - target: {fileID: 4878123932665600, guid: c5fa5a80a5beccc44a99075e80de9292, type: 3}
       propertyPath: m_LocalScale.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 64878178295631228, guid: c5fa5a80a5beccc44a99075e80de9292,
+        type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 64878178295631228, guid: c5fa5a80a5beccc44a99075e80de9292,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5fa5a80a5beccc44a99075e80de9292, type: 3}
@@ -2307,6 +2317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb23533d46505fd459bd98ba31f6d973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  videoPlayer: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!54 &1921849727
 Rigidbody:
   m_ObjectHideFlags: 0
