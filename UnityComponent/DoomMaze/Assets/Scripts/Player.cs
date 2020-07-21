@@ -56,6 +56,9 @@ public class Player : MonoBehaviour
         ballRb = GetComponent<Rigidbody>();
         scriptHolder = GameObject.FindWithTag("ScriptHolder");
         bgMusicAudioSource = scriptHolder.GetComponent<AudioSource>();
+
+        // Disable screen dimming
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
     private void playBackgroundMusic()

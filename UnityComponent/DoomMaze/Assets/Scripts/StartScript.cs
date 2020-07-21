@@ -57,6 +57,9 @@ public class StartScript : MonoBehaviour
         // Ensure that the ball doesn't move too much when the user is placing it
         var body = playerSphere.GetComponent<Rigidbody>();
         body.drag = 100;
+
+        // Disable screen dimming
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
     // Update is called once per frame
