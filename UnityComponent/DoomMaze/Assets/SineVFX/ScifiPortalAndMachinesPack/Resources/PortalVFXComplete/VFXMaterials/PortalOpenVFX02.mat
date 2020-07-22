@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: PortalOpenVFX02
+  m_Shader: {fileID: 4800000, guid: 06c3387526145d8428496fc35fa7fde9, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Circle:
+        m_Texture: {fileID: 2800000, guid: 5fd58416316d0a1468db4f45589908a3, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 6323e3e7bc3b00a4d9b66e960bc36f36, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OpenMask:
+        m_Texture: {fileID: 2800000, guid: b431b5a286b5d3446877b38783348616, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Tex01:
+        m_Texture: {fileID: 2800000, guid: fbc48b685a5b9a449ab66a76e5e124c1, type: 3}
+        m_Scale: {x: 2, y: 2}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _Cutoff: 0.5
+    - _DistortionPower: 0.5
+    - _DistortionPowerCircle: 0.25
+    - _Offset: 2
+    - _OpenMaskDistortionPower: 0
+    - _OpenMaskScale: 4
+    - _node_3011: 0
+    - _node_5756: 2.17
+    - _node_6158: 1
+    - _node_8734: 0
+    - _node_9775: 1
+    m_Colors:
+    - _CircleColor: {r: 1, g: 0.85091275, b: 0.6911765, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _node_578: {r: 1, g: 1, b: 1, a: 1}

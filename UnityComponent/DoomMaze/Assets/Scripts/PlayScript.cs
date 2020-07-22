@@ -34,7 +34,7 @@ public class PlayScript : MonoBehaviour
 
     void Start()
     {
-        //disable start button and slider
+        // Disable start button and slider
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
@@ -44,12 +44,15 @@ public class PlayScript : MonoBehaviour
         // Start game
         UnityEngine.Debug.Log("Starting Game...");
 
-        //swap cameras
+        // Swap cameras
         ToggleCamera();
 
-        //enable start buttons
+        // Enable start buttons
         startButton.gameObject.SetActive(true);
         sizeSlider.gameObject.SetActive(true);
         script.SetRunFlag(true);
+
+        // Disable screen dimming
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 }

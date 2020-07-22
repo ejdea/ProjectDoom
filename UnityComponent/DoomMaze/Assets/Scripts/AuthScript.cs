@@ -44,10 +44,15 @@ public class AuthScript : MonoBehaviour
     void Start()
     {
         Firebase.Storage.FirebaseStorage storage = Firebase.Storage.FirebaseStorage.DefaultInstance;
+
         // Get the root reference location of the database.
         storage_ref = storage.GetReferenceFromUrl("gs://doodle-maze-2020.appspot.com");
+
         // Ensures members of this class can be accessed by other scripts in different scenes
         DontDestroyOnLoad(this.gameObject);
+
+        // Disable screen dimming
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
     /*

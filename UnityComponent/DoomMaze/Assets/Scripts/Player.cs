@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     private float down_force = -50.0f;
 
     // Factor to speed up the mobile sensor
-    private float accel_factor = 5.0f;
+    private float accel_factor = 40.0f;
 #endif
 
     //flag to ensure movement doesn't occur until the game actually starts
@@ -56,6 +56,9 @@ public class Player : MonoBehaviour
         ballRb = GetComponent<Rigidbody>();
         scriptHolder = GameObject.FindWithTag("ScriptHolder");
         bgMusicAudioSource = scriptHolder.GetComponent<AudioSource>();
+
+        // Disable screen dimming
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
     private void playBackgroundMusic()
