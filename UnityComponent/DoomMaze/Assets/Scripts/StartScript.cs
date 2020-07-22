@@ -58,15 +58,8 @@ public class StartScript : MonoBehaviour
             OnSliderChange(sizeSlider);
         });
 
-<<<<<<< HEAD
-=======
-        // Ensure that the ball doesn't move too much when the user is placing it
-        var body = playerSphere.GetComponent<Rigidbody>();
-        body.drag = 100;
-
         // Disable screen dimming
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
->>>>>>> 0c4906c4ecc920dceff63f3abf6443ba25093a28
     }
 
     // Update is called once per frame
@@ -82,7 +75,8 @@ public class StartScript : MonoBehaviour
             }
         }
 
-        // if the objects position hasn't been set automatically, allow the user to change the position
+        // if the objects position haven't been set automatically, allow the user to change the position
+        // TODO: Might be removed
         if (!gameObjectPositionsSet && !gameStarted)
         {
             CheckForMoveEvent();
@@ -105,14 +99,14 @@ public class StartScript : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             //simple click, see what was selected
-            Ray ray = GetRay();
+            Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit) && (hit.collider != null))
             {
                 prevSelected = selected;
                 selected = hit.transform.gameObject;
                 Terrain ter = selected.GetComponent<Terrain>();
-                if (!isTerrain(selected))
+                if (!isTerrain(selected) && selected == playerSphere)
                 {
                     var render = selected.GetComponent<Renderer>();
                     if (selected != prevSelected)
@@ -123,13 +117,21 @@ public class StartScript : MonoBehaviour
                 }
                 else
                 {
-                    if (prevSelected != null && !isTerrain(prevSelected))
+                    if(selected == prevSelected && selected == playerSphere && prevSelected == playerSphere)
+                    {
+                        var render = prevSelected.GetComponent<Renderer>();
+                        render.material.SetColor("_Color", prev_color);
+                    }
+                    if (prevSelected != null && !isTerrain(prevSelected) && prevSelected == playerSphere) //moving sphere
                     {
                         var render = prevSelected.GetComponent<Renderer>();
                         render.material.SetColor("_Color", prev_color);
                         //move the ball to where the mouse just clicked
-                        var new_pos = prevSelected.GetComponent<Transform>();
-                        new_pos.position = new UnityEngine.Vector3(hit.point.x, 3, hit.point.z);
+                        prevSelected.transform.position = new UnityEngine.Vector3(hit.point.x, 3, hit.point.z);
+                    }
+                    else if (prevSelected != null && !isTerrain(prevSelected) && prevSelected != playerSphere)  //moving portal
+                    {
+                        prevSelected.transform.position = new UnityEngine.Vector3(hit.point.x, 0, hit.point.z);
                     }
                 }
             }
@@ -173,7 +175,7 @@ public class StartScript : MonoBehaviour
         player.transform.position = new UnityEngine.Vector3(pCoords[0], 3.0f, pCoords[1]);
         player.transform.localScale = new UnityEngine.Vector3(pScale[0], pScale[0], pScale[0]);
         end.transform.position = new UnityEngine.Vector3(eCoords[0], 0.0f, eCoords[1]);
-        end.transform.localScale = new UnityEngine.Vector3(eScale[0], 10.0f, eScale[1]);
+        end.transform.localScale = new UnityEngine.Vector3(1.0f, eScale[0], eScale[0]);
     }
 
     /**
@@ -224,12 +226,6 @@ public class StartScript : MonoBehaviour
         {
             return true;
         }
-    }
-
-    private Ray GetRay()
-    {
-        Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
-        return ray;
     }
 
     // Function that scales the player's sphere in accordance to the slider
