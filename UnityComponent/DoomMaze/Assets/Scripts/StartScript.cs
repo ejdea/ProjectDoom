@@ -57,6 +57,9 @@ public class StartScript : MonoBehaviour
         // Ensure that the ball doesn't move too much when the user is placing it
         var body = playerSphere.GetComponent<Rigidbody>();
         body.drag = 100;
+
+        // Disable screen dimming
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
     // Update is called once per frame
@@ -169,8 +172,8 @@ public class StartScript : MonoBehaviour
         p_script.EnableMovement();
 
         // Enable end box
-        GameObject endBox = GameObject.Find("EndBox");
-        EndScript endScript = endBox.GetComponent<EndScript>();
+        GameObject portal = GameObject.Find("Portal");
+        EndScript endScript = portal.GetComponent<EndScript>();
         endScript.enableEndBox(true);
     }
 
