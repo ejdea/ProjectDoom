@@ -45,6 +45,7 @@ class CreateMaze : AppCompatActivity() {
         const val app_folder = "app_height_maps";
         const val height_map_name = "mobile_height_map.raw"
 
+        var positionData: List<Int>? = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,8 +68,9 @@ class CreateMaze : AppCompatActivity() {
     }
 
     /**
-     * Uploads the currently cropped maze heightmap to Firebase Storage
+     * On click, creates a map and uploads a map to Google Firebase Storage
      *
+     * @param view Current view
      */
     fun onClickBuildMaze(view: View) {
         Log.d(TAG_INFO, "onClickBuildMaze")
@@ -85,15 +87,20 @@ class CreateMaze : AppCompatActivity() {
         val heightMapRef: StorageReference? = sRef.child(app_folder).child(user!!).child(
             height_map_name);
 
-        if(heightMapRef == null || currentImage == null)
+        if(heightMapRef == null || currentImage == null || positionData == null)
         {
             // If the currentImage is null, an error occurred while processing heightmap
             // If the heightMapRef is null, an error occurred while connecting to Firebase storage
+            // If the positionData is null, an error occurred with text recognition
             return
         }
 
-        // Write height map to {app_folder}/{user_id}/mobile_height_map.raw
-        val uploadTask = heightMapRef.putBytes(currentImage!!.GetHeightMap())
+
+        // Create Byte buffer to hold position data along with heightmap data
+        val dataBuffer = buildMapData(currentImage!!.GetHeightMap(), positionData!!)
+
+
+        val uploadTask = heightMapRef.putBytes(dataBuffer)
         uploadTask.addOnFailureListener{
             // Unable to upload the file
             // TODO: Add handler, but for now just restart process
@@ -115,6 +122,36 @@ class CreateMaze : AppCompatActivity() {
                 Log.d(TAG_INFO, "unityIntent == null")
             }
         }
+    }
+
+    /**
+     * Builds a map with all the necessary information needed to play the game
+     *
+     * n = number of bytes in position data
+     * m = number of bytes in heightmap data
+     *
+     * @param heightmap heightmap data from the image, 1025x1025x16 bits 2,101,250 bytes
+     * @param objectPositions position data for start and end positions, 32 bytes
+     * @return complete man with all the needed data to build a game state in unity
+     */
+    private fun buildMapData(heightmap: ByteArray, objectPositions: List<Int>): ByteArray{
+
+        // allocate n + m byte buffer
+        val dataBuffer = ByteArray((objectPositions.size * 4) + heightmap.size)
+        // convert integer positions into byte data using utility function in ImageMarkup
+        val bytePosData = ImageMarkup.GetPositionBytes(objectPositions)
+        // copy n bytes from position data into byte buffer
+        var offset = 0
+        for(i in bytePosData.indices){
+            dataBuffer[i] = bytePosData[i]
+            offset++
+        }
+        // copy m bytes from heightmap data into byte buffer
+        for(i in heightmap.indices){
+            dataBuffer[i+offset] = heightmap[i]
+        }
+
+        return dataBuffer
     }
 
     fun onClickCreateNewMaze(view: View) {
@@ -160,30 +197,12 @@ class CreateMaze : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG_INFO, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-        } else {
-            Log.d(TAG_INFO, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
-        }
-    }
-
-    private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
-        override fun onManagerConnected(status: Int) {
-            when (status) {
-                LoaderCallbackInterface.SUCCESS -> {
-                }
-                else -> {
-                    super.onManagerConnected(status)
-                }
-            }
-        }
-    }
-
-
+    /**
+     * Runs google's Text Detection ML kit for Firebase on the selected picture
+     *
+     *
+     * @param resultUri location of the picture to run text detection on
+     */
     private fun detectText(resultUri: Uri){
 
         // Convert image to Bitmap
@@ -226,8 +245,7 @@ class CreateMaze : AppCompatActivity() {
 
                     // Generate height map from the image with features correctly recognized
                     generateHeightMap(bmp, HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
-                    removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, bmp.width, bmp.height)
-
+                    positionData = removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, bmp.width, bmp.height)
                     // Display converted height map with features removed
                     mazeImageView.setImageBitmap(currentImage!!.GetBitmap())
 
@@ -246,6 +264,14 @@ class CreateMaze : AppCompatActivity() {
         return
     }
 
+    /**
+     * Utility function to resize an Android Bitmap
+     *
+     * Resizes a bitmap to a max of 4k x 4k resolution while maintaining aspect ratio
+     *
+     * @param bmp Bitmap to be resized
+     * @return resized bitmap
+     */
     private fun resizeBmp(bmp: Bitmap): Bitmap{
         val maxHeight = 4000
         val maxWidth = 4000
@@ -268,7 +294,16 @@ class CreateMaze : AppCompatActivity() {
         )
     }
 
-    private fun removeBoundingBoxes(startBoxTopLeft: Point?, startBoxBottomRight: Point?, endBoxTopLeft: Point?, endBoxBottomRight: Point?, maxWidth: Int, maxHeight: Int){
+    /**
+     * Function that removes the bounding boxes detected in the CV text detection method
+     *
+     *
+     * @param startBoxTopLeft top left 'X'
+     * @param startBoxBottomRight bottom right 'X'
+     * @param endBoxTopLeft top left 'O'
+     * @param endBoxBottomRight bottom right 'O'
+     */
+    private fun removeBoundingBoxes(startBoxTopLeft: Point?, startBoxBottomRight: Point?, endBoxTopLeft: Point?, endBoxBottomRight: Point?, maxWidth: Int, maxHeight: Int): List<Int>?{
         //convert pixel locations to 1025x1025 space
         val sTLx = (((startBoxTopLeft!!.x).toFloat() / maxWidth.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
         val sTLy =  (((startBoxTopLeft.y).toFloat() / maxHeight.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
@@ -280,10 +315,22 @@ class CreateMaze : AppCompatActivity() {
         val eBRx = (((endBoxBottomRight!!.x).toFloat() / maxWidth.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
         val eBRy =  (((endBoxBottomRight.y).toFloat() / maxHeight.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
 
+
+        if(currentImage == null)
+        {
+            Log.d(TAG_INFO, "Warning: currentImage needs to be created before removing bounding boxes!")
+            return null
+        }
         // remove the content in the bounding boxes mark
         currentImage!!.Resize(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
         currentImage!!.RemoveBoundingBox(sTLx, sTLy, sBRx, sBRy, -10, -10)
         currentImage!!.RemoveBoundingBox(eTLx, eTLy, eBRx, eBRy, -10, -10)
+
+        // recreate the height map with X and O removed
+        currentImage!!.GenerateHeightMap()
+
+        //(player.x1,y1); (player.x2,y1); (endBox.x1,y1); (endBox.x2,y2)
+        return listOf(sTLx, sTLy, sBRx, sBRy, eTLx, eTLy, eBRx, eBRy)
 
     }
 
@@ -298,4 +345,29 @@ class CreateMaze : AppCompatActivity() {
 
         return currentImage!!.GetBitmap()
     }
+
+    override fun onResume() {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG_INFO, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        } else {
+            Log.d(TAG_INFO, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
+    }
+
+    private val mLoaderCallback: BaseLoaderCallback = object : BaseLoaderCallback(this) {
+        override fun onManagerConnected(status: Int) {
+            when (status) {
+                LoaderCallbackInterface.SUCCESS -> {
+                }
+                else -> {
+                    super.onManagerConnected(status)
+                }
+            }
+        }
+    }
+
+
 }

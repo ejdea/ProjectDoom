@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Numerics;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,15 +26,18 @@ public class StartScript : MonoBehaviour
     public GameObject score;
     public GameObject playerSphere;
     public GameObject mazeTerrain;
-    public Camera current_camera;
+    public GameObject endBox;
+    public Camera currentCamera;
 
     public GameObject selected;
-    public GameObject prev_selected;
+    public GameObject prevSelected;
 
     private float scale_factor = 5;
 
-    private bool game_started = false;
+    private bool gameStarted = false;
     private bool script_start_flag = false;
+    private bool gameObjectPositionsSet = false;
+    private const int TerrainResolution = 1025;
     Color prev_color;
 
     // Start is called before the first frame update
@@ -54,58 +58,150 @@ public class StartScript : MonoBehaviour
             OnSliderChange(sizeSlider);
         });
 
-        // Ensure that the ball doesn't move too much when the user is placing it
-        var body = playerSphere.GetComponent<Rigidbody>();
-        body.drag = 100;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //PRE-GAME OBJECT POSITIONING CODE
-        /*
-        This code allows the user to move the the game pieces around in the world. This code is placeholder
-        until the positions of these pieces can be determined with CV.
-        
-        Allows interactivity where the user can select an item, if the item isn't terrain it's colored to display
-        what is currently selected. The user can then select another location to place the object there.
-        */
-        if (!game_started && script_start_flag)
+        // if position hasn't been set, attempt to read position data from map data
+        if(!gameObjectPositionsSet)
         {
-            //check if mouse is over an object when click is released
-            if (Input.GetMouseButtonUp(0))
+            if (ModifyTerrain.ObjectPositionData != null)
             {
-                //simple click, see what was selected
-                Ray ray = GetRay();
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit) && (hit.collider != null))
+                SetGameObjects(playerSphere, endBox);
+                gameObjectPositionsSet = true;
+            }
+        }
+
+        // if the objects position hasn't been set automatically, allow the user to change the position
+        if (!gameObjectPositionsSet && !gameStarted)
+        {
+            CheckForMoveEvent();
+        }
+   
+    }
+
+
+    //PRE-GAME OBJECT POSITIONING CODE
+    /*
+    This code allows the user to move the the game pieces around in the world. This code is placeholder
+    until the positions of these pieces can be determined with CV.
+
+    Allows interactivity where the user can select an item, if the item isn't terrain it's colored to display
+    what is currently selected. The user can then select another location to place the object there.
+    */
+    private void CheckForMoveEvent()
+    {
+        //check if mouse is over an object when click is released
+        if (Input.GetMouseButtonUp(0))
+        {
+            //simple click, see what was selected
+            Ray ray = GetRay();
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit) && (hit.collider != null))
+            {
+                prevSelected = selected;
+                selected = hit.transform.gameObject;
+                Terrain ter = selected.GetComponent<Terrain>();
+                if (!isTerrain(selected))
                 {
-                    prev_selected = selected;
-                    selected = hit.transform.gameObject;
-                    Terrain ter = selected.GetComponent<Terrain>();
-                    if(!isTerrain(selected))
+                    var render = selected.GetComponent<Renderer>();
+                    if (selected != prevSelected)
                     {
-                        var render = selected.GetComponent<Renderer>();
-                        if(selected != prev_selected)
-                        {
-                            prev_color = render.material.color;
-                        }
-                        render.material.SetColor("_Color", Color.red);
+                        prev_color = render.material.color;
                     }
-                    else
+                    render.material.SetColor("_Color", Color.red);
+                }
+                else
+                {
+                    if (prevSelected != null && !isTerrain(prevSelected))
                     {
-                        if(prev_selected != null && !isTerrain(prev_selected))
-                        {
-                            var render = prev_selected.GetComponent<Renderer>();
-                            render.material.SetColor("_Color", prev_color);
-                            //move the ball to where the mouse just clicked
-                            var new_pos = prev_selected.GetComponent<Transform>();
-                            new_pos.position = new Vector3(hit.point.x, 3, hit.point.z);
-                        }
+                        var render = prevSelected.GetComponent<Renderer>();
+                        render.material.SetColor("_Color", prev_color);
+                        //move the ball to where the mouse just clicked
+                        var new_pos = prevSelected.GetComponent<Transform>();
+                        new_pos.position = new UnityEngine.Vector3(hit.point.x, 3, hit.point.z);
                     }
                 }
             }
         }
+    }
+
+    private void SetGameObjects(GameObject player, GameObject end)
+    {
+        //get midpoint coords from bounding box
+        int[] pCoords = GetBoundingBoxMidPoint(
+            ModifyTerrain.ObjectPositionData[0], 
+            ModifyTerrain.ObjectPositionData[1], 
+            ModifyTerrain.ObjectPositionData[2], 
+            ModifyTerrain.ObjectPositionData[3]
+            );
+        //get midpoint coords from bounding box
+        int[] eCoords = GetBoundingBoxMidPoint(
+            ModifyTerrain.ObjectPositionData[4],
+            ModifyTerrain.ObjectPositionData[5],
+            ModifyTerrain.ObjectPositionData[6],
+            ModifyTerrain.ObjectPositionData[7]
+            );
+
+        int[] pScale = GetBoundingBoxWidth(
+            ModifyTerrain.ObjectPositionData[0],
+            ModifyTerrain.ObjectPositionData[1],
+            ModifyTerrain.ObjectPositionData[2],
+            ModifyTerrain.ObjectPositionData[3]
+            );
+
+        int[] eScale = GetBoundingBoxWidth(
+            ModifyTerrain.ObjectPositionData[4],
+            ModifyTerrain.ObjectPositionData[5],
+            ModifyTerrain.ObjectPositionData[6],
+            ModifyTerrain.ObjectPositionData[7]
+            );
+
+        ScalePositions(ref pCoords);
+        ScalePositions(ref eCoords);
+
+        player.transform.position = new UnityEngine.Vector3(pCoords[0], 3.0f, pCoords[1]);
+        player.transform.localScale = new UnityEngine.Vector3(pScale[0], pScale[0], pScale[0]);
+        end.transform.position = new UnityEngine.Vector3(eCoords[0], 0.0f, eCoords[1]);
+        end.transform.localScale = new UnityEngine.Vector3(eScale[0], 10.0f, eScale[1]);
+    }
+
+    /**
+     * Transforms array of positions from 0-1025 pixel space to Unity Terrain Space
+     * 
+     */
+    private void ScalePositions(ref int[] positions)
+    {
+        float dim = mazeTerrain.GetComponent<Terrain>().terrainData.size.x;
+
+        for (int i = 0; i < positions.Length; i++)
+        {
+            positions[i] = (int)((((float)positions[i]) * dim) / TerrainResolution);
+            if (i % 2 == 1)
+            {
+                positions[i] = (int)(dim - positions[i]); //flip along x axis
+            }
+        }
+    }
+
+    /**
+    * Gets the midpoint of the bounding boxes used in the image detection module
+    * 
+    */
+    private int[] GetBoundingBoxMidPoint(int x1, int y1, int x2, int y2)
+    {
+        return new int[] { ((x1 + x2) / 2), ((y1 + y2) / 2) };
+    }
+
+    /**
+     * Gets width of the bounding boxes from the image detection module and converts the width to terrain space
+     * 
+     */
+    private int[] GetBoundingBoxWidth(int x1, int y1, int x2, int y2)
+    {
+        float dim = mazeTerrain.GetComponent<Terrain>().terrainData.size.x;
+        return new int[] { (int)((x2 - x1) * dim / TerrainResolution), (int)((y2 - y1) * dim / TerrainResolution) };
     }
 
     private bool isTerrain(GameObject obj)
@@ -123,26 +219,25 @@ public class StartScript : MonoBehaviour
 
     private Ray GetRay()
     {
-        Ray ray = current_camera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
         return ray;
     }
 
     // Function that scales the player's sphere in accordance to the slider
     void OnSliderChange(Slider slider)
     {
-        Transform t = playerSphere.GetComponent<Transform>();
-        //allow user to scale ball between (1 - scale_factor)
         float new_scale = 1 + (slider.value * scale_factor);
-        t.localScale = new Vector3(new_scale, new_scale, new_scale);
+        playerSphere.transform.localScale = new UnityEngine.Vector3(new_scale, new_scale, new_scale);
     }
 
-    /* 
+    /**
      * Occurs when user presses the 'start' button.
      * At this point the user is expected to select their size     
      */
     void TaskOnClick()
     {
-        game_started = true;
+        gameStarted = true;
+        gameObjectPositionsSet = true;
 
         // Remove drag
         var body = playerSphere.GetComponent<Rigidbody>();
@@ -158,14 +253,8 @@ public class StartScript : MonoBehaviour
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
-        // Get start position of the ball
-        Vector2 ballStartPos = new Vector2(25.0f, 50.0f);
-
-        // Set start position of the ball
-        Player p_script = playerSphere.GetComponent<Player>();
-        //p_script.SetPosition(ballStartPos.x, ballStartPos.y);
-
         // Enable player input
+        Player p_script = playerSphere.GetComponent<Player>();
         p_script.EnableMovement();
 
         // Enable end box

@@ -529,9 +529,10 @@ MonoBehaviour:
   score: {fileID: 771285332}
   playerSphere: {fileID: 784119805}
   mazeTerrain: {fileID: 1663885743}
-  current_camera: {fileID: 607151418}
+  endBox: {fileID: 1767830606}
+  currentCamera: {fileID: 0}
   selected: {fileID: 0}
-  prev_selected: {fileID: 0}
+  prevSelected: {fileID: 0}
 --- !u!82 &562263863
 AudioSource:
   m_ObjectHideFlags: 0
@@ -929,7 +930,7 @@ ConstantForce:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 784119805}
   m_Enabled: 1
-  m_Force: {x: 0, y: 1, z: 0}
+  m_Force: {x: 0, y: -10, z: 0}
   m_RelativeForce: {x: 0, y: 0, z: 0}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
@@ -945,7 +946,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

@@ -11,13 +11,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * Class used for android -> OpenCV operations and height map generation.
  *
  * @author Martin Edmunds
- * @since 2020-07-03
- * @version 1.1
+ * @since 2020-07-22
+ * @version 1.2
  */
 public class ImageMarkup extends android.app.Activity{
 
@@ -26,6 +27,25 @@ public class ImageMarkup extends android.app.Activity{
 
     public Mat img;
     private byte[] height_map = null;
+
+    /**
+     * Class utility function to convert a list of integer positions into a byte array
+     *
+     * @param arr list of integers to be converted into bytes
+     * @return byte representation of the integers
+     * */
+    public static Byte[] GetPositionBytes(List<Integer> arr){
+        Byte[] to_return = new Byte[arr.size() * 4];
+        int byte_counter = 0;
+        for(int i = 0; i < arr.size(); i++){
+            to_return[byte_counter++] = (byte)(arr.get(i) >> 24);
+            to_return[byte_counter++] = (byte)((arr.get(i) & 0x00FFFFFF) >> 16);
+            to_return[byte_counter++] = (byte)((arr.get(i) & 0x0000FFFF) >> 8);
+            to_return[byte_counter++] = (byte)((arr.get(i) & 0x000000FF));
+        }
+
+        return to_return;
+    }
 
     /**
      * Constructor: Converts an existing Mat img into the a 1025x1025 1-channel greyscale image
@@ -495,7 +515,6 @@ public class ImageMarkup extends android.app.Activity{
         }
 
         this.img.put(0, 0, tmp);
-
     }
 
     /**
