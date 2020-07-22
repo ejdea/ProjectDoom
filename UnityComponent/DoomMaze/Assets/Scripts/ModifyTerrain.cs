@@ -8,18 +8,22 @@
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using UnityEngine.XR.WSA;
 
 /*
  * Class that builds a terrain from a heightmap that's stored in the Assets/StreamingAssets folder
  */
 public class ModifyTerrain : MonoBehaviour
 {
-
+    
     public GameObject TerrainObj;
     public Material default_mat;
     private TerrainData _TerrainData;
     public byte[] heightMapData;
     public static bool doneLoading = false;
+    private static int TerrainDataOffset = 32;
+    public static int[] ObjectPositionData = null;
+
 
     /*
      * Read a binary file and return an array with the read data
@@ -38,6 +42,21 @@ public class ModifyTerrain : MonoBehaviour
         return to_return;
     }
 
+    public void GetObjectPositions(byte[] b_data)
+    {
+        int[] positions = new int[8];
+        for(int i = 0; i < TerrainDataOffset; i+=4)
+        {
+            //read 4 bytes of data
+            int pData = b_data[i] << 24;
+            pData |= (b_data[i + 1] << 16);
+            pData |= (b_data[i + 2] << 8);
+            pData |= (b_data[i + 3]);
+            positions[i / 4] = pData;
+        }
+        ObjectPositionData = positions;
+    }
+
     /*
      * Builds a height map from the binary data passed from ReadStreamingAssets, or ReadBytes
      */
@@ -52,7 +71,7 @@ public class ModifyTerrain : MonoBehaviour
         
         int k = 0;
         //combine 16-bit length values into a float between 0 - 1
-        for (int i = 0; i < b_data.Length; i += 2)
+        for (int i = TerrainDataOffset; i < b_data.Length; i += 2)
         {
             var d = 0;
             d += (b_data[i + 1] << 8);      //add first 8 bits of unsigned data (ex: 0xAB) (Little Endian Order)
@@ -66,7 +85,7 @@ public class ModifyTerrain : MonoBehaviour
         {
             for (int x = 0; x < w; x++)
             {
-                data[y, x] = f_data[(y * w) + x];
+                data[h - y - 1, x] = f_data[(y * w) + x];
             }
         }
 
@@ -134,6 +153,7 @@ public class ModifyTerrain : MonoBehaviour
     {
         if(AuthScript.heightData != null)
         {
+            GetObjectPositions(AuthScript.heightData);
             BuildMap(AuthScript.heightData);
         }
         else

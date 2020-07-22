@@ -81,11 +81,13 @@ public class Player : MonoBehaviour
     public void EnableMovement()
     {
         input_enabled = true;
+        ballRb.isKinematic = false;
     }
 
     public void DisableMovement()
     {
         input_enabled = false;
+        ballRb.isKinematic = true;
     }
 
     void Move()
@@ -131,7 +133,10 @@ public class Player : MonoBehaviour
         UnityEngine.Vector3 movement = new UnityEngine.Vector3(Input.acceleration.x, down_force, Input.acceleration.y);
         float force = m_speed * Time.deltaTime * accel_factor;
 
-        m_body.AddForce(movement * force);
+        if(m_body.isKinematic)
+        {
+            m_body.AddForce(movement * force);
+        }
 
 #elif UNITY_EDITOR
         //get input from input manager
