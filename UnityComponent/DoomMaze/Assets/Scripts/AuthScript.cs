@@ -103,7 +103,7 @@ public class AuthScript : MonoBehaviour
         //if the user was able to log in, continue with file download attempt
         if(curUser != null && auth_result)
         {
-            const long maxSize = 3 * 1024 * 1024; //3mb limit (1025x1025x16bit map should always be ~ 2MB)
+            const long maxSize = 3 * 1024 * 1024; //3mb limit (1025x1025x16bit + 32 bytes position data map should always be ~ 2MB)
             string path = app_folder + "/" + curUser.UserId + "/" + file_name; ; //{app_url}/app_height_maps/{userID}/mobile_height_map.raw
 
             // Get storage instance

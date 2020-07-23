@@ -81,11 +81,13 @@ public class Player : MonoBehaviour
     public void EnableMovement()
     {
         input_enabled = true;
+        ballRb.isKinematic = false;
     }
 
     public void DisableMovement()
     {
         input_enabled = false;
+        ballRb.isKinematic = true;
     }
 
     void Move()

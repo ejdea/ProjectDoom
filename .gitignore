@@ -19,6 +19,7 @@ DoodleMaze/openCVLibrary343/
 DoodleMaze/openCVLibrary343/build/
 UnityComponent/DoomMaze/*.apk
 UnityComponent/Temp
+APKS/*.apk
 .idea/
 *.sln
 *.vs/
