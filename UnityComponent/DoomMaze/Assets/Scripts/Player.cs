@@ -133,10 +133,7 @@ public class Player : MonoBehaviour
         UnityEngine.Vector3 movement = new UnityEngine.Vector3(Input.acceleration.x, down_force, Input.acceleration.y);
         float force = m_speed * Time.deltaTime * accel_factor;
 
-        if(m_body.isKinematic)
-        {
-            m_body.AddForce(movement * force);
-        }
+        m_body.AddForce(movement * force);
 
 #elif UNITY_EDITOR
         //get input from input manager
