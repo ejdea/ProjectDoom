@@ -130,7 +130,7 @@ class AuthenticateActivity : AppCompatActivity(){
             return 1
         }
         //required for Firebase password
-        if(password.length <= 8){
+        if(password.length < 8){
             return 2
         }
         return 0

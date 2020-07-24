@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
@@ -29,6 +30,7 @@ import org.opencv.android.OpenCVLoader
 const val TAG_INFO = "INFO"
 
 class CreateMaze : AppCompatActivity() {
+
     companion object {
         init {
             /* Load OpenCV before class is instantiated */
@@ -39,6 +41,7 @@ class CreateMaze : AppCompatActivity() {
                 Log.d(TAG_INFO, "OpenCV loaded successfully")
             }
         }
+        const val DETECTION_ERROR = 100
         const val HEIGHTMAP_RESOLUTION = 1025
         const val app_folder = "app_height_maps";
         const val height_map_name = "mobile_height_map.raw"
@@ -59,9 +62,6 @@ class CreateMaze : AppCompatActivity() {
         var cx2Dim: Int = 0
         var cy1Dim: Int = 0
         var cy2Dim: Int = 0
-
-
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +77,6 @@ class CreateMaze : AppCompatActivity() {
 
         // Take picture with the camera or load an image from gallery. Then, crop image.
         CropImage.startPickImageActivity(this)
-        //cropImage()
     }
 
     fun onClickCancel(view: View) {
@@ -152,6 +151,8 @@ class CreateMaze : AppCompatActivity() {
      * @return complete man with all the needed data to build a game state in unity
      */
     private fun buildMapData(heightmap: ByteArray, objectPositions: List<Int>): ByteArray{
+        // recreate the height map with X and O removed
+        ocvImage!!.GenerateHeightMap()
 
         // allocate n + m byte buffer
         val dataBuffer = ByteArray((objectPositions.size * 4) + heightmap.size)
@@ -184,10 +185,10 @@ class CreateMaze : AppCompatActivity() {
             .start(this)
     }
 
-    private fun cropImage(result: Uri) {
+    private fun cropImage(uri: Uri) {
         // Take picture with the camera or load an image from gallery. Then, crop image.
         // Reference: https://github.com/ArthurHub/Android-Image-Cropper
-        CropImage.activity(result)
+        CropImage.activity(uri)
             .setGuidelines(CropImageView.Guidelines.ON)
             .setCropShape(CropImageView.CropShape.RECTANGLE)
             .start(this)
@@ -221,6 +222,9 @@ class CreateMaze : AppCompatActivity() {
                         if(!ocrResult)
                         {
                             Log.d(TAG_INFO, "Unable to detect X and O in detection routine")
+                            val returnIntent = Intent()
+                            setResult(DETECTION_ERROR, returnIntent)
+                            returnIntent.putExtra("error_code", "1")
                             finish()
                             //cropImage()
                         }
@@ -299,12 +303,10 @@ class CreateMaze : AppCompatActivity() {
                 {
                     Log.d(TAG_INFO, "Text recognition succeeded!")
                     originalImage!!.recycle()
-                    // Generate height map from the image with features correctly recognized
+                    // Generate ocvImage with all features recognized
                     cleanImage(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
                     positionData = removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp!!.width, croppedBmp!!.height)
-                    // recreate the height map with X and O removed
-                    ocvImage!!.GenerateHeightMap()
-
+                    croppedBmp!!.recycle()
                 }
                 return true
             }
