@@ -3,9 +3,7 @@ package com.doomteam.doodlemaze
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Matrix
-import android.graphics.Point
+import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -13,10 +11,12 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.Task
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -41,11 +41,31 @@ class CreateMaze : AppCompatActivity() {
         }
 
         var currentImage: ImageMarkup? = null
+        var originalImage: Bitmap? = null
         const val HEIGHTMAP_RESOLUTION = 1025
         const val app_folder = "app_height_maps";
         const val height_map_name = "mobile_height_map.raw"
 
         var positionData: List<Int>? = null
+
+        var croppedBmp: Bitmap? = null
+        var ocrImage: InputImage? = null
+
+        var ocrSuccess: Boolean = false
+        var taskCompleted: Boolean = false
+
+        // Source image dimensions
+        var sxDim: Int = 0
+        var syDim: Int = 0
+
+        // Crop image dimensions
+        var cx1Dim: Int = 0
+        var cx2Dim: Int = 0
+        var cy1Dim: Int = 0
+        var cy2Dim: Int = 0
+
+
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +80,8 @@ class CreateMaze : AppCompatActivity() {
         }
 
         // Take picture with the camera or load an image from gallery. Then, crop image.
-        cropImage()
+        CropImage.startPickImageActivity(this)
+        //cropImage()
     }
 
     fun onClickCancel(view: View) {
@@ -158,10 +179,19 @@ class CreateMaze : AppCompatActivity() {
         cropImage()
     }
 
-    private fun cropImage() {
+    private fun cropImage(){
         // Take picture with the camera or load an image from gallery. Then, crop image.
         // Reference: https://github.com/ArthurHub/Android-Image-Cropper
         CropImage.activity()
+            .setGuidelines(CropImageView.Guidelines.ON)
+            .setCropShape(CropImageView.CropShape.RECTANGLE)
+            .start(this)
+    }
+
+    private fun cropImage(result: Uri) {
+        // Take picture with the camera or load an image from gallery. Then, crop image.
+        // Reference: https://github.com/ArthurHub/Android-Image-Cropper
+        CropImage.activity(result)
             .setGuidelines(CropImageView.Guidelines.ON)
             .setCropShape(CropImageView.CropShape.RECTANGLE)
             .start(this)
@@ -176,20 +206,55 @@ class CreateMaze : AppCompatActivity() {
                     Log.d(TAG_INFO, "Error occurred when image cropping (Code $resultCode)")
                     finish()
                 }
-
                 // Get cropped image result
                 val result = CropImage.getActivityResult(data)
                 when (resultCode) {
                     Activity.RESULT_OK -> {
 
                         // Image retrieved from source, start image processing
-                        detectText(result.uri)
+                        val img = MediaStore.Images.Media.getBitmap(this.contentResolver, result.uri)
+                        croppedBmp = resizeBmp(img, 4000, 4000)
 
+                        cx1Dim = result.cropRect.left
+                        cx2Dim = result.cropRect.right
+                        cy1Dim = result.cropRect.top
+                        cy2Dim = result.cropRect.bottom
+
+                        ocrImage = InputImage.fromBitmap(croppedBmp!!, 0)
+                        val ocrResult = startDetectionRoutine()
+
+                        if(!ocrResult)
+                        {
+                            cropImage()
+                        }
+                        else
+                        {
+                            mazeImageView.setImageBitmap(currentImage!!.GetBitmap())
+                        }
                     }
                     else -> {
                         Log.d(TAG_INFO, "Error occurred during image cropping ($result.error)")
                     }
                 }
+            }
+            CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE -> { //User selected an image, initialize cropping on image
+                if(resultCode != RESULT_OK){
+                    Log.d(TAG_INFO, "Error occurred when picking image (Code $resultCode)")
+                    finish()
+                }
+                Log.d(TAG_INFO, "Picked an image")
+                val result = CropImage.getPickImageResultUri(this, data)
+                originalImage = MediaStore.Images.Media.getBitmap(this.contentResolver, result)
+                if(originalImage == null) {
+                    finish()
+                    Log.d(TAG_INFO, "Could not convert selected image to bitmap")
+                    return
+                }
+                sxDim = originalImage!!.width
+                syDim = originalImage!!.height
+
+                //Init crop activity on selected uri
+                cropImage(result)
             }
             else -> {
                 Log.d(TAG_INFO, "Unrecognized request code $requestCode")
@@ -197,31 +262,20 @@ class CreateMaze : AppCompatActivity() {
         }
     }
 
-    /**
-     * Runs google's Text Detection ML kit for Firebase on the selected picture
-     *
-     *
-     * @param resultUri location of the picture to run text detection on
-     */
-    private fun detectText(resultUri: Uri){
-
-        // Convert image to Bitmap
-        var bmp = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
-        // resize bitmap to 4k x 4k maintaining aspect ratio
-        bmp = resizeBmp(bmp)
-
-        val image = InputImage.fromBitmap(bmp, 0)
-        val recognizer = TextRecognition.getClient()
-
-        // Start OCR task to look for start/end features
-        val result = recognizer.process(image)
-            .addOnSuccessListener { visionText ->
-                //process results
+    private fun startDetectionRoutine(): Boolean{
+        var attempts = 0
+        var maxAttempts = 10
+        while(attempts < maxAttempts){
+            val result = detectText()
+            while(!result.isComplete) {}
+            val text = result.result!!.text;
+            if((text.contains('X') || text.contains('x')) && (text.contains('O') || text.contains('o'))) {
+                //good result
                 var startBoxTopLeft: Point? = null
                 var startBoxBottomRight: Point? = null
                 var endBoxTopLeft: Point? = null
                 var endBoxBottomRight: Point? = null
-                for (block in visionText.textBlocks) {
+                for (block in result.result!!.textBlocks) {
                     for (line in block.lines) {
                         for (element in line.elements) {
                             val elementText = element.text
@@ -238,30 +292,82 @@ class CreateMaze : AppCompatActivity() {
                         }
                     }
                 }
-
                 if(startBoxTopLeft != null && startBoxBottomRight != null && endBoxTopLeft != null && endBoxBottomRight != null)
                 {
                     Log.d(TAG_INFO, "Text recognition succeeded!")
-
+                    originalImage!!.recycle()
                     // Generate height map from the image with features correctly recognized
-                    generateHeightMap(bmp, HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
-                    positionData = removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, bmp.width, bmp.height)
+                    generateHeightMap(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
+                    positionData = removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp!!.width, croppedBmp!!.height)
                     // Display converted height map with features removed
-                    mazeImageView.setImageBitmap(currentImage!!.GetBitmap())
+                    //mazeImageView.setImageBitmap(currentImage!!.GetBitmap())
 
                 }
-                else{
-                    Log.d(TAG_INFO, "Character not located, try cropping again")
-                    cropImage()
-                }
+                return true
+            }
+            else{
+                //modify image
+                croppedBmp!!.recycle()
+                croppedBmp = resizeBmp(cropOriginal(0.01), 4000, 4000)
+                ocrImage = InputImage.fromBitmap(croppedBmp!!, 0)
+
+                //croppedBmp = resizeBmp(croppedBmp!!, 3800, 3800)
+                attempts++
+            }
+        }
+        return false
+    }
 
 
+    /**
+     * This program is used to modify the original image in an attempt for a better
+     * OCR result
+     *
+     */
+    private fun cropOriginal(amount: Double): Bitmap{
+        //increase cropped size by 5%
+        val width = cx2Dim - cx1Dim
+        val height = cy2Dim - cy1Dim
+        val widthResize = amount * width
+        val heightResize = amount * height
+
+        cx1Dim = maxOf(0, (cx1Dim - widthResize).toInt())
+        cx2Dim = minOf(sxDim, (cx2Dim + widthResize).toInt())
+        cy1Dim = maxOf(0, (cy1Dim - heightResize).toInt())
+        cy2Dim = minOf(syDim, (cy2Dim + heightResize).toInt())
+
+        val subImage = Bitmap.createBitmap(cx2Dim - cx1Dim, cy2Dim - cy1Dim, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(subImage)
+
+        canvas.drawBitmap(originalImage!!, Rect(cx1Dim, cy1Dim, cx2Dim, cy2Dim), Rect(0, 0, subImage.width, subImage.height), null)
+        return subImage
+    }
+
+
+    /**
+     * Runs google's Text Detection ML kit for Firebase on the selected picture
+     *
+     *
+     * @param resultUri location of the picture to run text detection on
+     */
+    private fun detectText(): Task<Text> {
+
+        // Convert image to Bitmap
+        //var bmp = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
+        // resize bitmap to 4k x 4k maintaining aspect ratio
+        //bmp = resizeBmp(bmp)
+
+        //val image = InputImage.fromBitmap(bmp, 0)
+        val recognizer = TextRecognition.getClient()
+
+        // Start OCR task to look for start/end features
+        return recognizer.process(ocrImage!!)
+            .addOnSuccessListener { visionText ->
+                Log.d(TAG_INFO, "Text recognition succeeded")
             }
             .addOnFailureListener{ e ->
                 Log.d(TAG_INFO, "Text recognition failed")
             }
-
-        return
     }
 
     /**
@@ -272,9 +378,7 @@ class CreateMaze : AppCompatActivity() {
      * @param bmp Bitmap to be resized
      * @return resized bitmap
      */
-    private fun resizeBmp(bmp: Bitmap): Bitmap{
-        val maxHeight = 4000
-        val maxWidth = 4000
+    private fun resizeBmp(bmp: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap{
         val scale: Float = Math.min(
             maxHeight.toFloat() / bmp.width,
             maxWidth.toFloat() / bmp.height
@@ -334,16 +438,14 @@ class CreateMaze : AppCompatActivity() {
 
     }
 
-    private fun generateHeightMap(imageBitmap: Bitmap?, width: Int, height: Int): Bitmap {
-        if (imageBitmap == null) {
+    private fun generateHeightMap(width: Int, height: Int) {
+        if (croppedBmp == null) {
             Log.d(TAG_INFO, "WARNING: imageBitmap == null")
         }
 
-        currentImage = ImageMarkup(imageBitmap, width, height)
+        currentImage = ImageMarkup(croppedBmp!!, width, height)
         currentImage!!.Filter(10)
         currentImage!!.GenerateHeightMap()
-
-        return currentImage!!.GetBitmap()
     }
 
     override fun onResume() {
