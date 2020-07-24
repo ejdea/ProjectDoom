@@ -39,20 +39,16 @@ class CreateMaze : AppCompatActivity() {
                 Log.d(TAG_INFO, "OpenCV loaded successfully")
             }
         }
-
-        var currentImage: ImageMarkup? = null
-        var originalImage: Bitmap? = null
         const val HEIGHTMAP_RESOLUTION = 1025
         const val app_folder = "app_height_maps";
         const val height_map_name = "mobile_height_map.raw"
 
-        var positionData: List<Int>? = null
-
+        var ocvImage: ImageMarkup? = null
+        var originalImage: Bitmap? = null
         var croppedBmp: Bitmap? = null
         var ocrImage: InputImage? = null
 
-        var ocrSuccess: Boolean = false
-        var taskCompleted: Boolean = false
+        var positionData: List<Int>? = null
 
         // Source image dimensions
         var sxDim: Int = 0
@@ -108,7 +104,7 @@ class CreateMaze : AppCompatActivity() {
         val heightMapRef: StorageReference? = sRef.child(app_folder).child(user!!).child(
             height_map_name);
 
-        if(heightMapRef == null || currentImage == null || positionData == null)
+        if(heightMapRef == null || ocvImage == null || positionData == null)
         {
             // If the currentImage is null, an error occurred while processing heightmap
             // If the heightMapRef is null, an error occurred while connecting to Firebase storage
@@ -118,7 +114,7 @@ class CreateMaze : AppCompatActivity() {
 
 
         // Create Byte buffer to hold position data along with heightmap data
-        val dataBuffer = buildMapData(currentImage!!.GetHeightMap(), positionData!!)
+        val dataBuffer = buildMapData(ocvImage!!.GetHeightMap(), positionData!!)
 
 
         val uploadTask = heightMapRef.putBytes(dataBuffer)
@@ -212,24 +208,25 @@ class CreateMaze : AppCompatActivity() {
                     Activity.RESULT_OK -> {
 
                         // Image retrieved from source, start image processing
-                        val img = MediaStore.Images.Media.getBitmap(this.contentResolver, result.uri)
-                        croppedBmp = resizeBmp(img, 4000, 4000)
-
+                        initCroppedBmp(result.uri)
                         cx1Dim = result.cropRect.left
                         cx2Dim = result.cropRect.right
                         cy1Dim = result.cropRect.top
                         cy2Dim = result.cropRect.bottom
 
+                        resizeCroppedBmp(4000, 4000)
                         ocrImage = InputImage.fromBitmap(croppedBmp!!, 0)
-                        val ocrResult = startDetectionRoutine()
 
+                        val ocrResult = startDetectionRoutine()
                         if(!ocrResult)
                         {
-                            cropImage()
+                            Log.d(TAG_INFO, "Unable to detect X and O in detection routine")
+                            finish()
+                            //cropImage()
                         }
                         else
                         {
-                            mazeImageView.setImageBitmap(currentImage!!.GetBitmap())
+                            mazeImageView.setImageBitmap(ocvImage!!.GetBitmap())
                         }
                     }
                     else -> {
@@ -264,26 +261,32 @@ class CreateMaze : AppCompatActivity() {
 
     private fun startDetectionRoutine(): Boolean{
         var attempts = 0
-        var maxAttempts = 10
+        val maxAttempts = 10
         while(attempts < maxAttempts){
+
+            //run text detection
             val result = detectText()
+
+            //wait for task to complete
             while(!result.isComplete) {}
             val text = result.result!!.text;
+
+
+            //check for recognition of X and O characters
             if((text.contains('X') || text.contains('x')) && (text.contains('O') || text.contains('o'))) {
-                //good result
-                var startBoxTopLeft: Point? = null
-                var startBoxBottomRight: Point? = null
-                var endBoxTopLeft: Point? = null
-                var endBoxBottomRight: Point? = null
+                var startBoxTopLeft: Point? = null; var startBoxBottomRight: Point? = null
+                var endBoxTopLeft: Point? = null; var endBoxBottomRight: Point? = null
                 for (block in result.result!!.textBlocks) {
                     for (line in block.lines) {
                         for (element in line.elements) {
                             val elementText = element.text
                             val elementCornerPoints = element.cornerPoints
+                            //retrieve bounding rect dimensions for 'x'
                             if(elementText[0] == 'X' || elementText[0] == 'x') {
                                 startBoxTopLeft = elementCornerPoints!![0]
                                 startBoxBottomRight = elementCornerPoints[2]
                             }
+                            //retrieve bounding rect dimensions for 'o'
                             else if(elementText[0] == 'O' || elementText[0] == 'o')
                             {
                                 endBoxTopLeft = elementCornerPoints!![0]
@@ -297,21 +300,23 @@ class CreateMaze : AppCompatActivity() {
                     Log.d(TAG_INFO, "Text recognition succeeded!")
                     originalImage!!.recycle()
                     // Generate height map from the image with features correctly recognized
-                    generateHeightMap(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
+                    cleanImage(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
                     positionData = removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp!!.width, croppedBmp!!.height)
-                    // Display converted height map with features removed
-                    //mazeImageView.setImageBitmap(currentImage!!.GetBitmap())
+                    // recreate the height map with X and O removed
+                    ocvImage!!.GenerateHeightMap()
 
                 }
                 return true
             }
             else{
-                //modify image
+                //hint for garbage collection to avoid heap exhaustion
                 croppedBmp!!.recycle()
-                croppedBmp = resizeBmp(cropOriginal(0.01), 4000, 4000)
+
+                //increase size of cropped by 1%
+                cropOriginal(0.01)
+                resizeCroppedBmp(4000, 4000)
                 ocrImage = InputImage.fromBitmap(croppedBmp!!, 0)
 
-                //croppedBmp = resizeBmp(croppedBmp!!, 3800, 3800)
                 attempts++
             }
         }
@@ -324,23 +329,25 @@ class CreateMaze : AppCompatActivity() {
      * OCR result
      *
      */
-    private fun cropOriginal(amount: Double): Bitmap{
+    private fun cropOriginal(amount: Double){
         //increase cropped size by 5%
         val width = cx2Dim - cx1Dim
         val height = cy2Dim - cy1Dim
         val widthResize = amount * width
         val heightResize = amount * height
 
+        //update new cropped image dimensions
         cx1Dim = maxOf(0, (cx1Dim - widthResize).toInt())
         cx2Dim = minOf(sxDim, (cx2Dim + widthResize).toInt())
         cy1Dim = maxOf(0, (cy1Dim - heightResize).toInt())
         cy2Dim = minOf(syDim, (cy2Dim + heightResize).toInt())
 
-        val subImage = Bitmap.createBitmap(cx2Dim - cx1Dim, cy2Dim - cy1Dim, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(subImage)
+        //create new cropped image
+        croppedBmp = Bitmap.createBitmap(cx2Dim - cx1Dim, cy2Dim - cy1Dim, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(croppedBmp!!)
 
-        canvas.drawBitmap(originalImage!!, Rect(cx1Dim, cy1Dim, cx2Dim, cy2Dim), Rect(0, 0, subImage.width, subImage.height), null)
-        return subImage
+        //copy from original image into the croppedBmp
+        canvas.drawBitmap(originalImage!!, Rect(cx1Dim, cy1Dim, cx2Dim, cy2Dim), Rect(0, 0, croppedBmp!!.width, croppedBmp!!.height), null)
     }
 
 
@@ -351,15 +358,8 @@ class CreateMaze : AppCompatActivity() {
      * @param resultUri location of the picture to run text detection on
      */
     private fun detectText(): Task<Text> {
-
-        // Convert image to Bitmap
-        //var bmp = MediaStore.Images.Media.getBitmap(this.contentResolver, resultUri)
-        // resize bitmap to 4k x 4k maintaining aspect ratio
-        //bmp = resizeBmp(bmp)
-
         //val image = InputImage.fromBitmap(bmp, 0)
         val recognizer = TextRecognition.getClient()
-
         // Start OCR task to look for start/end features
         return recognizer.process(ocrImage!!)
             .addOnSuccessListener { visionText ->
@@ -376,23 +376,25 @@ class CreateMaze : AppCompatActivity() {
      * Resizes a bitmap to a max of 4k x 4k resolution while maintaining aspect ratio
      *
      * @param bmp Bitmap to be resized
+     * @param maxWidth max width to target
+     * @param maxHeigt max height to target
      * @return resized bitmap
      */
-    private fun resizeBmp(bmp: Bitmap, maxWidth: Int, maxHeight: Int): Bitmap{
+    private fun resizeCroppedBmp(maxWidth: Int, maxHeight: Int){
         val scale: Float = Math.min(
-            maxHeight.toFloat() / bmp.width,
-            maxWidth.toFloat() / bmp.height
+            maxHeight.toFloat() / croppedBmp!!.width,
+            maxWidth.toFloat() / croppedBmp!!.height
         )
 
         val matrix = Matrix()
         matrix.postScale(scale, scale)
 
-        return Bitmap.createBitmap(
-            bmp,
+        Bitmap.createBitmap(
+            croppedBmp!!,
             0,
             0,
-            bmp.width,
-            bmp.height,
+            croppedBmp!!.width,
+            croppedBmp!!.height,
             matrix,
             true
         )
@@ -420,32 +422,27 @@ class CreateMaze : AppCompatActivity() {
         val eBRy =  (((endBoxBottomRight.y).toFloat() / maxHeight.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
 
 
-        if(currentImage == null)
+        if(ocvImage == null)
         {
             Log.d(TAG_INFO, "Warning: currentImage needs to be created before removing bounding boxes!")
             return null
         }
         // remove the content in the bounding boxes mark
-        currentImage!!.Resize(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
-        currentImage!!.RemoveBoundingBox(sTLx, sTLy, sBRx, sBRy, -10, -10)
-        currentImage!!.RemoveBoundingBox(eTLx, eTLy, eBRx, eBRy, -10, -10)
-
-        // recreate the height map with X and O removed
-        currentImage!!.GenerateHeightMap()
+        ocvImage!!.Resize(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
+        ocvImage!!.RemoveBoundingBox(sTLx, sTLy, sBRx, sBRy, -10, -10)
+        ocvImage!!.RemoveBoundingBox(eTLx, eTLy, eBRx, eBRy, -10, -10)
 
         //(player.x1,y1); (player.x2,y1); (endBox.x1,y1); (endBox.x2,y2)
         return listOf(sTLx, sTLy, sBRx, sBRy, eTLx, eTLy, eBRx, eBRy)
 
     }
 
-    private fun generateHeightMap(width: Int, height: Int) {
+    private fun cleanImage(width: Int, height: Int) {
         if (croppedBmp == null) {
             Log.d(TAG_INFO, "WARNING: imageBitmap == null")
         }
-
-        currentImage = ImageMarkup(croppedBmp!!, width, height)
-        currentImage!!.Filter(10)
-        currentImage!!.GenerateHeightMap()
+        ocvImage = ImageMarkup(croppedBmp!!, width, height)
+        ocvImage!!.Filter(10)
     }
 
     override fun onResume() {
@@ -471,5 +468,7 @@ class CreateMaze : AppCompatActivity() {
         }
     }
 
-
+    private fun initCroppedBmp(uri: Uri){
+        croppedBmp = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+    }
 }
