@@ -111,6 +111,9 @@ class CreateMaze : AppCompatActivity() {
             return
         }
 
+        // recreate the height map with X and O removed
+        ocvImage!!.GenerateHeightMap()
+
 
         // Create Byte buffer to hold position data along with heightmap data
         val dataBuffer = buildMapData(ocvImage!!.GetHeightMap(), positionData!!)
@@ -151,8 +154,6 @@ class CreateMaze : AppCompatActivity() {
      * @return complete man with all the needed data to build a game state in unity
      */
     private fun buildMapData(heightmap: ByteArray, objectPositions: List<Int>): ByteArray{
-        // recreate the height map with X and O removed
-        ocvImage!!.GenerateHeightMap()
 
         // allocate n + m byte buffer
         val dataBuffer = ByteArray((objectPositions.size * 4) + heightmap.size)

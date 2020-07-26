@@ -38,6 +38,8 @@ public class StartScript : MonoBehaviour
     private bool script_start_flag = false;
     private bool gameObjectPositionsSet = false;
     private const int TerrainResolution = 1025;
+    private const float PlayerObjectScaleFactor = 1.0f;
+    private const float EndObjectScaleFactor = 0.5f;
     Color prev_color;
 
     // Start is called before the first frame update
@@ -70,7 +72,7 @@ public class StartScript : MonoBehaviour
         {
             if (ModifyTerrain.ObjectPositionData != null)
             {
-                SetGameObjects(playerSphere, endBox);
+                SetGameObjects(ref playerSphere, ref endBox);
                 gameObjectPositionsSet = true;
             }
         }
@@ -84,61 +86,7 @@ public class StartScript : MonoBehaviour
    
     }
 
-
-    //PRE-GAME OBJECT POSITIONING CODE
-    /*
-    This code allows the user to move the the game pieces around in the world. This code is placeholder
-    until the positions of these pieces can be determined with CV.
-
-    Allows interactivity where the user can select an item, if the item isn't terrain it's colored to display
-    what is currently selected. The user can then select another location to place the object there.
-    */
-    private void CheckForMoveEvent()
-    {
-        //check if mouse is over an object when click is released
-        if (Input.GetMouseButtonUp(0))
-        {
-            //simple click, see what was selected
-            Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit) && (hit.collider != null))
-            {
-                prevSelected = selected;
-                selected = hit.transform.gameObject;
-                Terrain ter = selected.GetComponent<Terrain>();
-                if (!isTerrain(selected) && selected == playerSphere)
-                {
-                    var render = selected.GetComponent<Renderer>();
-                    if (selected != prevSelected)
-                    {
-                        prev_color = render.material.color;
-                    }
-                    render.material.SetColor("_Color", Color.red);
-                }
-                else
-                {
-                    if(selected == prevSelected && selected == playerSphere && prevSelected == playerSphere)
-                    {
-                        var render = prevSelected.GetComponent<Renderer>();
-                        render.material.SetColor("_Color", prev_color);
-                    }
-                    if (prevSelected != null && !isTerrain(prevSelected) && prevSelected == playerSphere) //moving sphere
-                    {
-                        var render = prevSelected.GetComponent<Renderer>();
-                        render.material.SetColor("_Color", prev_color);
-                        //move the ball to where the mouse just clicked
-                        prevSelected.transform.position = new UnityEngine.Vector3(hit.point.x, 3, hit.point.z);
-                    }
-                    else if (prevSelected != null && !isTerrain(prevSelected) && prevSelected != playerSphere)  //moving portal
-                    {
-                        prevSelected.transform.position = new UnityEngine.Vector3(hit.point.x, 0, hit.point.z);
-                    }
-                }
-            }
-        }
-    }
-
-    private void SetGameObjects(GameObject player, GameObject end)
+    private void SetGameObjects(ref GameObject player, ref GameObject end)
     {
         //get midpoint coords from bounding box
         int[] pCoords = GetBoundingBoxMidPoint(
@@ -175,7 +123,7 @@ public class StartScript : MonoBehaviour
         player.transform.position = new UnityEngine.Vector3(pCoords[0], 3.0f, pCoords[1]);
         player.transform.localScale = new UnityEngine.Vector3(pScale[0], pScale[0], pScale[0]);
         end.transform.position = new UnityEngine.Vector3(eCoords[0], 0.0f, eCoords[1]);
-        end.transform.localScale = new UnityEngine.Vector3(1.0f, eScale[0], eScale[0]);
+        end.transform.localScale = new UnityEngine.Vector3(1.0f, eScale[0] * EndObjectScaleFactor, eScale[0] * EndObjectScaleFactor);
     }
 
     /**
@@ -225,6 +173,59 @@ public class StartScript : MonoBehaviour
         else
         {
             return true;
+        }
+    }
+
+    //PRE-GAME OBJECT POSITIONING CODE
+    /*
+    This code allows the user to move the the game pieces around in the world. This code is placeholder
+    until the positions of these pieces can be determined with CV.
+
+    Allows interactivity where the user can select an item, if the item isn't terrain it's colored to display
+    what is currently selected. The user can then select another location to place the object there.
+    */
+    private void CheckForMoveEvent()
+    {
+        //check if mouse is over an object when click is released
+        if (Input.GetMouseButtonUp(0))
+        {
+            //simple click, see what was selected
+            Ray ray = currentCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit) && (hit.collider != null))
+            {
+                prevSelected = selected;
+                selected = hit.transform.gameObject;
+                Terrain ter = selected.GetComponent<Terrain>();
+                if (!isTerrain(selected) && selected == playerSphere)
+                {
+                    var render = selected.GetComponent<Renderer>();
+                    if (selected != prevSelected)
+                    {
+                        prev_color = render.material.color;
+                    }
+                    render.material.SetColor("_Color", Color.red);
+                }
+                else
+                {
+                    if (selected == prevSelected && selected == playerSphere && prevSelected == playerSphere)
+                    {
+                        var render = prevSelected.GetComponent<Renderer>();
+                        render.material.SetColor("_Color", prev_color);
+                    }
+                    if (prevSelected != null && !isTerrain(prevSelected) && prevSelected == playerSphere) //moving sphere
+                    {
+                        var render = prevSelected.GetComponent<Renderer>();
+                        render.material.SetColor("_Color", prev_color);
+                        //move the ball to where the mouse just clicked
+                        prevSelected.transform.position = new UnityEngine.Vector3(hit.point.x, 3, hit.point.z);
+                    }
+                    else if (prevSelected != null && !isTerrain(prevSelected) && prevSelected != playerSphere)  //moving portal
+                    {
+                        prevSelected.transform.position = new UnityEngine.Vector3(hit.point.x, 0, hit.point.z);
+                    }
+                }
+            }
         }
     }
 

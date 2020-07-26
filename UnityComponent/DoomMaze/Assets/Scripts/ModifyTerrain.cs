@@ -42,12 +42,15 @@ public class ModifyTerrain : MonoBehaviour
         return to_return;
     }
 
+    /**
+     * Retrieves position data from .raw map file
+     * 
+     */
     public void GetObjectPositions(byte[] b_data)
     {
         int[] positions = new int[8];
         for(int i = 0; i < TerrainDataOffset; i+=4)
         {
-            //read 4 bytes of data
             int pData = b_data[i] << 24;
             pData |= (b_data[i + 1] << 16);
             pData |= (b_data[i + 2] << 8);
