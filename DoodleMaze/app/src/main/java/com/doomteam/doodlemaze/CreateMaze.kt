@@ -12,7 +12,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
@@ -114,12 +113,10 @@ class CreateMaze : AppCompatActivity() {
         // recreate the height map with X and O removed
         ocvImage!!.GenerateHeightMap()
 
+        //build level data
+        val levelData = LevelData(ocvImage!!.GetHeightMap(), positionData!!)
 
-        // Create Byte buffer to hold position data along with heightmap data
-        val dataBuffer = buildMapData(ocvImage!!.GetHeightMap(), positionData!!)
-
-
-        val uploadTask = heightMapRef.putBytes(dataBuffer)
+        val uploadTask = heightMapRef.putBytes(levelData.GetData())
         uploadTask.addOnFailureListener{
             // Unable to upload the file
             // TODO: Add handler, but for now just restart process
@@ -174,7 +171,8 @@ class CreateMaze : AppCompatActivity() {
     }
 
     fun onClickCreateNewMaze(view: View) {
-        cropImage()
+        // Take picture with the camera or load an image from gallery. Then, crop image.
+        CropImage.startPickImageActivity(this)
     }
 
     private fun cropImage(){
@@ -227,7 +225,6 @@ class CreateMaze : AppCompatActivity() {
                             setResult(DETECTION_ERROR, returnIntent)
                             returnIntent.putExtra("error_code", "1")
                             finish()
-                            //cropImage()
                         }
                         else
                         {
@@ -243,6 +240,7 @@ class CreateMaze : AppCompatActivity() {
                 if(resultCode != RESULT_OK){
                     Log.d(TAG_INFO, "Error occurred when picking image (Code $resultCode)")
                     finish()
+                    return
                 }
                 Log.d(TAG_INFO, "Picked an image")
                 val result = CropImage.getPickImageResultUri(this, data)

@@ -17,8 +17,8 @@ import java.util.List;
  * Class used for android -> OpenCV operations and height map generation.
  *
  * @author Martin Edmunds
- * @since 2020-07-22
- * @version 1.2
+ * @since 2020-07-31
+ * @version 1.3
  */
 public class ImageMarkup extends android.app.Activity{
 

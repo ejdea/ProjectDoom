@@ -1,11 +1,24 @@
 package com.doomteam.doodlemaze;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class LevelData {
 
-    private byte[] m_data;
+/**
+ * Class used to encapsulate all necessary data needed for Unity terrain generation and game state
+ *
+ * @author Martin Edmunds
+ * @since 2020-07-31
+ * @version 1.3
+ */
+public class LevelData {
 
     /**
      * Class utility function to convert a list of integer positions into a byte array
@@ -13,7 +26,7 @@ public class LevelData {
      * @param arr list of integers to be converted into bytes
      * @return byte representation of the integers
      * */
-    public static byte[] GetPositionBytes(List<Integer> arr){
+    public static byte[] ConvertIntsToBytes(List<Integer> arr){
         byte[] to_return = new byte[arr.size() * 4];
         int byte_counter = 0;
         for(int i = 0; i < arr.size(); i++){
@@ -26,32 +39,136 @@ public class LevelData {
         return to_return;
     }
 
-    LevelData(Uri uri)
-    {
+    /**
+     * Class utility function to convert serialized positions into ArrayList
+     *
+     * @param data byte representation of integers
+     * @return ArrayList of position data
+     * */
+    public static ArrayList<Integer> ConvertBytesToInts(byte[] data){
+        ArrayList<Integer> to_return = new ArrayList<>();
+        for(int i = 0; i < HEIGHTDATA_OFFSET; i += 4){
+            int val = 0;
+            val |= data[i] & 0xFF;
+            val = val << 8;
+            val |= data[i+1] & 0xFF;
+            val = val << 8;
+            val |= data[i+2] & 0xFF;
+            val = val << 8;
+            val |= data[i+3] & 0xFF;
+            to_return.add(val);
+        }
+        return to_return;
+    }
+    private static int HEIGHTDATA_OFFSET = 32;
 
+    // composite level data, consists of 32 bytes of obj positions + 1024 * 1024 * 2 bytes of heightmap data
+    private byte[] m_data;
+    private ArrayList<Integer> m_objPositions;
+
+    /**
+     * Constructor used to build level data from local storage
+     *
+     * @param filepath string file path
+     * @param filename string file name
+     * @throws IOException of fileIO error
+     * */
+    LevelData(String filepath, String filename) throws IOException {
+        File file = new File(filepath, filename);
+        m_data = new byte[(int) file.length()];
+        FileInputStream in = new FileInputStream(file);
+        in.read(m_data);
+        m_objPositions = LevelData.ConvertBytesToInts(m_data);
     }
 
-    LevelData(String filename)
+    /**
+     * Constructor used to build level data from heightmap and object position list
+     *
+     * @param heightData 1024x1024x16 heightmap from ImageMarkup
+     * @param objPositions ArrayList of bounding box coords
+     * */
+    LevelData(byte[] heightData, List<Integer> objPositions)
     {
-
+        m_objPositions = new ArrayList<>(objPositions);
+        m_data = new byte[heightData.length + (objPositions.size() * 4)];
+        byte[] sPositionData = LevelData.ConvertIntsToBytes(m_objPositions);
+        // copy n bytes from position data into level data buffer
+        for(int i = 0; i < sPositionData.length; i++)
+        {
+            m_data[i] = sPositionData[i];
+        }
+        // copy m bytes from heightmap data into level data buffer
+        for(int i = 0; i < heightData.length; i++)
+        {
+            m_data[i + HEIGHTDATA_OFFSET] = heightData[i];
+        }
     }
 
-    LevelData(byte[] leveldata)
+    /**
+     * Constructor used to build level data from heightmap and object position list
+     *
+     * @param data n + m byte buffer consisting of 32 bytes position data + heightmap data
+     * */
+    LevelData(byte[] data)
     {
-
+        m_data = data;
+        m_objPositions = LevelData.ConvertBytesToInts(data);
     }
 
-    LevelData(byte[] heightdata, List<Integer> objPositions)
-    {
-
-    }
-
-
+    /**
+     * Getter for level data
+     *
+     * @return byte array consisting of 32 bytes positioning data and 1024x1024x2 bytes heightmap data
+     * */
     byte[] GetData()
     {
-        return null;
+        return m_data;
     }
 
+    /**
+     * Getter for position data
+     *
+     * @return ArrayList of bounding box coords for position data
+     * */
+    ArrayList<Integer> GetPositions()
+    {
+        return m_objPositions;
+    }
+
+    /**
+     * Converts the currently held heightmap into a bitmap image that can be used for display
+     *
+     * @return Bitmap representation of the heightmap
+     * */
+    Bitmap GetImage()
+    {
+        int stride = 3;
+        byte[] image = new byte[(m_data.length - HEIGHTDATA_OFFSET) * stride];
+        // create RGB color array for bitmap factory to decode
+        for(int i = HEIGHTDATA_OFFSET; i < m_data.length; i++)
+        {
+            if(m_data[i] != 0x0)
+            {
+                image[i*stride] = (byte)255;     //r
+                image[i*stride + 1] = (byte)255; //g
+                image[i*stride + 2] = (byte)255; //b
+            }
+        }
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
+    }
+
+    /**
+     * Function used to save the currently held level data as a file
+     *
+     * @param filepath location to save map data
+     * @param filename name of the file to be saved as
+     * @throws IOException on IO error
+     * */
+    void Save(String filepath, String filename) throws IOException {
+        File file = new File(filepath, filename);
+        FileOutputStream out = new FileOutputStream(file);
+        out.write(m_data);
+    }
 
 
 }
