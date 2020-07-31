@@ -186,7 +186,7 @@ public class ImageMarkup extends android.app.Activity{
                 height_map[byte_index + 1] = 0x00;
             }
             else{
-                height_map[byte_index + 1] = 0x01;
+                height_map[byte_index + 1] = 0x02;
             }
             byte_index += DEFAULT_DEPTH;
         }

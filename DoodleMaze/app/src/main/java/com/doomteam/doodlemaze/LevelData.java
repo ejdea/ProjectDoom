@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,8 +62,9 @@ public class LevelData {
         return to_return;
     }
     private static int HEIGHTDATA_OFFSET = 32;
+    private static int HEIGHTMAP_RESOLUTION = 1025;
 
-    // composite level data, consists of 32 bytes of obj positions + 1024 * 1024 * 2 bytes of heightmap data
+    // composite level data, consists of 32 bytes of obj positions + 1025 * 1025 * 2 bytes of heightmap data
     private byte[] m_data;
     private ArrayList<Integer> m_objPositions;
 
@@ -84,7 +86,7 @@ public class LevelData {
     /**
      * Constructor used to build level data from heightmap and object position list
      *
-     * @param heightData 1024x1024x16 heightmap from ImageMarkup
+     * @param heightData 1025x1025 heightmap from ImageMarkup
      * @param objPositions ArrayList of bounding box coords
      * */
     LevelData(byte[] heightData, List<Integer> objPositions)
@@ -118,7 +120,7 @@ public class LevelData {
     /**
      * Getter for level data
      *
-     * @return byte array consisting of 32 bytes positioning data and 1024x1024x2 bytes heightmap data
+     * @return byte array consisting of 32 bytes positioning data and 1025x1025x2 bytes heightmap data
      * */
     byte[] GetData()
     {
@@ -142,19 +144,27 @@ public class LevelData {
      * */
     Bitmap GetImage()
     {
-        int stride = 3;
-        byte[] image = new byte[(m_data.length - HEIGHTDATA_OFFSET) * stride];
-        // create RGB color array for bitmap factory to decode
-        for(int i = HEIGHTDATA_OFFSET; i < m_data.length; i++)
+        int num_pixels = HEIGHTMAP_RESOLUTION * HEIGHTMAP_RESOLUTION;
+        int[] pixelData = new int[num_pixels];
+        int idxCounter = 0;
+        for(int i = HEIGHTDATA_OFFSET; i < m_data.length; i += 2)
         {
-            if(m_data[i] != 0x0)
-            {
-                image[i*stride] = (byte)255;     //r
-                image[i*stride + 1] = (byte)255; //g
-                image[i*stride + 2] = (byte)255; //b
+            int val = 0;
+            val |= m_data[i];
+            val <<= 2;
+            val |= m_data[i+1];
+            if(val == 0) {
+                //white
+                pixelData[idxCounter] = 0xFFFFFFFF;
             }
+            else {
+                //black
+                pixelData[idxCounter] = 0xFF000000;
+            }
+            idxCounter++;
         }
-        return BitmapFactory.decodeByteArray(image, 0, image.length);
+
+        return Bitmap.createBitmap(pixelData, HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION, Bitmap.Config.ARGB_8888);
     }
 
     /**

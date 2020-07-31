@@ -124,6 +124,8 @@ class CreateMaze : AppCompatActivity() {
             cropImage()
 
         }.addOnSuccessListener {
+
+
             // Done
             finish()
             Log.d(TAG_INFO, "Upload done!")
