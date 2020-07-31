@@ -140,36 +140,6 @@ class CreateMaze : AppCompatActivity() {
         }
     }
 
-    /**
-     * Builds a map with all the necessary information needed to play the game
-     *
-     * n = number of bytes in position data
-     * m = number of bytes in heightmap data
-     *
-     * @param heightmap heightmap data from the image, 1025x1025x16 bits 2,101,250 bytes
-     * @param objectPositions position data for start and end positions, 32 bytes
-     * @return complete man with all the needed data to build a game state in unity
-     */
-    private fun buildMapData(heightmap: ByteArray, objectPositions: List<Int>): ByteArray{
-
-        // allocate n + m byte buffer
-        val dataBuffer = ByteArray((objectPositions.size * 4) + heightmap.size)
-        // convert integer positions into byte data using utility function in ImageMarkup
-        val bytePosData = ImageMarkup.GetPositionBytes(objectPositions)
-        // copy n bytes from position data into byte buffer
-        var offset = 0
-        for(i in bytePosData.indices){
-            dataBuffer[i] = bytePosData[i]
-            offset++
-        }
-        // copy m bytes from heightmap data into byte buffer
-        for(i in heightmap.indices){
-            dataBuffer[i+offset] = heightmap[i]
-        }
-
-        return dataBuffer
-    }
-
     fun onClickCreateNewMaze(view: View) {
         // Take picture with the camera or load an image from gallery. Then, crop image.
         CropImage.startPickImageActivity(this)
