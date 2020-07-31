@@ -1,5 +1,6 @@
 package com.doomteam.doodlemaze
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,6 +12,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.Task
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -24,6 +27,7 @@ import kotlinx.android.synthetic.main.activity_create_maze.*
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
+import java.time.Duration
 
 
 const val TAG_INFO = "INFO"
@@ -40,6 +44,7 @@ class CreateMaze : AppCompatActivity() {
                 Log.d(TAG_INFO, "OpenCV loaded successfully")
             }
         }
+        const val PERMISSION_REQUEST_CODE = 1723
         const val DETECTION_ERROR = 100
         const val HEIGHTMAP_RESOLUTION = 1025
         const val app_folder = "app_height_maps";
@@ -74,8 +79,29 @@ class CreateMaze : AppCompatActivity() {
                 Toast.LENGTH_LONG).show()
         }
 
-        // Take picture with the camera or load an image from gallery. Then, crop image.
-        CropImage.startPickImageActivity(this)
+        // Request app permissions to camera and storage
+        var permissions = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+        if (!checkAppPermissions()) {
+            Log.d(TAG_INFO, "Requesting app permissions")
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
+        } else {
+            // Take picture with the camera or load an image from gallery. Then, crop image.
+            CropImage.startPickImageActivity(this)
+        }
+    }
+
+    private fun checkAppPermissions(): Boolean {
+        return (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED)
     }
 
     fun onClickCancel(view: View) {
@@ -137,6 +163,9 @@ class CreateMaze : AppCompatActivity() {
                 applicationContext.startActivity(unityIntent)
             } else {
                 Log.d(TAG_INFO, "unityIntent == null")
+                Toast.makeText(this,
+                "Unable to play maze. Please install unitydoodle-maze.",
+                    Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -162,6 +191,24 @@ class CreateMaze : AppCompatActivity() {
             .setGuidelines(CropImageView.Guidelines.ON)
             .setCropShape(CropImageView.CropShape.RECTANGLE)
             .start(this)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>,
+                                            grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> {
+                if (checkAppPermissions()) {
+                    Log.d(TAG_INFO, "start image picker")
+                    CropImage.startPickImageActivity(this)
+                } else {
+                    Toast.makeText(this,
+                        "Please enable camera and storage permission to load mazes",
+                        Toast.LENGTH_LONG).show()
+                    finish()
+                }
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
