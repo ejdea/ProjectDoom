@@ -267,6 +267,9 @@ class CreateMaze : AppCompatActivity() {
     private fun startDetectionRoutine(): Boolean{
         var attempts = 0
         val maxAttempts = 10
+        var startBoxTopLeft: Point? = null; var startBoxBottomRight: Point? = null
+        var endBoxTopLeft: Point? = null; var endBoxBottomRight: Point? = null
+
         while(attempts < maxAttempts){
 
             //run text detection
@@ -276,39 +279,36 @@ class CreateMaze : AppCompatActivity() {
             while(!result.isComplete) {}
             val text = result.result!!.text;
 
-
             //check for recognition of X and O characters
             if((text.contains('X') || text.contains('x')) && (text.contains('O') || text.contains('o'))) {
-                var startBoxTopLeft: Point? = null; var startBoxBottomRight: Point? = null
-                var endBoxTopLeft: Point? = null; var endBoxBottomRight: Point? = null
                 for (block in result.result!!.textBlocks) {
                     for (line in block.lines) {
                         for (element in line.elements) {
                             val elementText = element.text
                             val elementCornerPoints = element.cornerPoints
                             //retrieve bounding rect dimensions for 'x'
-                            if(elementText[0] == 'X' || elementText[0] == 'x') {
+                            if(startBoxTopLeft == null && (elementText[0] == 'X' || elementText[0] == 'x')) {
                                 startBoxTopLeft = elementCornerPoints!![0]
                                 startBoxBottomRight = elementCornerPoints[2]
                             }
                             //retrieve bounding rect dimensions for 'o'
-                            else if(elementText[0] == 'O' || elementText[0] == 'o')
-                            {
+                            else if(endBoxTopLeft == null && (elementText[0] == 'O' || elementText[0] == 'o')) {
                                 endBoxTopLeft = elementCornerPoints!![0]
                                 endBoxBottomRight = elementCornerPoints[2]
                             }
                         }
                     }
                 }
-                if(startBoxTopLeft != null && startBoxBottomRight != null && endBoxTopLeft != null && endBoxBottomRight != null)
-                {
-                    Log.d(TAG_INFO, "Text recognition succeeded!")
-                    originalImage!!.recycle()
-                    // Generate ocvImage with all features recognized
-                    cleanImage(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
-                    positionData = removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp!!.width, croppedBmp!!.height)
-                    croppedBmp!!.recycle()
-                }
+            }
+            // check if detection routine is done
+            if(startBoxTopLeft != null && startBoxBottomRight != null && endBoxTopLeft != null && endBoxBottomRight != null)
+            {
+                Log.d(TAG_INFO, "Text recognition succeeded!")
+                originalImage!!.recycle()
+                // Generate ocvImage with all features recognized
+                cleanImage(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
+                positionData = removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp!!.width, croppedBmp!!.height)
+                croppedBmp!!.recycle()
                 return true
             }
             else{
@@ -317,11 +317,11 @@ class CreateMaze : AppCompatActivity() {
 
                 //increase size of cropped by 1%
                 cropOriginal(0.01)
+
                 resizeCroppedBmp(4000, 4000)
                 ocrImage = InputImage.fromBitmap(croppedBmp!!, 0)
-
-                attempts++
             }
+            attempts++
         }
         return false
     }
@@ -333,7 +333,7 @@ class CreateMaze : AppCompatActivity() {
      *
      */
     private fun cropOriginal(amount: Double){
-        //increase cropped size by 5%
+        //increase cropped size by amount%
         val width = cx2Dim - cx1Dim
         val height = cy2Dim - cy1Dim
         val widthResize = amount * width
@@ -402,6 +402,7 @@ class CreateMaze : AppCompatActivity() {
             true
         )
     }
+
 
     /**
      * Function that removes the bounding boxes detected in the CV text detection method

@@ -24,6 +24,7 @@ public class ImageMarkup extends android.app.Activity{
 
     public static int DEFAULT_RESOLUTION = 1025;
     private static int DEFAULT_DEPTH = 2;
+    private static double CLAMP_STD_VALUE = -2;
 
     public Mat img;
     private byte[] height_map = null;
@@ -248,7 +249,7 @@ public class ImageMarkup extends android.app.Activity{
     public void Filter(int num_times) {
         for(int i = 0; i < num_times; i++) {
             this.Blur(9, 9);
-            this.ClampSTD(-1);
+            this.ClampSTD(CLAMP_STD_VALUE);
         }
     }
 
@@ -308,16 +309,6 @@ public class ImageMarkup extends android.app.Activity{
     }
 
     /**
-     * Default Clamp call that clamps the image to within 1 standard deviation
-     *
-     *
-     *
-     * */
-    public void ClampSTD() {
-        this.ClampSTD(1);
-    }
-
-    /**
      * Clamps the pixel values in the image against a value:
      * Pixels less than the threshold are set to 0. Everything else is set to 255.
      *
@@ -356,7 +347,7 @@ public class ImageMarkup extends android.app.Activity{
      *
      * @param num_std number of standard deviations to clamp to
      * */
-    public void ClampSTD(int num_std) {
+    public void ClampSTD(double num_std) {
         double value = this.GetAveragePixel();
         double stdev = this.GetStdDev();
         this.Clamp(value + (stdev * num_std));
