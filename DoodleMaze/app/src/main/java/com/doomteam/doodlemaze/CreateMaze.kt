@@ -125,7 +125,6 @@ class CreateMaze : AppCompatActivity() {
 
         }.addOnSuccessListener {
 
-
             // Done
             finish()
             Log.d(TAG_INFO, "Upload done!")
@@ -277,7 +276,7 @@ class CreateMaze : AppCompatActivity() {
                 originalImage!!.recycle()
                 // Generate ocvImage with all features recognized
                 cleanImage(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
-                positionData = removeBoundingBoxes(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp!!.width, croppedBmp!!.height)
+                positionData = removeOCRText(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp!!.width, croppedBmp!!.height)
                 croppedBmp!!.recycle()
                 return true
             }
@@ -383,7 +382,7 @@ class CreateMaze : AppCompatActivity() {
      * @param endBoxTopLeft top left 'O'
      * @param endBoxBottomRight bottom right 'O'
      */
-    private fun removeBoundingBoxes(startBoxTopLeft: Point?, startBoxBottomRight: Point?, endBoxTopLeft: Point?, endBoxBottomRight: Point?, maxWidth: Int, maxHeight: Int): List<Int>?{
+    private fun removeOCRText(startBoxTopLeft: Point?, startBoxBottomRight: Point?, endBoxTopLeft: Point?, endBoxBottomRight: Point?, maxWidth: Int, maxHeight: Int): List<Int>?{
         //convert pixel locations to 1025x1025 space
         val sTLx = (((startBoxTopLeft!!.x).toFloat() / maxWidth.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
         val sTLy =  (((startBoxTopLeft.y).toFloat() / maxHeight.toFloat()) * HEIGHTMAP_RESOLUTION).toInt()
