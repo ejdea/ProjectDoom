@@ -70,6 +70,7 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_round_corner"
+        android:onClick="onClickCredits"
         android:text="@string/credits"
         android:textColor="#2D1E2F"
         app:layout_constraintBottom_toTopOf="@+id/sign_up"

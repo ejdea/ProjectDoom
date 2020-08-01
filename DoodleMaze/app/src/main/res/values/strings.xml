@@ -1,5 +1,5 @@
 <resources>
-    <!-- Main Activity String -->
+    <!-- Main Activity Strings -->
     <string name="app_name">Doodle Maze</string>
     <string name="doodle_maze">Doodle Maze</string>
     <string name="create_maze">Create Maze</string>
@@ -9,21 +9,30 @@
     <string name="credits">Credits</string>
     <string name="exit">Exit</string>
 
+    <!-- Load Maze Activity Strings -->
     <string name="saved_mazes">Saved Mazes</string>
     <string name="thumb_desc">Maze Thumbnail</string>
     <string name="play_maze">Play</string>
     <string name="scores">Scores</string>
     <string name="action_settings">Settings</string>
 
-    <string-array name="maze_options">
-        <item>Play</item>
-        <item>Scores</item>
-    </string-array>
-    <string name="title_activity_main2">MainActivity</string>
-
-    <!-- Create Maze Activity String -->
+    <!-- Create Maze Activity Strings -->
     <string name="buildMaze">Build Maze</string>
     <string name="createNewMaze">Create New Maze</string>
     <string name="Cancel">Cancel</string>
     <string name="mazeImageView">Maze Contents</string>
+
+    <!-- Credits Activity Strings -->
+    <string name="Credits">Credits</string>
+    <string name="Programmers">Programmers</string>
+    <string name="ProgNames">Edmund Dea, Martin Edwards, Lee Rice</string>
+    <string name="Music">Music</string>
+    <string name="Waves">Waves by Pictures of the Floating World</string>
+    <string name="Bumbling">Bumbling by Pictures of the Floating World </string>
+    <string name="Canada">Canada by Pictures of the Floating World</string>
+    <string name="Elevator">Elevator by Pictures of the Floating World</string>
+    <string name="Memories">Memories by Pictures of the Floating World</string>
+    <string name="Images">Images/Videos</string>
+    <string name="Back">Back</string>
+
 </resources>
