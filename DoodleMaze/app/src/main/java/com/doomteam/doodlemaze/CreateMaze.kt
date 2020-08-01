@@ -165,7 +165,7 @@ class CreateMaze : AppCompatActivity() {
     private fun dbStoreMap(hash: String){
         val db = Firebase.firestore
         val entityData = hashMapOf(
-            "score" to 0.0f,
+            "score" to -1.0f,
             "hash" to hash
         )
 
