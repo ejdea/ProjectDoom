@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,25 +12,54 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:fontFamily="cursive"
         android:text="@string/doodle_maze"
         android:textAlignment="textStart"
         android:textColor="#FFFFFF"
         android:textSize="70sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/email_field"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.08" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/email_field"
+        android:layout_width="230dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="32dp"
+        android:autofillHints="email"
+        android:background="#CCFFFFFF"
+        android:ems="10"
+        android:hint="@string/fui_email_hint"
+        android:inputType="textEmailAddress"
+        android:textColor="#2D1E2F"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <EditText
+        android:id="@+id/password_field"
+        android:layout_width="230dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="32dp"
+        android:autofillHints="password"
+        android:background="#CCFFFFFF"
+        android:ems="10"
+        android:hint="@string/fui_password_hint"
+        android:inputType="textPassword"
+        android:textColor="#2D1E2F"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email_field" />
 
     <Button
         android:id="@+id/sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="99dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/button_round_corner"
         android:onClick="onClickSignUp"
         android:text="@string/sign_up"
@@ -43,52 +71,12 @@
         android:id="@+id/sign_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="102dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="34dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/button_round_corner"
         android:onClick="onClickSignIn"
         android:text="@string/sign_in"
         app:layout_constraintEnd_toStartOf="@+id/sign_up"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password_field" />
-
-    <EditText
-        android:id="@+id/email_field"
-        android:layout_width="230dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="102dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="99dp"
-        android:autofillHints="email"
-        android:background="#CCFFFFFF"
-        android:ems="10"
-        android:hint="@string/fui_email_hint"
-        android:inputType="textEmailAddress"
-        android:textColor="#2D1E2F"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.571"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-    <EditText
-        android:id="@+id/password_field"
-        android:layout_width="230dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="103dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginEnd="99dp"
-        android:layout_marginBottom="32dp"
-        android:autofillHints="password"
-        android:background="#CCFFFFFF"
-        android:ems="10"
-        android:hint="@string/fui_password_hint"
-        android:inputType="textPassword"
-        android:textColor="#2D1E2F"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_field"
-        app:layout_constraintVertical_bias="0.036" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
