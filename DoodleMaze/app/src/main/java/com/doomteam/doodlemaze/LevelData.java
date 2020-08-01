@@ -183,6 +183,7 @@ public class LevelData {
     /**
      * Function used to get a unique hash for the map to use as a key in the DB
      *
+     * @return String representation of hash
      * */
     String GetHash(){
         try{
@@ -191,7 +192,9 @@ public class LevelData {
             // Create Hex String
             StringBuilder hexString = new StringBuilder();
             for (byte aMessageDigest : messageDigest) {
+                //convert byte to unsigned value, get hex string
                 String h = Integer.toHexString(0xFF & aMessageDigest);
+                //force hex bytes to be at least two characters wide with leading zero (ie. 'b' -> '0b')
                 while (h.length() < 2)
                     h = "0" + h;
                 hexString.append(h);
