@@ -5,15 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#808080"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/main_bg"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="cursive"
         android:text="@string/doodle_maze"
-        android:textSize="50sp"
+        android:textAlignment="textStart"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -23,10 +28,12 @@
 
     <Button
         android:id="@+id/sign_in"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
         android:onClick="openCreateMazeScreen"
         android:text="@string/create_maze"
+        android:textColor="#2D1E2F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -36,10 +43,12 @@
 
     <Button
         android:id="@+id/load_maze"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
         android:onClick="openLoadMazeScreen"
         android:text="@string/load_maze"
+        android:textColor="#2D1E2F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -49,9 +58,11 @@
 
     <Button
         android:id="@+id/credits"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
         android:text="@string/credits"
+        android:textColor="#2D1E2F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -61,10 +72,12 @@
 
     <Button
         android:id="@+id/sign_up"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
         android:onClick="onClickExit"
         android:text="@string/exit"
+        android:textColor="#2D1E2F"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -75,11 +88,13 @@
     <TextView
         android:id="@+id/name_holder"
         android:layout_width="wrap_content"
-        android:layout_height="19dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
         android:layout_marginTop="79dp"
         android:layout_marginEnd="177dp"
         android:layout_marginBottom="633dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
