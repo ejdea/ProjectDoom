@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
@@ -150,10 +151,40 @@ class CreateMaze : AppCompatActivity() {
             cropImage()
 
         }.addOnSuccessListener {
+            Log.d(TAG_INFO, "Upload done!")
+
+            dbStoreMap(levelData.GetHash())
+        }
+    }
+
+    fun onClickCreateNewMaze(view: View) {
+        // Take picture with the camera or load an image from gallery. Then, crop image.
+        CropImage.startPickImageActivity(this)
+    }
+
+    private fun dbStoreMap(hash: String){
+        val db = Firebase.firestore
+        val entityData = hashMapOf(
+            "score" to 0.0f,
+            "hash" to hash
+        )
+
+        // check to see if map already exists
+        val mapRef = db.collection("Maps")
+        val query = mapRef.whereEqualTo("hash", hash)
+        query.get().addOnCompleteListener { result ->
+            if(result.isSuccessful){
+                if(result.result!!.size() == 0)
+                {
+                    mapRef.document().set(entityData)
+                }
+            }
+            else{
+                Log.d(TAG_INFO, "Failed to upload to database!");
+            }
 
             // Done
             finish()
-            Log.d(TAG_INFO, "Upload done!")
 
             // Launch Unity
             Log.d(TAG_INFO, "Launch Unity")
@@ -164,16 +195,13 @@ class CreateMaze : AppCompatActivity() {
             } else {
                 Log.d(TAG_INFO, "unityIntent == null")
                 Toast.makeText(this,
-                "Unable to play maze. Please install unitydoodle-maze.",
+                    "Unable to play maze. Please install unitydoodle-maze.",
                     Toast.LENGTH_LONG).show()
             }
         }
+
     }
 
-    fun onClickCreateNewMaze(view: View) {
-        // Take picture with the camera or load an image from gallery. Then, crop image.
-        CropImage.startPickImageActivity(this)
-    }
 
     private fun cropImage(){
         // Take picture with the camera or load an image from gallery. Then, crop image.

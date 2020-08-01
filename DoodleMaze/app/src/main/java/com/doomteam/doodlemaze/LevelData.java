@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,6 +178,30 @@ public class LevelData {
         File file = new File(filepath, filename);
         FileOutputStream out = new FileOutputStream(file);
         out.write(m_data);
+    }
+
+    /**
+     * Function used to get a unique hash for the map to use as a key in the DB
+     *
+     * */
+    String GetHash(){
+        try{
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] messageDigest = md.digest(m_data);
+            // Create Hex String
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+        }
+        catch(NoSuchAlgorithmException e){
+            e.printStackTrace();
+            return "";
+        }
     }
 
 
