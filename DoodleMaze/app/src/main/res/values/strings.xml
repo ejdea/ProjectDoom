@@ -1,5 +1,5 @@
 <resources>
-    <!-- Main Activity Strings -->
+    <!-- Main Activity String -->
     <string name="app_name">Doodle Maze</string>
     <string name="doodle_maze">Doodle Maze</string>
     <string name="create_maze">Create Maze</string>
@@ -9,14 +9,21 @@
     <string name="credits">Credits</string>
     <string name="exit">Exit</string>
 
-    <!-- Load Maze Activity Strings -->
     <string name="saved_mazes">Saved Mazes</string>
     <string name="thumb_desc">Maze Thumbnail</string>
     <string name="play_maze">Play</string>
     <string name="scores">Scores</string>
     <string name="action_settings">Settings</string>
+    <string name="test_message">This is a test message. It is a very long message</string>
+    <string name="test_message2">This is a test message.</string>
 
-    <!-- Create Maze Activity Strings -->
+    <string-array name="maze_options">
+        <item>Play</item>
+        <item>Scores</item>
+    </string-array>
+    <string name="title_activity_main2">MainActivity</string>
+
+    <!-- Create Maze Activity String -->
     <string name="buildMaze">Build Maze</string>
     <string name="createNewMaze">Create New Maze</string>
     <string name="Cancel">Cancel</string>

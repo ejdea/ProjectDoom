@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_create_maze.*
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
-import java.time.Duration
 
 
 const val TAG_INFO = "INFO"
@@ -48,7 +47,7 @@ class CreateMaze : AppCompatActivity() {
         const val PERMISSION_REQUEST_CODE = 1723
         const val DETECTION_ERROR = 100
         const val HEIGHTMAP_RESOLUTION = 1025
-        const val app_folder = "app_height_maps";
+        const val app_folder = "app_height_maps"
         const val height_map_name = "mobile_height_map.raw"
 
         var ocvImage: ImageMarkup? = null
