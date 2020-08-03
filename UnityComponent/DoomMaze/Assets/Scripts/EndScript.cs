@@ -82,7 +82,6 @@ public class EndScript : MonoBehaviour
             {
                 LogScore(GetCurrentScore());
             }
-
             int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(currentSceneIndex + 1);
         }
@@ -112,17 +111,15 @@ public class EndScript : MonoBehaviour
         {
             foreach (DocumentSnapshot docSnap in querySnapshotTask.Result.Documents)
             {
+                //if new high score
                 Dictionary<string, object> mapObj = docSnap.ToDictionary();
-                double currentScore = (double)(mapObj["score"]);
-                if (score < currentScore)
-                {
-                    AuthScript.mapHighScore = score;
-                    mapObj["score"] = score;
-                    //if new high score
-                    DocumentReference mapRef = db.Collection("Maps").Document(docSnap.Id);
-                    mapRef.UpdateAsync(mapObj).ContinueWithOnMainThread(task =>
-                    { });
-                }
+                
+                //update local and cloud high score
+                AuthScript.mapHighScore = score;
+                mapObj["score"] = score;
+                DocumentReference mapRef = db.Collection("Maps").Document(docSnap.Id);
+                mapRef.UpdateAsync(mapObj).ContinueWithOnMainThread(task =>
+                { });
             }
         });
     }
