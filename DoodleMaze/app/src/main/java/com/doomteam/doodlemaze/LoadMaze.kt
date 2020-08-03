@@ -2,11 +2,8 @@ package com.doomteam.doodlemaze
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_load_maze.*
 import java.io.File
@@ -29,7 +26,6 @@ class LoadMaze : AppCompatActivity() {
 
         file.list()?.forEach {
             val thumbImageView = ImageView(this)
-            Log.d(TAG_INFO, "Full filepath is: $it")
             val imageFile = BitmapFactory.decodeStream(FileInputStream(targetDir.toString() + filePath + it))
             thumbImageView.setImageBitmap(imageFile)
             thumbImageView.setPadding(0, 10, 0, 10)
@@ -39,21 +35,5 @@ class LoadMaze : AppCompatActivity() {
     }
 
     fun onClickLoadMaze(view: View) {
-        displayToast()
-    }
-
-    /*
-    * Reference for listing files: https://stackoverflow.com/a/44567568
-     */
-    private fun displayToast() {
-        Toast.makeText(applicationContext, "Hello!", Toast.LENGTH_SHORT).show()
-        val targetDir = this.getExternalFilesDir(null)
-        val filePath = "/maze_thumbnails/"
-        val file = File(targetDir, filePath)
-        Log.d(TAG_INFO, "File is $file")
-//        val thumbList = file.list().forEach {
-//            Log.d(TAG_INFO, "List is $it")
-//        }
-
     }
 }

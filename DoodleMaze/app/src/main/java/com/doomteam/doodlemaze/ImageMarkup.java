@@ -211,7 +211,7 @@ public class ImageMarkup extends android.app.Activity{
             throw new NullPointerException("Heightmap needs to be generated first!");
         }
 
-        File dir = new File(context.getExternalFilesDir(null), "app_height_maps");
+        File dir = new File(context.getFilesDir(), "app_height_maps");
         if(!dir.exists()){
             dir.mkdir();
         }

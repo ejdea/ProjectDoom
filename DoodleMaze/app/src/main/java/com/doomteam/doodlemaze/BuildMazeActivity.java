@@ -25,7 +25,6 @@ import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import androidx.appcompat.app.AlertDialog;
 
-import java.io.IOException;
 import java.util.Objects;
 
 public class BuildMazeActivity extends Activity implements OnTouchListener {
@@ -187,14 +186,6 @@ public class BuildMazeActivity extends Activity implements OnTouchListener {
 
         img.Filter(10);
         img.GenerateHeightMap();
-
-        try{
-            img.WriteHeightMap(this, "mobile_height_map.raw");
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
         image_container.setImageBitmap(img.GetBitmap());
 
 
