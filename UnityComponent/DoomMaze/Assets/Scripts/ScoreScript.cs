@@ -19,9 +19,10 @@ public class ScoreScript : MonoBehaviour
     public GameObject text_parent;
     Text score_text;
 
-    float current_time = 0;
+    double current_time = 0;
     
     bool game_started = false;
+    bool stopped = false;
     public string score_string = "Text(s): ";
 
     // Start is called before the first frame update
@@ -34,7 +35,7 @@ public class ScoreScript : MonoBehaviour
     void Update()
     {
         //only keep track of score if the game started
-        if (game_started)
+        if (game_started && !stopped)
         {
             current_time += Time.deltaTime;
             score_text.text = score_string + current_time.ToString("f2");
@@ -43,8 +44,9 @@ public class ScoreScript : MonoBehaviour
 
     public void Reset()
     {
-        this.game_started = false;
+        game_started = false;
         current_time = 0;
+        stopped = false;
     }
 
     public void StartScoreCounter()
@@ -52,9 +54,14 @@ public class ScoreScript : MonoBehaviour
         this.game_started = true;
     }
 
-    public float GetTime()
+    public double GetTime()
     {
         return current_time;
+    }
+
+    public void Stop()
+    {
+        stopped = true;
     }
 
 }

@@ -78,6 +78,11 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(createMazeIntent, RC_CMAZE)
     }
 
+    fun onClickCredits(view: View) {
+        val creditsIntent = Intent(this, Credits::class.java)
+        startActivity(creditsIntent)
+    }
+
     fun onClickExit(view: View) {
         finishAffinity()
     }
