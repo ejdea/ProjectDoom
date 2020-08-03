@@ -1,5 +1,5 @@
 <resources>
-    <!-- Main Activity Strings -->
+    <!-- Main Activity String -->
     <string name="app_name">Doodle Maze</string>
     <string name="doodle_maze">Doodle Maze</string>
     <string name="create_maze">Create Maze</string>

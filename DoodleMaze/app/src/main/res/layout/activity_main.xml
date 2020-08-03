@@ -73,14 +73,14 @@
         android:onClick="onClickCredits"
         android:text="@string/credits"
         android:textColor="#2D1E2F"
-        app:layout_constraintBottom_toTopOf="@+id/sign_up"
+        app:layout_constraintBottom_toTopOf="@+id/exit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/load_maze" />
 
     <Button
-        android:id="@+id/sign_up"
+        android:id="@+id/exit"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:background="@drawable/button_round_corner"
