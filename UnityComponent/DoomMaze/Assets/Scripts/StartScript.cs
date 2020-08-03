@@ -5,6 +5,8 @@
  * Version: 1.0
  */
 
+using Firebase.Extensions;
+using Firebase.Firestore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +15,7 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /*
@@ -22,8 +25,10 @@ using UnityEngine.UI;
 public class StartScript : MonoBehaviour
 {
     public Button startButton;
+    public Button restartButton;
     public Slider sizeSlider;
     public GameObject score;
+    public GameObject highScore;
     public GameObject playerSphere;
     public GameObject mazeTerrain;
     public GameObject endBox;
@@ -49,6 +54,11 @@ public class StartScript : MonoBehaviour
         startButton.onClick.AddListener(TaskOnClick);
         Text text_c = score.GetComponent<Text>();
         text_c.enabled = false;
+        Text htext_c = highScore.GetComponent<Text>();
+        htext_c.enabled = false;
+
+        // Add listener to restartButton
+        restartButton.onClick.AddListener(RestartOnClick);
 
         // Start slider with half value
         sizeSlider.value = 0.5f;
@@ -249,6 +259,15 @@ public class StartScript : MonoBehaviour
         var body = playerSphere.GetComponent<Rigidbody>();
         body.drag = 0;
 
+        // Set High Score if high score is valid
+
+        if (AuthScript.mapHighScore > 0.0)
+        {
+            Text htext_c = highScore.GetComponent<Text>();
+            htext_c.enabled = true;
+            highScore.GetComponent<Text>().text = "High Score: " + AuthScript.mapHighScore.ToString("f2");
+        }
+
         // Start score timer
         Text text_c = score.GetComponent<Text>();
         text_c.enabled = true;
@@ -259,6 +278,10 @@ public class StartScript : MonoBehaviour
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
+
+        // Enable restart button
+        restartButton.gameObject.SetActive(true);
+
         // Enable player input
         Player p_script = playerSphere.GetComponent<Player>();
         p_script.EnableMovement();
@@ -267,6 +290,13 @@ public class StartScript : MonoBehaviour
         GameObject portal = GameObject.Find("Portal");
         EndScript endScript = portal.GetComponent<EndScript>();
         endScript.enableEndBox(true);
+    }
+
+    void RestartOnClick()
+    {
+        //reload the current scene
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
 
 
