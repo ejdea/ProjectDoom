@@ -827,12 +827,12 @@ Light:
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
-    m_Resolution: -1
+    m_Resolution: 0
     m_CustomResolution: -1
     m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_Bias: 0
+    m_NormalBias: 0.47
+    m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
@@ -876,13 +876,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.64283997, y: -0.19530395, z: 0.4594746, w: 0.58094424}
-  m_LocalPosition: {x: 34.43, y: 10, z: 45.03}
+  m_LocalRotation: {x: 0.81105644, y: -0.16288485, z: -0.1628849, w: 0.53770304}
+  m_LocalPosition: {x: 20, y: 50, z: 80}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 112.121994, y: -104.962006, z: -48.664978}
+  m_LocalEulerAnglesHint: {x: 125, y: 50, z: 50}
 --- !u!1 &771285332
 GameObject:
   m_ObjectHideFlags: 0
@@ -1378,7 +1378,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 67d2236b34d423b46a514ea817833ab6, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 03df648f2a2e48843962ec5471b9e969, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -1528,7 +1528,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 67d2236b34d423b46a514ea817833ab6, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 03df648f2a2e48843962ec5471b9e969, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -1604,7 +1604,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 67d2236b34d423b46a514ea817833ab6, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 03df648f2a2e48843962ec5471b9e969, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -1680,7 +1680,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 67d2236b34d423b46a514ea817833ab6, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 03df648f2a2e48843962ec5471b9e969, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -1896,7 +1896,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 67d2236b34d423b46a514ea817833ab6, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 03df648f2a2e48843962ec5471b9e969, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -1972,7 +1972,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 67d2236b34d423b46a514ea817833ab6, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 03df648f2a2e48843962ec5471b9e969, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -2150,7 +2150,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 67d2236b34d423b46a514ea817833ab6, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 03df648f2a2e48843962ec5471b9e969, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -2241,7 +2241,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 67d2236b34d423b46a514ea817833ab6, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 03df648f2a2e48843962ec5471b9e969, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
@@ -2558,7 +2558,7 @@ Terrain:
   m_DrawInstanced: 0
   m_DrawTreesAndFoliage: 1
   m_ReflectionProbeUsage: 1
-  m_MaterialTemplate: {fileID: 2100000, guid: 67d2236b34d423b46a514ea817833ab6, type: 2}
+  m_MaterialTemplate: {fileID: 2100000, guid: 03df648f2a2e48843962ec5471b9e969, type: 2}
   m_BakeLightProbesForTrees: 1
   m_PreserveTreePrototypeLayers: 0
   m_DeringLightProbesForTrees: 1
