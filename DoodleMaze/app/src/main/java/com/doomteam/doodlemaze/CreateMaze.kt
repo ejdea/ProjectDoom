@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
+import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -28,7 +29,11 @@ import kotlinx.android.synthetic.main.activity_create_maze.*
 import org.opencv.android.BaseLoaderCallback
 import org.opencv.android.LoaderCallbackInterface
 import org.opencv.android.OpenCVLoader
-import java.time.Duration
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 const val TAG_INFO = "INFO"
@@ -48,7 +53,7 @@ class CreateMaze : AppCompatActivity() {
         const val PERMISSION_REQUEST_CODE = 1723
         const val DETECTION_ERROR = 100
         const val HEIGHTMAP_RESOLUTION = 1025
-        const val app_folder = "app_height_maps";
+        const val app_folder = "app_height_maps"
         const val height_map_name = "mobile_height_map.raw"
 
         var ocvImage: ImageMarkup? = null
@@ -140,8 +145,17 @@ class CreateMaze : AppCompatActivity() {
         // recreate the height map with X and O removed
         ocvImage!!.GenerateHeightMap()
 
-        //build level data
+        // Build level data
         val levelData = LevelData(ocvImage!!.GetHeightMap(), positionData!!)
+
+        // Save level for later play
+        val fileName = fileNameGenerator()
+
+        if (fileName != null) {
+            val bitmapImage =levelData.GetImage()
+            createThumbnail(bitmapImage, fileName)
+            saveLevelData(levelData, fileName)
+        }
 
         val uploadTask = heightMapRef.putBytes(levelData.GetData())
         uploadTask.addOnFailureListener{
@@ -160,6 +174,58 @@ class CreateMaze : AppCompatActivity() {
     fun onClickCreateNewMaze(view: View) {
         // Take picture with the camera or load an image from gallery. Then, crop image.
         CropImage.startPickImageActivity(this)
+    }
+
+    /**
+     * Returns the current date and time in a predetermined format.
+     * Reference: https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html
+     */
+    private fun fileNameGenerator(): String? {
+        val time = LocalDateTime.now()
+        val timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_hh.mm.ss.SSS")
+        return time.format(timeFormatter)
+    }
+
+    /**
+     * Creates and stores a 1200px by 1200px thumbnail
+     * Reference for directory creation: https://stackoverflow.com/a/44425281
+     */
+    private fun createThumbnail(incBitmap: Bitmap, incFileName: String){
+        // Create image from bitmap
+        val thumbnailBmp = ThumbnailUtils.extractThumbnail(incBitmap, 1200, 1200)
+        val filePath = getExternalFilesDir(null).toString() + "/maze_thumbnails"
+        val fileName = incFileName + "_thumb.png"
+
+        // Create parent directory for file object
+        val externalDir = File(filePath)
+        externalDir.mkdirs()
+
+        val fileObject = File(externalDir, fileName)
+        try {
+            val fileOutStream = FileOutputStream(fileObject)
+            thumbnailBmp.compress(Bitmap.CompressFormat.PNG, 100, fileOutStream)
+        } catch (e: FileNotFoundException) {
+            Log.e(TAG_INFO, "A file not found exception has occurred.")
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * Saves the LevelData locally to be used later.
+     */
+    private fun saveLevelData(levelData: LevelData, incFileName: String){
+        val filePath = getExternalFilesDir(null).toString() + "/saved_mazes"
+
+        // Create parent directory for file object
+        val externalDir = File(filePath)
+        externalDir.mkdirs()
+
+        try {
+            levelData.Save(filePath,incFileName)
+        } catch (e: FileNotFoundException) {
+            Log.e(TAG_INFO, "A file not found exception has occurred.")
+            e.printStackTrace()
+        }
     }
 
     private fun dbStoreMap(hash: String){
@@ -353,6 +419,7 @@ class CreateMaze : AppCompatActivity() {
                 cleanImage(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION)
                 positionData = removeOCRText(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp!!.width, croppedBmp!!.height)
                 croppedBmp!!.recycle()
+
                 return true
             }
             else{
@@ -369,7 +436,6 @@ class CreateMaze : AppCompatActivity() {
         }
         return false
     }
-
 
     /**
      * This program is used to modify the original image in an attempt for a better

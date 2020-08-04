@@ -181,21 +181,11 @@ public class BuildMazeActivity extends Activity implements OnTouchListener {
     }
 
     private void GenerateHeightMap(){
-        ImageView image_container = (ImageView) findViewById(R.id.imageView1);
+        ImageView image_container = findViewById(R.id.imageView1);
         ImageMarkup img = new ImageMarkup(this.bitmap_img, 1025, 1025);
 
         img.Filter(10);
         img.GenerateHeightMap();
-
-        /*
-        try{
-            img.WriteHeightMap(this, "mobile_height_map.raw");
-        }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-        */
-
         image_container.setImageBitmap(img.GetBitmap());
 
 
