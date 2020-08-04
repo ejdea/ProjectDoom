@@ -34,7 +34,7 @@ public class StartScript : MonoBehaviour
     public GameObject prevSelected;
 
     private float max_scale = 5f;
-    private float min_scale = 1f;
+    private float min_scale = 1.5f;
     private UnityEngine.Vector3 startingScale;
 
     private bool gameStarted = false;
