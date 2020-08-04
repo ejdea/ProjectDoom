@@ -14,6 +14,7 @@ using System.Numerics;
 using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR.WSA.Input;
 
 /*
  * Script to control the start up sequence of the game 
@@ -32,7 +33,9 @@ public class StartScript : MonoBehaviour
     public GameObject selected;
     public GameObject prevSelected;
 
-    private float scale_factor = 5;
+    private float max_scale = 5f;
+    private float min_scale = 1f;
+    private UnityEngine.Vector3 startingScale;
 
     private bool gameStarted = false;
     private bool script_start_flag = false;
@@ -45,6 +48,9 @@ public class StartScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        startingScale = playerSphere.transform.localScale;
+        ClampScale(ref startingScale);
+
         // Add listener to startButton
         startButton.onClick.AddListener(TaskOnClick);
         Text text_c = score.GetComponent<Text>();
@@ -232,8 +238,21 @@ public class StartScript : MonoBehaviour
     // Function that scales the player's sphere in accordance to the slider
     void OnSliderChange(Slider slider)
     {
-        float new_scale = 1 + (slider.value * scale_factor);
+        //scale the ball between min_scale - max_scale
+        float new_scale = ((max_scale - min_scale) * slider.value) + min_scale;
+        
         playerSphere.transform.localScale = new UnityEngine.Vector3(new_scale, new_scale, new_scale);
+    }
+
+
+    /**
+     * Function that clamps the current Player scale between min_scale and max_scale
+     */
+    private void ClampScale(ref UnityEngine.Vector3 vec)
+    {
+        float val = vec.x;
+        val = Math.Min(max_scale, Math.Max(min_scale, val));
+        vec = new UnityEngine.Vector3(val, val, val);
     }
 
     /**
