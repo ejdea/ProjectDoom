@@ -10,12 +10,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Security.Cryptography;
 using UnityEngine.UIElements;
 using Firebase;
+using Firebase.Firestore;
 using System.IO;
 using Firebase.Database;
 using Firebase.Unity.Editor;
 using System;
+using Firebase.Extensions;
 
 
 /*
@@ -31,7 +34,10 @@ public class AuthScript : MonoBehaviour
 
     // Holds the current user, need to download file from database
     public static Firebase.Auth.FirebaseUser curUser = null;
+    public static double mapHighScore = -1.0;
+    public static string map_hash_value = "";
     public Firebase.Storage.StorageReference storage_ref = null;
+
 
     // Firebase variables
     public const string file_name = "mobile_height_map.raw";
@@ -122,6 +128,7 @@ public class AuthScript : MonoBehaviour
                 else
                 {
                     heightData = task.Result;
+                    CheckForHighScore();
                 }
             });
 
@@ -144,6 +151,46 @@ public class AuthScript : MonoBehaviour
         }
 
     }
+
+    /**
+     * Function that
+     *  1. Hashes the downloaded map data
+     *  2. Checks to see if the map has a current high score
+     * 
+     * 
+     */
+    public void CheckForHighScore()
+    {
+
+        FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
+        CollectionReference colRef = db.Collection("Maps");
+
+        // Get hash value for map data
+        SHA256Managed hash = new SHA256Managed();
+        byte[] result = hash.ComputeHash(heightData);
+        string hashValue = "";
+        foreach (byte b in result)
+        {
+            hashValue += b.ToString("x2");
+        }
+        map_hash_value = hashValue;
+
+        //query the db to see if the map exists
+        Firebase.Firestore.Query query = colRef.WhereEqualTo("hash", hashValue);
+        query.GetSnapshotAsync().ContinueWithOnMainThread((querySnapshotTask) =>
+        {
+            foreach (DocumentSnapshot docSnap in querySnapshotTask.Result.Documents)
+            {
+                Dictionary<string, object> mapObj = docSnap.ToDictionary();
+                var mapScore = mapObj["score"];
+                double mapScoreD;
+                double.TryParse(mapScore.ToString(), out mapScoreD);
+                mapHighScore = mapScoreD;
+            }
+        });
+
+    }
+
 
     /*
      * Debug function to ensure firebase storage is working correctly
