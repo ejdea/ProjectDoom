@@ -8,7 +8,6 @@
 using System.Collections;
 using System.IO;
 using UnityEngine;
-using UnityEngine.XR.WSA;
 
 /*
  * Class that builds a terrain from a heightmap that's stored in the Assets/StreamingAssets folder

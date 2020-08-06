@@ -5,6 +5,8 @@
  * Version: 1.0
  */
 
+using Firebase.Extensions;
+using Firebase.Firestore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,8 +15,8 @@ using System.Diagnostics;
 using System.Numerics;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.XR.WSA.Input;
 
 /*
  * Script to control the start up sequence of the game 
@@ -23,8 +25,10 @@ using UnityEngine.XR.WSA.Input;
 public class StartScript : MonoBehaviour
 {
     public Button startButton;
+    public Button restartButton;
     public Slider sizeSlider;
     public GameObject score;
+    public GameObject highScore;
     public GameObject playerSphere;
     public GameObject mazeTerrain;
     public GameObject endBox;
@@ -33,14 +37,14 @@ public class StartScript : MonoBehaviour
     public GameObject selected;
     public GameObject prevSelected;
 
-    private float max_scale = 5f;
-    private float min_scale = 1.5f;
-    private UnityEngine.Vector3 startingScale;
+    private float scale_factor = 5;
 
     private bool gameStarted = false;
     private bool script_start_flag = false;
     private bool gameObjectPositionsSet = false;
     private const int TerrainResolution = 1025;
+    private const float min_scale_value = 1.5f;
+    private const float max_scale_value = 5.0f;
     private const float PlayerObjectScaleFactor = 1.0f;
     private const float EndObjectScaleFactor = 0.5f;
     Color prev_color;
@@ -48,13 +52,19 @@ public class StartScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startingScale = playerSphere.transform.localScale;
-        ClampScale(ref startingScale);
+        //Clamp player sphere
+        UnityEngine.Vector3 curScale = playerSphere.transform.localScale;
+        ClampPlayerScale(ref curScale);
 
         // Add listener to startButton
         startButton.onClick.AddListener(TaskOnClick);
         Text text_c = score.GetComponent<Text>();
         text_c.enabled = false;
+        Text htext_c = highScore.GetComponent<Text>();
+        htext_c.enabled = false;
+
+        // Add listener to restartButton
+        restartButton.onClick.AddListener(RestartOnClick);
 
         // Start slider with half value
         sizeSlider.value = 0.5f;
@@ -238,22 +248,20 @@ public class StartScript : MonoBehaviour
     // Function that scales the player's sphere in accordance to the slider
     void OnSliderChange(Slider slider)
     {
-        //scale the ball between min_scale - max_scale
-        float new_scale = ((max_scale - min_scale) * slider.value) + min_scale;
-        
-        playerSphere.transform.localScale = new UnityEngine.Vector3(new_scale, new_scale, new_scale);
+        //scale between min, max value
+        float scale = ((max_scale_value - min_scale_value) * slider.value) + min_scale_value;
+        playerSphere.transform.localScale = new UnityEngine.Vector3(scale, scale, scale);
     }
 
-
-    /**
-     * Function that clamps the current Player scale between min_scale and max_scale
-     */
-    private void ClampScale(ref UnityEngine.Vector3 vec)
+    
+    void ClampPlayerScale(ref UnityEngine.Vector3 scale)
     {
-        float val = vec.x;
-        val = Math.Min(max_scale, Math.Max(min_scale, val));
-        vec = new UnityEngine.Vector3(val, val, val);
+        // x=y=z
+        float val = scale.x;
+        val = Math.Min(max_scale_value, Math.Max(min_scale_value, val));
+        playerSphere.transform.localScale = new UnityEngine.Vector3(val, val, val);
     }
+
 
     /**
      * Occurs when user presses the 'start' button.
@@ -268,6 +276,15 @@ public class StartScript : MonoBehaviour
         var body = playerSphere.GetComponent<Rigidbody>();
         body.drag = 0;
 
+        // Set High Score if high score is valid
+
+        if (AuthScript.mapHighScore > 0.0)
+        {
+            Text htext_c = highScore.GetComponent<Text>();
+            htext_c.enabled = true;
+            highScore.GetComponent<Text>().text = "High Score: " + AuthScript.mapHighScore.ToString("f2");
+        }
+
         // Start score timer
         Text text_c = score.GetComponent<Text>();
         text_c.enabled = true;
@@ -278,6 +295,10 @@ public class StartScript : MonoBehaviour
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
+
+        // Enable restart button
+        restartButton.gameObject.SetActive(true);
+
         // Enable player input
         Player p_script = playerSphere.GetComponent<Player>();
         p_script.EnableMovement();
@@ -286,6 +307,13 @@ public class StartScript : MonoBehaviour
         GameObject portal = GameObject.Find("Portal");
         EndScript endScript = portal.GetComponent<EndScript>();
         endScript.enableEndBox(true);
+    }
+
+    void RestartOnClick()
+    {
+        //reload the current scene
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
 
 
