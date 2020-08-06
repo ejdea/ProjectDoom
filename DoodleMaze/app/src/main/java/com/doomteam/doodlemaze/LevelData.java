@@ -71,12 +71,12 @@ public class LevelData {
     /**
      * Constructor used to build level data from local storage
      *
-     * @param filepath string file path
+     * @param filePath string file path
      * @param filename string file name
      * @throws IOException of fileIO error
      * */
-    LevelData(String filepath, String filename) throws IOException {
-        File file = new File(filepath, filename);
+    LevelData(String filePath, String filename) throws IOException {
+        File file = new File(filePath, filename);
         m_data = new byte[(int) file.length()];
         FileInputStream in = new FileInputStream(file);
         in.read(m_data);
