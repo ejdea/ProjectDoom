@@ -502,7 +502,7 @@ class CreateMaze : AppCompatActivity() {
         val matrix = Matrix()
         matrix.postScale(scale, scale)
 
-        Bitmap.createBitmap(
+        croppedBmp = Bitmap.createBitmap(
             croppedBmp!!,
             0,
             0,
