@@ -5,6 +5,7 @@
     <string name="create_maze">Create Maze</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="sign_out">Sign Out</string>
     <string name="load_maze">Load Maze</string>
     <string name="credits">Credits</string>
     <string name="exit">Exit</string>
