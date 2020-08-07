@@ -94,7 +94,7 @@ class CreateMaze : AppCompatActivity() {
 
         if (!checkAppPermissions()) {
             Log.d(TAG_INFO, "Requesting app permissions")
-            ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, permissions, PERMISSION_REQUEST_CODE)
         } else {
             // Take picture with the camera or load an image from gallery. Then, crop image.
             CropImage.startPickImageActivity(this)
@@ -132,7 +132,7 @@ class CreateMaze : AppCompatActivity() {
             return
 
         val heightMapRef: StorageReference? = sRef.child(app_folder).child(user!!).child(
-            height_map_name);
+            height_map_name)
 
         if(heightMapRef == null || ocvImage == null || positionData == null)
         {
@@ -246,7 +246,7 @@ class CreateMaze : AppCompatActivity() {
                 }
             }
             else{
-                Log.d(TAG_INFO, "Failed to upload to database!");
+                Log.d(TAG_INFO, "Failed to upload to database!")
             }
 
             // Done
@@ -387,7 +387,7 @@ class CreateMaze : AppCompatActivity() {
 
             //wait for task to complete
             while(!result.isComplete) {}
-            val text = result.result!!.text;
+            val text = result.result!!.text
 
             //check for recognition of X and O characters
             if((text.contains('X') || text.contains('x')) && (text.contains('O') || text.contains('o'))) {
@@ -560,13 +560,13 @@ class CreateMaze : AppCompatActivity() {
     }
 
     override fun onResume() {
-        super.onResume();
+        super.onResume()
         if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG_INFO, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+            Log.d(TAG_INFO, "Internal OpenCV library not found. Using OpenCV Manager for initialization")
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback)
         } else {
-            Log.d(TAG_INFO, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+            Log.d(TAG_INFO, "OpenCV library found inside package. Using it!")
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS)
         }
     }
 
