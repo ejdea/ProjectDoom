@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -78,6 +79,9 @@ class CreateMaze : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_maze)
 
+        buildMazeButton.isEnabled = false
+        buildMazeButton.isClickable = false
+
         // Check if camera and write permission is available
         if (!this.packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             Toast.makeText(this,
@@ -121,6 +125,9 @@ class CreateMaze : AppCompatActivity() {
      */
     fun onClickBuildMaze(view: View) {
         Log.d(TAG_INFO, "onClickBuildMaze")
+
+        buildMazeButton.isEnabled = false
+        buildMazeButton.isClickable = false
 
         // Get storage reference
         val storage = Firebase.storage
@@ -172,6 +179,9 @@ class CreateMaze : AppCompatActivity() {
     }
 
     fun onClickCreateNewMaze(view: View) {
+        buildMazeButton.isEnabled = false
+        buildMazeButton.isClickable = false
+
         // Take picture with the camera or load an image from gallery. Then, crop image.
         CropImage.startPickImageActivity(this)
     }
@@ -333,14 +343,22 @@ class CreateMaze : AppCompatActivity() {
                         if(!ocrResult)
                         {
                             Log.d(TAG_INFO, "Unable to detect X and O in detection routine")
+                            val toast = Toast.makeText(this,
+                                "Unable to detect X and O in the maze",
+                                Toast.LENGTH_LONG)
+                            toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, 0)
+                            toast.show()
+
                             val returnIntent = Intent()
                             setResult(DETECTION_ERROR, returnIntent)
                             returnIntent.putExtra("error_code", "1")
-                            finish()
+                            mazeImageView.setImageBitmap(croppedBmp)
                         }
                         else
                         {
                             mazeImageView.setImageBitmap(ocvImage!!.GetBitmap())
+                            buildMazeButton.isEnabled = true
+                            buildMazeButton.isClickable = true
                         }
                     }
                     else -> {
