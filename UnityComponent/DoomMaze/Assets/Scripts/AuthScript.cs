@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Security.Cryptography;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using Firebase;
 using Firebase.Firestore;
@@ -149,7 +150,25 @@ public class AuthScript : MonoBehaviour
             // problem authorizing the user
             SetErrorTextBox(true, "Authorization Failed!");
         }
+    }
 
+    /**
+     * Signs the user out of Firebase and returns to the login screen
+     * 
+     */
+    public void signOut()
+	{
+        Debug.Log("Signing out");
+
+        Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        auth.SignOut();
+
+        int prevSceneIndex = SceneManager.GetActiveScene().buildIndex - 1;
+
+        if (prevSceneIndex < 0)
+            prevSceneIndex = 0;
+
+        SceneManager.LoadScene(prevSceneIndex);
     }
 
     /**
