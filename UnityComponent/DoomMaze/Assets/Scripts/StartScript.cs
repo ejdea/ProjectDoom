@@ -54,7 +54,6 @@ public class StartScript : MonoBehaviour
     {
         //Clamp player sphere
         UnityEngine.Vector3 curScale = playerSphere.transform.localScale;
-        ClampPlayerScale(ref curScale);
 
         // Add listener to startButton
         startButton.onClick.AddListener(TaskOnClick);
@@ -89,6 +88,8 @@ public class StartScript : MonoBehaviour
             if (ModifyTerrain.ObjectPositionData != null)
             {
                 SetGameObjects(ref playerSphere, ref endBox);
+                UnityEngine.Vector3 scale = playerSphere.transform.localScale;
+                ClampPlayerScale(ref scale);
                 gameObjectPositionsSet = true;
             }
         }
