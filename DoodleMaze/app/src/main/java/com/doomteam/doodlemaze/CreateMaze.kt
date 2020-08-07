@@ -344,7 +344,7 @@ class CreateMaze : AppCompatActivity() {
                         {
                             Log.d(TAG_INFO, "Unable to detect X and O in detection routine")
                             val toast = Toast.makeText(this,
-                                "Unable to detect X and O in the maze",
+                                "Unable to detect X and O in the maze. Please try again.",
                                 Toast.LENGTH_LONG)
                             toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, 0)
                             toast.show()
