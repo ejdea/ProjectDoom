@@ -9,6 +9,9 @@
     <string name="credits_page">Credits</string>
     <string name="sign_out">Sign Out</string>
     <string name="load_maze">Load Maze</string>
+  
+    <string name="how_to_play">How to Play</string>
+    <string name="credits">Credits</string>
     <string name="exit">Exit</string>
 
     <!-- Saved Mazes Activity Strings -->
@@ -21,6 +24,35 @@
     <string name="create_new_maze">Create New Maze</string>
     <string name="cancel">Cancel</string>
     <string name="maze_image_view">Maze Contents</string>
+
+    <!-- Instructions Activity Strings -->
+    <string name="instructions">Instructions</string>
+    <string name="draw_header">Drawing Maze</string>
+    <string name="add_header">Adding a Maze</string>
+    <string name="play_header">Playing the Game</string>
+    <string name="draw_maze">Draw a maze using a dark pencil or black/blue pen on an
+        unlined, white piece of paper.\n\nPlace an O to mark the starting point of the maze and the
+        letter X to mark the end of the maze.
+    </string>
+    <string name="creating_a_maze">To create a maze,
+        first create an account. Then, press the \"Create Maze\" button.
+        \n\nNow, either take a picture of a maze you\'ve drawn or select a
+        saved picture of a maze from your stored photos.
+    </string>
+    <string name="accept">Use the cropping tool to crop out everything around the maze. Be sure to crop out everything outside the bounds of the paper.
+        If you are satisfied with cropping result, press Build Maze to
+    start playing your new maze.  If not, choose create maze to try again.</string>
+    <string name="unity_instructions">Wait for a few seconds for Unity Doodle Maze to load. 
+        Then, the Maze game will start and ask you to log in.
+        Once logged in, choose Play.</string>
+    <string name="game_instructions">Use the slider to adjust the size of the ball to be small enough
+        that it will be able to fit through the smallest gap in your maze. Hit start to begin gameplay.
+    </string>
+    <string name="play_instructions">To win, tilt your device to guide the ball into the portal
+        as quickly as possible.
+        After winning, choose Play Again to replay your maze and attempt to solve the maze quicker.
+        You can also choose Main Menu to return to the Play screen or Exit to close the game.
+    </string>
 
     <!-- Credits Activity Strings -->
     <string name="credits">Credits</string>
@@ -38,27 +70,103 @@
     <string name="audio_effects">Audio Effects</string>
     <string name="img1_desc">Labyrinth Freedom by mwewering</string>
     <string name="img1">Link: <a href="https://pixabay.com/photos/labyrinth-freedom-orientation-4300600">https://pixabay.com/photos/labyrinth-freedom-orientation-4300600</a></string>
+    <string name="Credits">Credits</string>
+    <string name="Programmers">Programmers</string>
+    <string name="ProgNames">Edmund Dea, Martin Edwards, Lee Rice</string>
+    <string name="Music">Music</string>
+    <string name="Waves">Waves by Pictures of the Floating World</string>
+    <string name="waves_link">Link:
+        <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Waves_1528/Waves_1217">
+            https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Waves_1528/Waves_1217
+        </a>
+    </string>
+
+    <string name="Bumbling">Bumbling by Pictures of the Floating World </string>
+    <string name="bumbling_link">Link:
+        <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Bumbling/Bumbling">
+        https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Bumbling/Bumbling
+    </a>
+    </string>
+
+    <string name="Canada">Canada by Pictures of the Floating World</string>
+    <string name="canada_link">Link:
+        <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Canada/Canada_1385">
+        https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Canada/Canada_1385
+    </a>
+    </string>
+
+    <string name="Elevator">Elevator by Pictures of the Floating World</string>
+    <string name="elevator_link">Link:
+        <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Elevator">
+        https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Elevator
+    </a>
+    </string>
+
+    <string name="Memories">Memories by Pictures of the Floating World</string>
+    <string name="memories_link">Link:
+        <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Memories_1709">
+        https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Memories_1709
+    </a>
+    </string>
+
+    <string name="Images">Images</string>
+    <string name="Video">Video</string>
+    <string name="AudioEffects">Audio Effects</string>
+    <string name="Back">Back</string>
+
+    <string name="img1_desc">Labryinth Freedom by mwewering</string>
+    <string name="img1">Link:
+        <a href="https://pixabay.com/photos/labyrinth-freedom-orientation-4300600">
+        https://pixabay.com/photos/labyrinth-freedom-orientation-4300600
+        </a>
+    </string>
+
     <string name="img2_desc">Time Lapse Photo of Stars on Night by Jakub Novacek</string>
-    <string name="img2">Link: <a href="https://www.pexels.com/photo/time-lapse-photo-of-stars-on-night-924824">https://www.pexels.com/photo/time-lapse-photo-of-stars-on-night-924824</a></string>
+    <string name="img2">Link: <a href="https://www.pexels.com/photo/time-lapse-photo-of-stars-on-night-924824">
+        https://www.pexels.com/photo/time-lapse-photo-of-stars-on-night-924824
+    </a>
+    </string>
+
     <string name="img3_desc">Maze icon by iStock</string>
-    <string name="img3">Link: <a href="https://www.needpix.com/photo/download/20658/maze-icon-symbol-free-vector-graphics-free-pictures-free-photos-free-images-royalty-free-free-illustrations">
-        https://www.needpix.com/photo/download/20658/maze-icon-symbol-free-vector-graphics-free-pictures-free-photos-free-images-royalty-free-free-illustrations</a>
+    <string name="img3">Link:
+        <a href="https://www.needpix.com/photo/download/20658/maze-icon-symbol-free-vector-graphics-free-pictures-free-photos-free-images-royalty-free-free-illustrations">
+        https://www.needpix.com/photo/download/20658/maze-icon-symbol-free-vector-graphics-free-pictures-free-photos-free-images-royalty-free-free-illustrations
+        </a>
     </string>
 
     <string name="vid1_desc">White Maze by Videezy.com</string>
-    <string name="vid1">Link: <a href="https://www.videezy.com/backgrounds/44407-the-white-maze">https://www.videezy.com/backgrounds/44407-the-white-maze</a></string>
+    <string name="vid1">Link:
+        <a href="https://www.videezy.com/backgrounds/44407-the-white-maze">
+        https://www.videezy.com/backgrounds/44407-the-white-maze
+        </a>
+    </string>
+
     <string name="vid2_desc">Streaming Through a Tunnel of Refracted Light by Videezy.com</string>
-    <string name="vid2">Link: <a href="https://www.videezy.com/abstract/38824-streaming-through-a-tunnel-of-refracted-light">
-        https://www.videezy.com/abstract/38824-streaming-through-a-tunnel-of-refracted-light</a>
+    <string name="vid2">Link:
+        <a href="https://www.videezy.com/abstract/38824-streaming-through-a-tunnel-of-refracted-light">
+        https://www.videezy.com/abstract/38824-streaming-through-a-tunnel-of-refracted-light
+        </a>
     </string>
 
     <string name="audio1_desc">Victory - Hip Hop Beat by Copyright Free Music Production</string>
-    <string name="audio1">Link: <a href="https://www.youtube.com/watch?v=4D-LoMTbvx4">https://www.youtube.com/watch?v=4D-LoMTbvx4</a></string>
+    <string name="audio1">Link:
+        <a href="https://www.youtube.com/watch?v=4D-LoMTbvx4">
+        https://www.youtube.com/watch?v=4D-LoMTbvx4
+        </a>
+    </string>
+
     <string name="audio2_desc">Rolling Glass #1 Sound Effect by HowItSounds</string>
-    <string name="audio2">Link: <a href="https://www.youtube.com/watch?v=R3S9PzBUhdw">https://www.youtube.com/watch?v=R3S9PzBUhdw</a></string>
+    <string name="audio2">Link:
+        <a href="https://www.youtube.com/watch?v=R3S9PzBUhdw">
+        https://www.youtube.com/watch?v=R3S9PzBUhdw
+        </a>
+    </string>
+
     <string name="audio3_desc">Take You Home Tonight by Vibe Tracks</string>
-    <string name="audio3">Link: <a href="https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/vibe-tracks-take-you-home-tonight">
-        https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/vibe-tracks-take-you-home-tonight</a>
+    <string name="audio3">Link:
+        <a href="https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/vibe-tracks-take-you-home-tonight">
+        https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/vibe-tracks-take-you-home-tonight
+        </a>
     </string>
 
 </resources>

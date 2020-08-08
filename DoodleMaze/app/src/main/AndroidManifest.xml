@@ -32,6 +32,7 @@
         <activity android:name="com.doomteam.doodlemaze.CreateMaze" />
         <activity android:name="com.doomteam.doodlemaze.AuthenticateActivity" />
         <activity android:name="com.doomteam.doodlemaze.Credits" />
+        <activity android:name="com.doomteam.doodlemaze.Instructions" />
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"/>
     </application>
