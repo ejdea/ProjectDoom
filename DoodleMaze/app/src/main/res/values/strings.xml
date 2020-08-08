@@ -7,6 +7,7 @@
     <string name="sign_up">Sign Up</string>
     <string name="sign_out">Sign Out</string>
     <string name="load_maze">Load Maze</string>
+    <string name="how_to_play">How to Play</string>
     <string name="credits">Credits</string>
     <string name="exit">Exit</string>
 
@@ -22,6 +23,35 @@
     <string name="createNewMaze">Create New Maze</string>
     <string name="Cancel">Cancel</string>
     <string name="mazeImageView">Maze Contents</string>
+
+    <!-- Instructions Activity Strings -->
+    <string name="instructions">Instructions</string>
+    <string name="draw_header">Drawing Maze</string>
+    <string name="add_header">Adding a Maze</string>
+    <string name="play_header">Playing the Game</string>
+    <string name="draw_maze">Draw a maze using a pencil or black blue pen on an
+        unlined white piece of paper.\nPlace an O to mark the starting point of the maze and the
+        letter X to mark the end of the maze.
+    </string>
+    <string name="creating_a_maze">To create a maze,
+        first create an account then press the \"Create Maze\" button.
+        \nNow either take a picture of a maze you\'ve drawn or select a
+        saved picture of a maze from your stored photos.
+    </string>
+    <string name="accept">Use the cropping tool to crop out the white space around the maze.
+        If you are satisfied with result of the cropping, press Build Maze to
+    start playing your new maze.  If not, choose create maze to try again.</string>
+    <string name="unity_instructions">After a few seconds wait, the Maze game with start
+        and ask you to log in.
+        Once logged in, choose Play.</string>
+    <string name="game_instructions">Use the slider to adjust the size of be small enough
+        that it will be able to fit through the smallest gap in your maze and hit start.
+    </string>
+    <string name="play_instructions">To win, tilt your device to guide the ball into the portal
+        as quickly as possible.
+        After winning, choose Play Again to replay your maze and attempt to solve the maze quicker.
+        You can also choose Main Menu to return to the Play screen or Exit to close the game.
+    </string>
 
     <!-- Credits Activity Strings -->
     <string name="Credits">Credits</string>

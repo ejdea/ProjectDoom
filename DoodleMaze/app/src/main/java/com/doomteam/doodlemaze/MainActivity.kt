@@ -85,6 +85,11 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(createMazeIntent, RC_CMAZE)
     }
 
+    fun openInstructionsScreen(view: View) {
+        val instructionsIntent = Intent(this, Instructions::class.java)
+        startActivity(instructionsIntent)
+    }
+
     fun onClickCredits(view: View) {
         val creditsIntent = Intent(this, Credits::class.java)
         startActivity(creditsIntent)
