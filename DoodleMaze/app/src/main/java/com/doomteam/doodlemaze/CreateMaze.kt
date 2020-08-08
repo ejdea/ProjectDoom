@@ -305,17 +305,11 @@ class CreateMaze : AppCompatActivity() {
                         var processor = OCRProcessor(result.cropRect.left, result.cropRect.right, result.cropRect.top, result.cropRect.bottom)
                         if(!OCRProcessor.good)
                         {
-                            Log.d(TAG_INFO, "Unable to detect X and O in detection routine")
-                            val toast = Toast.makeText(this,
-                                "Unable to detect X and O in the maze. Please try again.",
-                                Toast.LENGTH_LONG)
-                            toast.setGravity(Gravity.TOP or Gravity.CENTER, 0, 0)
-                            toast.show()
-
                             val returnIntent = Intent()
                             setResult(DETECTION_ERROR, returnIntent)
                             returnIntent.putExtra("error_code", "1")
-                            mazeImageView.setImageBitmap(croppedBmp)
+                            finish()
+                            return
                         }
                         else
                         {
