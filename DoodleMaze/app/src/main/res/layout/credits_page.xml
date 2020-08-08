@@ -71,11 +71,11 @@
         android:text="@string/Elevator"
         android:textSize="12sp" />
     <TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fontFamily="cursive"
-    android:text="@string/Memories"
-    android:textSize="12sp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/Memories"
+        android:textSize="12sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -88,23 +88,26 @@
         android:fontFamily="cursive"
         android:textSize="20sp" />
     <TextView
+        android:id="@+id/img1_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="@string/img1"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
     <TextView
+        android:id="@+id/img2_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="@string/img2"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
     <TextView
+        android:id="@+id/img3_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="@string/img3"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -117,17 +120,19 @@
         android:fontFamily="cursive"
         android:textSize="20sp" />
     <TextView
+        android:id="@+id/vid1_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="@string/vid1"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
     <TextView
+        android:id="@+id/vid2_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="@string/vid2"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -140,23 +145,26 @@
         android:fontFamily="cursive"
         android:textSize="20sp" />
     <TextView
+        android:id="@+id/audio1_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="@string/audio1"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
     <TextView
+        android:id="@+id/audio2_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="@string/audio2"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
     <TextView
+        android:id="@+id/audio3_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
         android:text="@string/audio3"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -166,9 +174,9 @@
         android:id="@+id/credits_back"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_round_corner"
+        android:background="@drawable/button_round_corner2"
         android:onClick="goBack"
         android:text="@string/Back"
-        android:textColor="#2D1E2F"
+        android:textColor="#FCF681"
         app:layout_constraintVertical_bias="0.4" />
 </LinearLayout>

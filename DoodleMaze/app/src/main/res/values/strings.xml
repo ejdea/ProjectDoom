@@ -37,13 +37,13 @@
     <string name="Video">Video</string>
     <string name="Audio">Audio</string>
     <string name="Back">Back</string>
-    <string name="img1">https://pixabay.com/photos/labyrinth-freedom-orientation-4300600</string>
-    <string name="img2">https://www.pexels.com/photo/time-lapse-photo-of-stars-on-night-924824</string>
-    <string name="img3">https://www.needpix.com/photo/download/20658/maze-icon-symbol-free-vector-graphics-free-pictures-free-photos-free-images-royalty-free-free-illustrations</string>
-    <string name="vid1">https://www.videezy.com/backgrounds/44407-the-white-maze</string>
-    <string name="vid2">https://www.videezy.com/abstract/38824-streaming-through-a-tunnel-of-refracted-light</string>
-    <string name="audio1">https://www.youtube.com/watch?v=4D-LoMTbvx4</string>
-    <string name="audio2">https://www.youtube.com/watch?v=R3S9PzBUhdw</string>
-    <string name="audio3">https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/vibe-tracks-take-you-home-tonight</string>
+    <string name="img1"><a href="https://pixabay.com/photos/labyrinth-freedom-orientation-4300600">Labyrinth Freedom</a></string>
+    <string name="img2"><a href="https://www.pexels.com/photo/time-lapse-photo-of-stars-on-night-924824">Time Lapse Photo of Stars on Night</a></string>
+    <string name="img3"><a href="https://www.needpix.com/photo/download/20658/maze-icon-symbol-free-vector-graphics-free-pictures-free-photos-free-images-royalty-free-free-illustrations">Maze icon</a></string>
+    <string name="vid1"><a href="https://www.videezy.com/backgrounds/44407-the-white-maze">White Maze</a></string>
+    <string name="vid2"><a href="https://www.videezy.com/abstract/38824-streaming-through-a-tunnel-of-refracted-light">Streaming Through a Tunnel of Refracted Light</a></string>
+    <string name="audio1"><a href="https://www.youtube.com/watch?v=4D-LoMTbvx4">Victory - Hip Hop Beat</a></string>
+    <string name="audio2"><a href="https://www.youtube.com/watch?v=R3S9PzBUhdw">Rolling Glass #1 Sound Effect</a></string>
+    <string name="audio3"><a href="https://soundcloud.com/royaltyfreemusic-nocopyrightmusic/vibe-tracks-take-you-home-tonight">Take You Home Tonight</a></string>
 
 </resources>
