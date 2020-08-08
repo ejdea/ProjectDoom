@@ -65,7 +65,7 @@ class AuthenticateActivity : AppCompatActivity(){
         setContentView(R.layout.authenticate_main)
     }
 
-    fun onClickSignIn(view: View){
+    fun onClickSignIn(view: View) {
         //val auth = FirebaseAuth.getInstance()
         val email = findViewById<EditText>(R.id.email_field).text.toString()
         val password = findViewById<EditText>(R.id.password_field).text.toString()
@@ -93,10 +93,9 @@ class AuthenticateActivity : AppCompatActivity(){
                     displayErrorToast("Authentication Failed")
                 }
             }
-
     }
 
-    fun onClickSignUp(view: View){
+    fun onClickSignUp(view: View) {
         //val auth = FirebaseAuth.getInstance()
         val email = findViewById<EditText>(R.id.email_field).text.toString()
         val password = findViewById<EditText>(R.id.password_field).text.toString()

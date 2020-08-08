@@ -26,6 +26,7 @@ public class StartScript : MonoBehaviour
 {
     public Button startButton;
     public Button restartButton;
+    public Button quitButton;
     public Slider sizeSlider;
     public GameObject score;
     public GameObject highScore;
@@ -62,8 +63,9 @@ public class StartScript : MonoBehaviour
         Text htext_c = highScore.GetComponent<Text>();
         htext_c.enabled = false;
 
-        // Add listener to restartButton
+        // Add listener to mid-game buttons
         restartButton.onClick.AddListener(RestartOnClick);
+        quitButton.onClick.AddListener(QuitOnClick);
 
         // Start slider with half value
         sizeSlider.value = 0.5f;
@@ -296,9 +298,9 @@ public class StartScript : MonoBehaviour
         startButton.gameObject.SetActive(false);
         sizeSlider.gameObject.SetActive(false);
 
-
-        // Enable restart button
+        // Enable mid-game buttons
         restartButton.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
 
         // Enable player input
         Player p_script = playerSphere.GetComponent<Player>();
@@ -317,6 +319,16 @@ public class StartScript : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
     }
 
+    void QuitOnClick()
+	{
+        // Quit the current game to the previous screen
+        int prevSceneIndex = SceneManager.GetActiveScene().buildIndex - 1;
+
+        if (prevSceneIndex < 0)
+            prevSceneIndex = 0;
+
+        SceneManager.LoadScene(prevSceneIndex);
+    }
 
     public void SetRunFlag(bool flag) 
     {

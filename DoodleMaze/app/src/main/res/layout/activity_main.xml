@@ -73,11 +73,25 @@
         android:onClick="onClickCredits"
         android:text="@string/credits_page"
         android:textColor="#2D1E2F"
-        app:layout_constraintBottom_toTopOf="@+id/exit"
+        app:layout_constraintBottom_toTopOf="@+id/signOut"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/load_maze" />
+
+    <Button
+        android:id="@+id/signOut"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
+        android:onClick="onClickSignOut"
+        android:text="@string/sign_out"
+        android:textColor="#2D1E2F"
+        app:layout_constraintBottom_toTopOf="@+id/exit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/credits" />
 
     <Button
         android:id="@+id/exit"
@@ -91,6 +105,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/credits" />
+        app:layout_constraintTop_toBottomOf="@+id/signOut" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
