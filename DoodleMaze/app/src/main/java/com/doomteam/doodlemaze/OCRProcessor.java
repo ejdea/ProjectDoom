@@ -12,10 +12,26 @@ import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 
+/**
+ * Class that controls the OCR process and manages all necessary resources for the process
+ * Most resources are made static to prevent copies of large Bitmap objects being passed around
+ *
+ * NUM_OCR_ATTEMPTS - Number of attempts to make before failing the OCR procedure
+ * NUM_FILTER_ITERATIONS - Number of times to filter the image to remove noise
+ * MAX_IMAGE_SIZE - Max bounds to work with for the cropped BMP
+ *
+ * originalImage - set before instantiating class
+ * positionData - Game object positioning data (Rect starting_location, Rect ending_location)
+ * good - status flag that depicts state of OCR result
+ *
+ * @author Martin Edmunds
+ * @since 2020-08-08
+ * @version 1.0
+ */
 public class OCRProcessor {
 
     private static int NUM_OCR_ATTEMPTS = 10;
-    private static int NUM_FILTER_ITERATIONS = 2;
+    private static int NUM_FILTER_ITERATIONS = 5;
     private static int MAX_IMAGE_SIZE = 4000;
     private static int HEIGHTMAP_RESOLUTION = 1025;
     public static Bitmap originalImage = null;
@@ -33,6 +49,21 @@ public class OCRProcessor {
     int cy1Dim;
     int cy2Dim;
 
+    /**
+     * OCRProcessor Constructor: Performs the following
+     *  1. Assumes that original image has been set with a call to OCRProcess.originalImage = some_bitmap
+     *  2. If the original image is above 4000, 4000 resolution, rescales the image keeping aspect ratio.
+     *  3. Creates a new lower resolution cropped image from the original bitmap.
+     *  4. Creates an OCRImage instance to perform Google's OCR
+     *  5. Runs the detection routine
+     *      5a. If detection failes, upsizes the image by 1% and tries again
+     *  6. If Recognition is successful, OCRProcess.good bit set to true.
+     *
+     * @param x1Dim Upper left bounding box coord from image cropping routine
+     * @param x2Dim Lower right bounding box coord from image cropping routine
+     * @param y1Dim Upper left bounding box coord from image cropping routine
+     * @param y2Dim Lower right bounding box coord from image cropping routine
+     */
     OCRProcessor(int x1Dim, int x2Dim, int y1Dim, int y2Dim)
     {
         if(originalImage == null)
@@ -96,6 +127,14 @@ public class OCRProcessor {
         }
     }
 
+    /**
+     * Runs the current OCR method (Google's Firebase OCR)
+     * Successful attempts are able to locate an 'x' and an 'o'
+     * On failure, attempts to reisze and try again
+     *
+     *
+     * @return boolean OCR success status
+     */
     private boolean StartDetectionRoutine()
     {
         if(croppedBmp == null || ocrImage == null)
@@ -137,12 +176,11 @@ public class OCRProcessor {
                     }
                 }
             }
-            // check if detection routine is done
+            // check if detection routine detected all the necessary characters
             if(startBoxTopLeft != null && startBoxBottomRight != null && endBoxTopLeft != null && endBoxBottomRight != null)
             {
                 Log.d(TAG_INFO, "All characters were recognized");
                 originalImage.recycle();
-
                 // Generate ocvImage with all features recognized
                 cleanImage(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION);
                 positionData = removeOCRText(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp.getWidth(), croppedBmp.getHeight());
@@ -160,12 +198,14 @@ public class OCRProcessor {
             }
             attempts++;
         }
+        Log.d(TAG_INFO, "Characters weren't found in OCR process");
         return false;
     }
 
     /**
      * Runs google's Text Detection ML kit for Firebase on the selected picture
      *
+     * @return Task currently running OCR task
      */
     private Task<Text> detectText() {
         TextRecognizer recognizer = TextRecognition.getClient();
@@ -176,10 +216,17 @@ public class OCRProcessor {
         });
     }
 
+    /**
+     * Creates an ocvImage from the ImageMarkup class and performs image filtering on the image
+     * Make sure that a usable cropped image is available for this process
+     *
+     * @throws NullPointerException on croppedBmp not being set
+     * @param width width of the OpenCV Mat to be created
+     * @param height height of the OpenCV Mat to be created
+     */
     private void cleanImage(int width, int height) {
-        if (croppedBmp == null) {
-            Log.d(TAG_INFO, "WARNING: imageBitmap == null");
-            return;
+        if (croppedBmp == null){
+            throw new NullPointerException();
         }
         ocvImage = new ImageMarkup(croppedBmp, croppedBmp.getWidth(), croppedBmp.getHeight());
         ocvImage.Filter(NUM_FILTER_ITERATIONS);
@@ -188,11 +235,12 @@ public class OCRProcessor {
     /**
      * Function that removes the bounding boxes detected in the CV text detection method
      *
-     *
+     * @throws NullPointerException On ocvImage not being created successfully
      * @param startBoxTopLeft top left 'X'
      * @param startBoxBottomRight bottom right 'X'
      * @param endBoxTopLeft top left 'O'
      * @param endBoxBottomRight bottom right 'O'
+     * @return ArrayList array consisting of location of game objects
      */
     private ArrayList<Integer> removeOCRText(Point startBoxTopLeft, Point startBoxBottomRight, Point endBoxTopLeft, Point endBoxBottomRight, int maxWidth, int maxHeight){
         //convert pixel locations to 1025x1025 space
@@ -209,8 +257,7 @@ public class OCRProcessor {
 
         if(ocvImage == null)
         {
-            Log.d(TAG_INFO, "Warning: currentImage needs to be created before removing bounding boxes!");
-            return null;
+            throw new NullPointerException();
         }
 
         // remove the content in the bounding boxes mark
@@ -225,9 +272,10 @@ public class OCRProcessor {
     }
 
     /**
-     * This program is used to modify the original image in an attempt for a better
-     * OCR result
+     * Method performs a crop on the original image
      *
+     * @param amount % amount to change the image
+     * @throws NullPointerException on original image not being set
      */
     private void cropOriginal(double amount){
         //increase cropped size by amount%
@@ -235,6 +283,11 @@ public class OCRProcessor {
         int height = cy2Dim - cy1Dim;
         int widthResize = (int)(amount * width);
         int heightResize = (int)(amount * height);
+
+        if(originalImage == null)
+        {
+            throw new NullPointerException();
+        }
 
         //update new cropped image dimensions
         cx1Dim = Math.max(0, (int)(cx1Dim - widthResize));
