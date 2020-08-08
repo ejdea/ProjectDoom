@@ -108,6 +108,28 @@ public class ImageMarkup extends android.app.Activity{
     }
 
     /**
+     * Constructor: Converts an existing Bitmap into the a (x, y) 1-channel greyscale image. Uses static reference
+     * to save memory
+     *
+     * @throws CvException On missing file
+     * @throws NullPointerException On bitmap -> map conversion errors
+     * */
+    public ImageMarkup(int x, int y) throws CvException, NullPointerException{
+        this.img = new Mat();
+
+        //convert Android color bitmap to 1-channel grayscale
+        Utils.bitmapToMat(OCRProcessor.croppedBmp, this.img);
+        if(this.img == null){
+            throw new NullPointerException("Unable to convert bitmap to mat!");
+        }
+        ConvertTo1CGray();
+        if(this.img == null){
+            throw new NullPointerException("Unable to convert bitmap to mat!");
+        }
+        Resize(x, y);
+    }
+
+    /**
      * Converts the current mat image to a 1-channel grayscale image
      *
      * @throws CvException on invalid conversion
