@@ -29,23 +29,23 @@
     <string name="draw_header">Drawing Maze</string>
     <string name="add_header">Adding a Maze</string>
     <string name="play_header">Playing the Game</string>
-    <string name="draw_maze">Draw a maze using a pencil or black blue pen on an
-        unlined white piece of paper.\nPlace an O to mark the starting point of the maze and the
+    <string name="draw_maze">Draw a maze using a dark pencil or black/blue pen on an
+        unlined, white piece of paper.\nPlace an O to mark the starting point of the maze and the
         letter X to mark the end of the maze.
     </string>
     <string name="creating_a_maze">To create a maze,
-        first create an account then press the \"Create Maze\" button.
-        \nNow either take a picture of a maze you\'ve drawn or select a
+        first create an account. Then, press the \"Create Maze\" button.
+        \nNow, either take a picture of a maze you\'ve drawn or select a
         saved picture of a maze from your stored photos.
     </string>
     <string name="accept">Use the cropping tool to crop out the white space around the maze.
-        If you are satisfied with result of the cropping, press Build Maze to
+        If you are satisfied with cropping result, press Build Maze to
     start playing your new maze.  If not, choose create maze to try again.</string>
-    <string name="unity_instructions">After a few seconds wait, the Maze game with start
-        and ask you to log in.
+    <string name="unity_instructions">Wait for a few seconds for Unity Doodle Maze to load. 
+        Then, the Maze game will start and ask you to log in.
         Once logged in, choose Play.</string>
-    <string name="game_instructions">Use the slider to adjust the size of be small enough
-        that it will be able to fit through the smallest gap in your maze and hit start.
+    <string name="game_instructions">Use the slider to adjust the size of the ball to be small enough
+        that it will be able to fit through the smallest gap in your maze. Hit start to begin gameplay.
     </string>
     <string name="play_instructions">To win, tilt your device to guide the ball into the portal
         as quickly as possible.
