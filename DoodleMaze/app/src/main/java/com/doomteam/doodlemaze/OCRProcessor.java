@@ -192,7 +192,6 @@ public class OCRProcessor {
             }
             else{
                 //hint for garbage collection to avoid heap exhaustion
-                croppedBmp.recycle();
 
                 //increase size of cropped by 1%
                 cropOriginal(0.01);
@@ -299,7 +298,6 @@ public class OCRProcessor {
         cy2Dim = Math.min(originalImage.getHeight(), (int)(cy2Dim + heightResize));
 
         //create new cropped image
-        croppedBmp.recycle();
         croppedBmp = Bitmap.createBitmap(originalImage, cx1Dim, cy1Dim, (cx2Dim - cx1Dim), (cy2Dim - cy1Dim));
     }
 
