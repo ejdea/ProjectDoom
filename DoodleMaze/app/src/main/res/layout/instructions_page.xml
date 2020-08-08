@@ -177,10 +177,10 @@
         android:id="@+id/credits_back"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_round_corner"
+        android:background="@drawable/button_round_corner2"
         android:onClick="goBackToMain"
         android:text="@string/Back"
-        android:textColor="#2D1E2F"
+        android:textColor="#FCF681"
         app:layout_constraintVertical_bias="0.4" />
 
     </LinearLayout>
