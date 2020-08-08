@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@drawable/main_bg"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/name_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/doodle_maze"
+        android:textAlignment="textStart"
+        android:textColor="#FFFFFF"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/credits"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/sign_in"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
+        android:onClick="openCreateMazeScreen"
+        android:text="@string/create_maze_page"
+        android:textColor="#2D1E2F"
+        app:layout_constraintBottom_toTopOf="@+id/load_maze"
+        app:layout_constraintEnd_toStartOf="@+id/credits"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <Button
+        android:id="@+id/load_maze"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
+        android:onClick="openLoadMazeScreen"
+        android:text="@string/saved_maze_page"
+        android:textColor="#2D1E2F"
+        app:layout_constraintBottom_toTopOf="@+id/instructions"
+        app:layout_constraintEnd_toStartOf="@+id/signOut"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in" />
+
+    <Button
+        android:id="@+id/instructions"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
+        android:onClick="openInstructionsScreen"
+        android:text="@string/how_to_play"
+        android:textColor="#2D1E2F"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/exit"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/load_maze" />
+
+    <Button
+        android:id="@+id/exit"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
+        android:onClick="onClickExit"
+        android:text="@string/exit"
+        android:textColor="#2D1E2F"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/instructions"
+        app:layout_constraintTop_toBottomOf="@+id/signOut" />
+
+    <Button
+        android:id="@+id/credits"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
+        android:onClick="onClickCredits"
+        android:text="@string/credits_page"
+        android:textColor="#2D1E2F"
+        app:layout_constraintBottom_toTopOf="@+id/signOut"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sign_in"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <Button
+        android:id="@+id/signOut"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_round_corner"
+        android:onClick="onClickSignOut"
+        android:text="@string/sign_out"
+        android:textColor="#2D1E2F"
+        app:layout_constraintBottom_toTopOf="@+id/exit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/load_maze"
+        app:layout_constraintTop_toBottomOf="@+id/credits" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
