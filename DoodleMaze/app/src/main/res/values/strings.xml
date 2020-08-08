@@ -9,7 +9,6 @@
     <string name="credits_page">Credits</string>
     <string name="sign_out">Sign Out</string>
     <string name="load_maze">Load Maze</string>
-    <string name="credits">Credits</string>
     <string name="exit">Exit</string>
 
     <!-- Saved Mazes Activity Strings -->
@@ -33,10 +32,11 @@
     <string name="canada">Canada by Pictures of the Floating World</string>
     <string name="elevator">Elevator by Pictures of the Floating World</string>
     <string name="memories">Memories by Pictures of the Floating World</string>
-    <string name="images">Images/Videos</string>
+    <string name="images">Images</string>
+    <string name="videos">Videos</string>
     <string name="back">Back</string>
     <string name="audio_effects">Audio Effects</string>
-    <string name="img1_desc">Labryinth Freedom by mwewering</string>
+    <string name="img1_desc">Labyrinth Freedom by mwewering</string>
     <string name="img1">Link: <a href="https://pixabay.com/photos/labyrinth-freedom-orientation-4300600">https://pixabay.com/photos/labyrinth-freedom-orientation-4300600</a></string>
     <string name="img2_desc">Time Lapse Photo of Stars on Night by Jakub Novacek</string>
     <string name="img2">Link: <a href="https://www.pexels.com/photo/time-lapse-photo-of-stars-on-night-924824">https://www.pexels.com/photo/time-lapse-photo-of-stars-on-night-924824</a></string>
