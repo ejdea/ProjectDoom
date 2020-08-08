@@ -2,27 +2,28 @@
     <!-- Main Activity String -->
     <string name="app_name">Doodle Maze</string>
     <string name="doodle_maze">Doodle Maze</string>
-    <string name="create_maze">Create Maze</string>
+    <string name="create_maze_page">Create Maze</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="saved_maze_page">Saved Mazes</string>
+    <string name="credits_page">Credits</string>
     <string name="sign_out">Sign Out</string>
     <string name="load_maze">Load Maze</string>
+  
     <string name="how_to_play">How to Play</string>
     <string name="credits">Credits</string>
     <string name="exit">Exit</string>
 
-    <!-- Load Maze Activity Strings -->
+    <!-- Saved Mazes Activity Strings -->
     <string name="saved_mazes">Saved Mazes</string>
-    <string name="thumb_desc">Maze Thumbnail</string>
-    <string name="play_maze">Play</string>
-    <string name="scores">Scores</string>
-    <string name="action_settings">Settings</string>
+    <string name="tap_instructions">Tap to load a maze</string>
+    <string name="long_press_instructions">Long Press to delete a maze</string>
 
     <!-- Create Maze Activity Strings -->
-    <string name="buildMaze">Build Maze</string>
-    <string name="createNewMaze">Create New Maze</string>
-    <string name="Cancel">Cancel</string>
-    <string name="mazeImageView">Maze Contents</string>
+    <string name="build_maze">Build Maze</string>
+    <string name="create_new_maze">Create New Maze</string>
+    <string name="cancel">Cancel</string>
+    <string name="maze_image_view">Maze Contents</string>
 
     <!-- Instructions Activity Strings -->
     <string name="instructions">Instructions</string>
@@ -54,6 +55,21 @@
     </string>
 
     <!-- Credits Activity Strings -->
+    <string name="credits">Credits</string>
+    <string name="programmers">Programmers</string>
+    <string name="programmer_names">Edmund Dea, Martin Edwards, Lee Rice</string>
+    <string name="music">Music</string>
+    <string name="waves">Waves by Pictures of the Floating World</string>
+    <string name="bumbling">Bumbling by Pictures of the Floating World </string>
+    <string name="canada">Canada by Pictures of the Floating World</string>
+    <string name="elevator">Elevator by Pictures of the Floating World</string>
+    <string name="memories">Memories by Pictures of the Floating World</string>
+    <string name="images">Images</string>
+    <string name="videos">Videos</string>
+    <string name="back">Back</string>
+    <string name="audio_effects">Audio Effects</string>
+    <string name="img1_desc">Labyrinth Freedom by mwewering</string>
+    <string name="img1">Link: <a href="https://pixabay.com/photos/labyrinth-freedom-orientation-4300600">https://pixabay.com/photos/labyrinth-freedom-orientation-4300600</a></string>
     <string name="Credits">Credits</string>
     <string name="Programmers">Programmers</string>
     <string name="ProgNames">Edmund Dea, Martin Edwards, Lee Rice</string>

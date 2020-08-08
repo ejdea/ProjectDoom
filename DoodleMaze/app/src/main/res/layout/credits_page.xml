@@ -4,14 +4,44 @@
     android:id="@+id/scroll"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-    <LinearLayout
+      <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#BBFCF6B1"
         android:orientation="vertical"
         android:paddingStart="16sp"
         android:paddingEnd="16sp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="cursive"
+        android:text="@string/credits"
+        android:textSize="50sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+
+        android:text="@string/programmers"
+        android:textSize="20sp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/programmer_names"
+        android:textSize="14sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -27,40 +57,71 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.2" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="@string/Programmers"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/music"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/waves"
+        android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/ProgNames"
-            android:textSize="14sp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/bumbling"
+        android:textSize="14sp" />
+  
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
+  
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/canada"
+        android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
-            android:text="@string/Music"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/elevator"
+        android:textSize="14sp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/memories"
+        android:textSize="14sp" />
+  
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
 
         <TextView
             android:layout_width="match_parent"
@@ -80,11 +141,40 @@
             android:layout_width="match_parent"
             android:layout_height="12sp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/images"
+        android:fontFamily="cursive"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+      
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/img1_desc"
+        android:textSize="14sp" />
+    <TextView
+        android:id="@+id/img1_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/img1"
+        android:textSize="14sp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="@string/Bumbling"
+            android:text="@string/bumbling"
             android:textSize="14sp" />
 
         <TextView
@@ -105,6 +195,18 @@
             android:text="@string/Canada"
             android:textSize="14sp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/videos"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
+        
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,6 +232,17 @@
             android:text="@string/elevator_link"
             android:textSize="12sp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="@string/audio_effects"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10sp" />
+        
         <Space
             android:layout_width="match_parent"
             android:layout_height="12sp" />
