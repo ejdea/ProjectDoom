@@ -295,6 +295,10 @@ class CreateMaze : AppCompatActivity() {
                         var processor = OCRProcessor(result.cropRect.left, result.cropRect.right, result.cropRect.top, result.cropRect.bottom)
                         if(!OCRProcessor.good)
                         {
+                            //TODO: remove
+                            //mazeImageView.setImageBitmap(OCRProcessor.originalImage);
+                            //mazeImageView.setImageBitmap(OCRProcessor.ocvImage.GetBitmap());
+
                             Log.d(TAG_INFO, "Unable to detect X and O in detection routine")
                             val returnIntent = Intent()
                             setResult(DETECTION_ERROR, returnIntent)
@@ -303,6 +307,7 @@ class CreateMaze : AppCompatActivity() {
                         }
                         else
                         {
+                            //mazeImageView.setImageBitmap(OCRProcessor.originalImage);
                             mazeImageView.setImageBitmap(OCRProcessor.ocvImage.GetBitmap());
                         }
                     }
