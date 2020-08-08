@@ -521,8 +521,8 @@ public class ImageMarkup extends android.app.Activity{
         byte[] tmp = new byte[num_bytes];
         this.img.get(0, 0, tmp);
 
-        for(int j = min_y + offset_y; j < max_y - offset_y; j++) {
-            for (int i = min_x + offset_x; i < max_x - offset_x; i++) {
+        for(int j = Math.max(0, min_y + offset_y); j < Math.min(DEFAULT_RESOLUTION, max_y - offset_y); j++) {
+            for (int i = Math.max(0, min_x + offset_x); i < Math.min(DEFAULT_RESOLUTION, max_x - offset_x); i++) {
                 tmp[(j * height) + i] = (byte)255;
             }
         }

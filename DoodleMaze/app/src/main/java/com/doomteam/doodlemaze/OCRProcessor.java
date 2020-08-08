@@ -78,7 +78,7 @@ public class OCRProcessor {
         float scaleFactorX = 1.0f;
 
         //determine if original image needs scaled down to save memory
-        if(originalImage.getWidth() > 4000 || originalImage.getHeight() > 4000)
+        if(originalImage.getWidth() > MAX_IMAGE_SIZE || originalImage.getHeight() > MAX_IMAGE_SIZE)
         {
             float ratio = Math.min(
                     (float) MAX_IMAGE_SIZE / originalImage.getWidth(),
@@ -146,6 +146,9 @@ public class OCRProcessor {
         Point startBoxTopLeft = null; Point startBoxBottomRight = null;
         Point endBoxTopLeft = null; Point endBoxBottomRight = null;
 
+        boolean foundX = false;
+        boolean foundO = false;
+
         while(attempts < NUM_OCR_ATTEMPTS){
 
             //run text detection
@@ -163,28 +166,28 @@ public class OCRProcessor {
                             String elementText = element.getText();
                             Point[] elementCornerPoints = element.getCornerPoints();
                             //retrieve bounding rect dimensions for 'x'
-                            if(startBoxTopLeft == null && (elementText.equals("X") || elementText.equals("x"))) {
+                            if(startBoxTopLeft == null && (elementText.contains("X") || elementText.contains("x"))) {
                                 startBoxTopLeft = elementCornerPoints[0];
                                 startBoxBottomRight = elementCornerPoints[2];
+                                foundX = true;
                             }
                             //retrieve bounding rect dimensions for 'o'
-                            else if(endBoxTopLeft == null && (elementText.equals("O") || elementText.equals("o"))) {
+                            else if(endBoxTopLeft == null && (elementText.contains("O") || elementText.contains("o"))) {
                                 endBoxTopLeft = elementCornerPoints[0];
                                 endBoxBottomRight = elementCornerPoints[2];
+                                foundO = true;
                             }
                         }
                     }
                 }
             }
             // check if detection routine detected all the necessary characters
-            if(startBoxTopLeft != null && startBoxBottomRight != null && endBoxTopLeft != null && endBoxBottomRight != null)
+            if(foundX && foundO)
             {
                 Log.d(TAG_INFO, "All characters were recognized");
-                originalImage.recycle();
                 // Generate ocvImage with all features recognized
                 cleanImage(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION);
                 positionData = removeOCRText(startBoxTopLeft, startBoxBottomRight, endBoxTopLeft, endBoxBottomRight, croppedBmp.getWidth(), croppedBmp.getHeight());
-                croppedBmp.recycle();
                 return true;
             }
             else{
