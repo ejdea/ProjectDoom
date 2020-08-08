@@ -29,293 +29,168 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-
+        android:fontFamily="sans-serif-black"
         android:text="@string/programmers"
         android:textSize="20sp" />
     <Space
         android:layout_width="match_parent"
-        android:layout_height="10sp" />
+        android:layout_height="12sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
+        android:fontFamily="sans-serif"
         android:text="@string/programmer_names"
         android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="cursive"
-            android:text="@string/Credits"
-            android:textSize="50sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.2" />
+          <Space
+              android:layout_width="match_parent"
+              android:layout_height="12sp" />
 
-    <TextView
+          <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="cursive"
+        android:fontFamily="sans-serif-black"
         android:text="@string/music"
         android:textSize="20sp"
         android:textStyle="bold" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/waves"
-        android:textSize="14sp" />
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/waves"
+              android:textSize="14sp" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10sp" />
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/waves_link"
+              android:textSize="12sp" />
 
-    <TextView
+          <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/bumbling"
-        android:textSize="14sp" />
-  
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10sp" />
-  
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/canada"
-        android:textSize="14sp" />
+        android:layout_height="12sp" />
 
-    <Space
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/bumbling"
+              android:textSize="14sp" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/bumbling_link"
+              android:textSize="12sp" />
+
+          <Space
+              android:layout_width="match_parent"
+              android:layout_height="12sp" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/canada"
+              android:textSize="14sp" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/canada_link"
+              android:textSize="12sp" />
+
+          <Space
         android:layout_width="match_parent"
-        android:layout_height="10sp" />
+        android:layout_height="12sp" />
 
-    <TextView
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/elevator"
+              android:textSize="14sp" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/elevator_link"
+              android:textSize="12sp" />
+
+          <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/elevator"
-        android:textSize="14sp" />
+        android:layout_height="12sp" />
 
-    <Space
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/memories"
+              android:textSize="14sp" />
+
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/memories_link"
+              android:textSize="12sp" />
+
+          <Space
         android:layout_width="match_parent"
-        android:layout_height="10sp" />
+        android:layout_height="12sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/memories"
-        android:textSize="14sp" />
-  
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10sp" />
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/audio3_desc"
+              android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/Waves"
-            android:textSize="14sp" />
+          <TextView
+              android:id="@+id/audio3_id"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/audio3"
+              android:textSize="12sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/waves_link"
-            android:textSize="12sp" />
-
-        <Space
+          <Space
             android:layout_width="match_parent"
             android:layout_height="12sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/images"
-        android:fontFamily="cursive"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-      
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10sp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/img1_desc"
-        android:textSize="14sp" />
-    <TextView
-        android:id="@+id/img1_id"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/img1"
-        android:textSize="14sp" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10sp" />
+          <TextView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/audio1_desc"
+              android:textSize="14sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/bumbling"
-            android:textSize="14sp" />
+          <TextView
+              android:id="@+id/audio1_id"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:fontFamily="sans-serif"
+              android:text="@string/audio1"
+              android:textSize="12sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/bumbling_link"
-            android:textSize="12sp" />
-
-        <Space
+          <Space
             android:layout_width="match_parent"
             android:layout_height="12sp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/Canada"
-            android:textSize="14sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/videos"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10sp" />
-        
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/canada_link"
-            android:textSize="12sp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/Elevator"
-            android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/elevator_link"
-            android:textSize="12sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="cursive"
-        android:text="@string/audio_effects"
-        android:textAlignment="center"
-        android:textSize="20sp" />
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="10sp" />
-        
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/Memories"
-            android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/memories_link"
-            android:textSize="12sp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/audio1_desc"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/audio1_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/audio1"
-            android:textSize="14sp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12sp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/audio3_desc"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/audio3_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/audio3"
-            android:textSize="14sp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20sp" />
-
-        <TextView
+          <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
-            android:text="@string/Images"
+            android:text="@string/images"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12sp" />
-
-        <TextView
+          <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
@@ -368,15 +243,11 @@
             android:text="@string/img3"
             android:textSize="12sp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20sp" />
-
-        <TextView
+          <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
-            android:text="@string/Video"
+            android:text="@string/videos"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -420,13 +291,13 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20sp" />
+            android:layout_height="12sp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
-            android:text="@string/AudioEffects"
+            android:text="@string/audio_effects"
             android:textSize="20sp" />
 
         <Space
@@ -458,8 +329,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_round_corner2"
             android:onClick="goBack"
-            android:text="@string/Back"
+            android:text="@string/back"
             android:textColor="#FCF681"
             app:layout_constraintVertical_bias="0.4" />
+
+          <Space
+              android:layout_width="match_parent"
+              android:layout_height="12sp" />
     </LinearLayout>
 </ScrollView>

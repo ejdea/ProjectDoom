@@ -11,7 +11,6 @@
     <string name="load_maze">Load Maze</string>
   
     <string name="how_to_play">How to Play</string>
-    <string name="credits">Credits</string>
     <string name="exit">Exit</string>
 
     <!-- Saved Mazes Activity Strings -->
@@ -59,60 +58,44 @@
     <string name="programmers">Programmers</string>
     <string name="programmer_names">Edmund Dea, Martin Edwards, Lee Rice</string>
     <string name="music">Music</string>
-    <string name="waves">Waves by Pictures of the Floating World</string>
-    <string name="bumbling">Bumbling by Pictures of the Floating World </string>
-    <string name="canada">Canada by Pictures of the Floating World</string>
-    <string name="elevator">Elevator by Pictures of the Floating World</string>
-    <string name="memories">Memories by Pictures of the Floating World</string>
     <string name="images">Images</string>
     <string name="videos">Videos</string>
     <string name="back">Back</string>
     <string name="audio_effects">Audio Effects</string>
-    <string name="img1_desc">Labyrinth Freedom by mwewering</string>
-    <string name="img1">Link: <a href="https://pixabay.com/photos/labyrinth-freedom-orientation-4300600">https://pixabay.com/photos/labyrinth-freedom-orientation-4300600</a></string>
-    <string name="Credits">Credits</string>
-    <string name="Programmers">Programmers</string>
-    <string name="ProgNames">Edmund Dea, Martin Edwards, Lee Rice</string>
-    <string name="Music">Music</string>
-    <string name="Waves">Waves by Pictures of the Floating World</string>
+    <string name="waves">Waves by Pictures of the Floating World</string>
     <string name="waves_link">Link:
         <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Waves_1528/Waves_1217">
             https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Waves_1528/Waves_1217
         </a>
     </string>
 
-    <string name="Bumbling">Bumbling by Pictures of the Floating World </string>
+    <string name="bumbling">Bumbling by Pictures of the Floating World </string>
     <string name="bumbling_link">Link:
         <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Bumbling/Bumbling">
         https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Bumbling/Bumbling
     </a>
     </string>
 
-    <string name="Canada">Canada by Pictures of the Floating World</string>
+    <string name="canada">Canada by Pictures of the Floating World</string>
     <string name="canada_link">Link:
         <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Canada/Canada_1385">
         https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Canada/Canada_1385
     </a>
     </string>
 
-    <string name="Elevator">Elevator by Pictures of the Floating World</string>
+    <string name="elevator">Elevator by Pictures of the Floating World</string>
     <string name="elevator_link">Link:
         <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Elevator">
         https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Elevator
     </a>
     </string>
 
-    <string name="Memories">Memories by Pictures of the Floating World</string>
+    <string name="memories">Memories by Pictures of the Floating World</string>
     <string name="memories_link">Link:
         <a href="https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Memories_1709">
         https://freemusicarchive.org/music/Pictures_of_the_Floating_World/Memories_1709
     </a>
     </string>
-
-    <string name="Images">Images</string>
-    <string name="Video">Video</string>
-    <string name="AudioEffects">Audio Effects</string>
-    <string name="Back">Back</string>
 
     <string name="img1_desc">Labryinth Freedom by mwewering</string>
     <string name="img1">Link:
