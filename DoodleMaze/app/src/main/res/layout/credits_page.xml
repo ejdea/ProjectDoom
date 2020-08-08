@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:fontFamily="cursive"
-        android:text="@string/Credits"
+        android:text="@string/credits"
         android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -26,15 +26,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
-        android:text="@string/Programmers"
+        android:text="@string/programmers"
         android:textSize="20sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
-        android:text="@string/ProgNames"
-        android:textSize="12sp" />
+        android:text="@string/programmer_names"
+        android:textSize="14sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -44,38 +44,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
-        android:text="@string/Music"
+        android:text="@string/music"
         android:textSize="20sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
-        android:text="@string/Waves"
-        android:textSize="12sp" />
+        android:text="@string/waves"
+        android:textSize="14sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
-        android:text="@string/Bumbling"
-        android:textSize="12sp" />
+        android:text="@string/bumbling"
+        android:textSize="14sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
-        android:text="@string/Canada"
-        android:textSize="12sp" />
+        android:text="@string/canada"
+        android:textSize="14sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
-        android:text="@string/Elevator"
-        android:textSize="12sp" />
+        android:text="@string/elevator"
+        android:textSize="14sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="cursive"
-        android:text="@string/Memories"
-        android:textSize="12sp" />
+        android:text="@string/memories"
+        android:textSize="14sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -84,7 +84,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Images"
+        android:text="@string/images"
         android:fontFamily="cursive"
         android:textSize="20sp" />
 
@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/button_round_corner"
         android:onClick="goBack"
-        android:text="@string/Back"
+        android:text="@string/back"
         android:textColor="#2D1E2F"
         app:layout_constraintVertical_bias="0.4" />
 </LinearLayout>

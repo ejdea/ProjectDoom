@@ -15,7 +15,7 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_round_corner"
         android:onClick="onClickCreateNewMaze"
-        android:text="@string/createNewMaze"
+        android:text="@string/create_new_maze"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buildMazeButton"
         app:layout_constraintStart_toEndOf="@+id/cancelButton" />
@@ -29,7 +29,7 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_round_corner"
         android:onClick="onClickBuildMaze"
-        android:text="@string/buildMaze"
+        android:text="@string/build_maze"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/createNewMazeButton" />
@@ -43,7 +43,7 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/button_round_corner"
         android:onClick="onClickCancel"
-        android:text="@string/Cancel"
+        android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/createNewMazeButton"
         app:layout_constraintStart_toStartOf="parent" />
@@ -53,7 +53,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/mazeImageView"
+        android:contentDescription="@string/maze_image_view"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@+id/createNewMazeButton"
         app:layout_constraintEnd_toEndOf="parent"
