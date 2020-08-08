@@ -41,6 +41,7 @@ public class BuildMazeActivity extends Activity implements OnTouchListener {
     static {
         if (!OpenCVLoader.initDebug()) {
             // Handle initialization error
+            Log.d(TAG, "OpenCV failed to initialize");
         }
         else{
             Log.d(TAG, "OpenCV loaded successfully");

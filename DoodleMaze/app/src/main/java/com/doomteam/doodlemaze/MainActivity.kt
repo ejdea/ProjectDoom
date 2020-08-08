@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,12 +18,13 @@ class MainActivity : AppCompatActivity() {
         private const val RC_AUTH = 125
         private const val RC_CMAZE = 126
         private var current_user: String? = null
+        private lateinit var auth: FirebaseAuth
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        auth = FirebaseAuth.getInstance()
         authenticateUser()
     }
 
@@ -30,6 +32,11 @@ class MainActivity : AppCompatActivity() {
     {
         val intent = Intent(this, AuthenticateActivity::class.java)
         startActivityForResult(intent, RC_AUTH)
+    }
+
+    fun onClickSignOut(view: View) {
+        auth.signOut()
+        authenticateUser()
     }
 
     // [START auth_fui_result]
