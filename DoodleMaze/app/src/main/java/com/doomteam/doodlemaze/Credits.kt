@@ -14,7 +14,11 @@ class Credits: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.credits_page)
-
+        pfw_link1.movementMethod = LinkMovementMethod.getInstance()
+        pfw_link2.movementMethod = LinkMovementMethod.getInstance()
+        pfw_link3.movementMethod = LinkMovementMethod.getInstance()
+        pfw_link4.movementMethod = LinkMovementMethod.getInstance()
+        pfw_link5.movementMethod = LinkMovementMethod.getInstance()
         img1_id.movementMethod = LinkMovementMethod.getInstance()
         img2_id.movementMethod = LinkMovementMethod.getInstance()
         img3_id.movementMethod = LinkMovementMethod.getInstance()
