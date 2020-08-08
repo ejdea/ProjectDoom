@@ -38,7 +38,7 @@
         \n\nNow, either take a picture of a maze you\'ve drawn or select a
         saved picture of a maze from your stored photos.
     </string>
-    <string name="accept">Use the cropping tool to crop out the white space around the maze.
+    <string name="accept">Use the cropping tool to crop out everything around the maze. Be sure to crop out everything outside the bounds of the paper.
         If you are satisfied with cropping result, press Build Maze to
     start playing your new maze.  If not, choose create maze to try again.</string>
     <string name="unity_instructions">Wait for a few seconds for Unity Doodle Maze to load. 
