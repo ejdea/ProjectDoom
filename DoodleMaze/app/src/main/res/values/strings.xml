@@ -30,12 +30,12 @@
     <string name="add_header">Adding a Maze</string>
     <string name="play_header">Playing the Game</string>
     <string name="draw_maze">Draw a maze using a dark pencil or black/blue pen on an
-        unlined, white piece of paper.\nPlace an O to mark the starting point of the maze and the
+        unlined, white piece of paper.\n\nPlace an O to mark the starting point of the maze and the
         letter X to mark the end of the maze.
     </string>
     <string name="creating_a_maze">To create a maze,
         first create an account. Then, press the \"Create Maze\" button.
-        \nNow, either take a picture of a maze you\'ve drawn or select a
+        \n\nNow, either take a picture of a maze you\'ve drawn or select a
         saved picture of a maze from your stored photos.
     </string>
     <string name="accept">Use the cropping tool to crop out the white space around the maze.
