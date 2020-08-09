@@ -353,11 +353,17 @@ class CreateMaze : AppCompatActivity() {
                             {
                                 targetStartObject = true
                                 requestManualResult = true
+                                Toast.makeText(this,
+                                    "Automatic Detection failed: Please identify 'X'",
+                                    Toast.LENGTH_LONG).show()
                                 cropImage(originalImageUri!!)
                             }
                             else{   // end hasn't been identified
                                 targetEndObject = true
                                 requestManualResult = true
+                                Toast.makeText(this,
+                                    "Automatic Detection failed: Please identify 'O'",
+                                    Toast.LENGTH_LONG).show()
                                 cropImage(originalImageUri!!)
                             }
                         }
@@ -370,6 +376,10 @@ class CreateMaze : AppCompatActivity() {
                                 manualCropMode = true
                                 targetStartObject = true
                                 requestManualResult = true
+
+                                Toast.makeText(this,
+                                    "Automatic Detection failed: Please identify 'X'",
+                                    Toast.LENGTH_LONG).show()
                                 cropImage(originalImageUri!!)
                             }
                             else
