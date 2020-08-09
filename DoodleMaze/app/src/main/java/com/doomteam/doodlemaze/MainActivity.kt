@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() {
                 current_user = data?.getStringExtra("auth_result_uid")
                 if(current_user == null)
                 {
-                    //TODO ADD HANDLER: Something went wrong during sign in
+                    displayErrorToast("Unable to authenticate. Please try again.")
+                    authenticateUser()
                 }
                 else{
                     setContentView(R.layout.activity_main)
@@ -58,7 +59,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             else{
-                //TODO ADD HANDLER: user didn't create an account
+                displayErrorToast("Unable to authenticate. Please try again.")
+                authenticateUser()
             }
         }
         else if(requestCode == RC_CMAZE){
@@ -104,6 +106,4 @@ class MainActivity : AppCompatActivity() {
         toast.setGravity(Gravity.TOP, 0, 0)
         toast.show()
     }
-
-    //TODO: sign out the account?
 }
