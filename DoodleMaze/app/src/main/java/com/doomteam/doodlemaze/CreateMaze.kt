@@ -51,6 +51,21 @@ class CreateMaze : AppCompatActivity() {
         const val DETECTION_ERROR = 100
         const val app_folder = "app_height_maps"
         const val height_map_name = "mobile_height_map.raw"
+
+        var originalImageUri: Uri? = null
+        var manualCropMode: Boolean = false
+        var idStartObject: Boolean = false
+        var idEndObject: Boolean = false
+        var startIdentified: Boolean = false
+        var endIdentified: Boolean = false
+        var onManualResult: Boolean = false
+
+        var mXTL: Point = Point()
+        var mXBR: Point = Point()
+        var mOTL: Point = Point()
+        var mOBR: Point = Point()
+
+        var processor:OCRProcessor? = null;
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -251,7 +266,6 @@ class CreateMaze : AppCompatActivity() {
 
     }
 
-
     private fun cropImage(){
         // Take picture with the camera or load an image from gallery. Then, crop image.
         // Reference: https://github.com/ArthurHub/Android-Image-Cropper
@@ -297,25 +311,112 @@ class CreateMaze : AppCompatActivity() {
                     Log.d(TAG_INFO, "Error occurred when image cropping (Code $resultCode)")
                     finish()
                 }
+
                 // Get cropped image result
                 val result = CropImage.getActivityResult(data)
                 when (resultCode) {
                     Activity.RESULT_OK -> {
 
-                        var processor = OCRProcessor(result.cropRect.left, result.cropRect.right, result.cropRect.top, result.cropRect.bottom)
-                        if(!OCRProcessor.good)
-                        {
-                            val returnIntent = Intent()
-                            setResult(DETECTION_ERROR, returnIntent)
-                            returnIntent.putExtra("error_code", "1")
-                            finish()
-                            return
+                        // if automatic detection failed
+                        if(manualCropMode) {
+                            // if a result was returned through manual cropping
+                            if(onManualResult)
+                            {
+                                // if result target was the start object and it hasn't been identified
+                                if(idStartObject && !startIdentified)
+                                {
+                                    mXTL.x = result.cropRect.left
+                                    mXTL.y = result.cropRect.top
+                                    mXBR.x = result.cropRect.right
+                                    mXBR.y = result.cropRect.bottom
+                                    onManualResult = false
+                                    idStartObject = false
+                                    startIdentified = true
+                                }
+
+                                // if result target was the end object and it hasn't been identified
+                                else if(idEndObject && !endIdentified)
+                                {
+                                    mOTL.x = result.cropRect.left
+                                    mOTL.y = result.cropRect.top
+                                    mOBR.x = result.cropRect.right
+                                    mOBR.y = result.cropRect.bottom
+                                    onManualResult = false
+                                    idEndObject = false
+                                    endIdentified = true
+                                }
+                                if(startIdentified && endIdentified)
+                                {
+                                    // stop manually detecting
+                                    manualCropMode = false
+                                }
+                            }
+
+                            // if start or end hasn't been identified, launch activity with flags set
+                            if(!startIdentified || !endIdentified)
+                            {
+                                if(!startIdentified)
+                                {
+                                    onManualResult = true
+                                    idStartObject = true
+                                    cropImage(originalImageUri!!)
+                                }
+                                else if(!endIdentified)
+                                {
+                                    onManualResult = true
+                                    idEndObject = true
+                                    cropImage(originalImageUri!!)
+                                }
+                            }
+                            else{
+                                // both the start and end have been identified and absolute positions have been set.
+                                processor!!.RunManualRoutine(mXTL, mXBR, mOTL, mOBR)
+                                mazeImageView.setImageBitmap(OCRProcessor.ocvImage.GetBitmap());
+                                buildMazeButton.isEnabled = true
+                                buildMazeButton.isClickable = true
+
+                                // save a tmp version of this image to local file storage
+                                val filePath = getExternalFilesDir(null).toString() + "/tmp"
+                                // Create parent directory for file object
+                                val externalDir = File(filePath)
+                                externalDir.mkdirs()
+                                val file = File(filePath, "tmp.bmp")
+                                val outFile = FileOutputStream(file)
+                                // write bitmap to local storage for later retrieval
+                                OCRProcessor.ocvImage.GetBitmap().compress(Bitmap.CompressFormat.PNG, 100, outFile)
+                                outFile.flush()
+                                outFile.close()
+                                manualCropMode = false
+                                idStartObject = false
+                                idEndObject = false
+                                onManualResult = false
+                                endIdentified = false
+                                startIdentified = false
+
+                            }
                         }
-                        else
-                        {
-                            mazeImageView.setImageBitmap(OCRProcessor.ocvImage.GetBitmap());
-                            buildMazeButton.isEnabled = true
-                            buildMazeButton.isClickable = true
+                        else{
+                            processor = OCRProcessor(result.cropRect.left, result.cropRect.right, result.cropRect.top, result.cropRect.bottom)
+                            if(!OCRProcessor.good)
+                            {
+                                //Start manual cropping
+                                manualCropMode = true
+                                idStartObject = true
+                                onManualResult = true
+                                cropImage(originalImageUri!!)
+
+                                //val returnIntent = Intent()
+                                //setResult(DETECTION_ERROR, returnIntent)
+                                //returnIntent.putExtra("error_code", "1")
+                                //finish()
+                                return
+                            }
+                            //else
+                            //{
+                            //    mazeImageView.setImageBitmap(OCRProcessor.ocvImage.GetBitmap());
+                            //    buildMazeButton.isEnabled = true
+                            //    buildMazeButton.isClickable = true
+                            //}
                         }
                     }
                     else -> {
@@ -335,6 +436,20 @@ class CreateMaze : AppCompatActivity() {
                 val result = CropImage.getPickImageResultUri(this, data)
                 OCRProcessor.originalImage = MediaStore.Images.Media.getBitmap(this.contentResolver, result)
 
+                // save a tmp version of this image to local file storage
+                val filePath = getExternalFilesDir(null).toString() + "/tmp"
+                // Create parent directory for file object
+                val externalDir = File(filePath)
+                externalDir.mkdirs()
+                val file = File(filePath, "tmp.bmp")
+                val outFile = FileOutputStream(file)
+                // write bitmap to local storage for later retrieval
+                OCRProcessor.originalImage.compress(Bitmap.CompressFormat.PNG, 100, outFile)
+                outFile.flush()
+                outFile.close()
+
+                originalImageUri = Uri.fromFile(file)
+
                 //Init crop activity on selected uri
                 cropImage(result)
             }
@@ -342,6 +457,14 @@ class CreateMaze : AppCompatActivity() {
                 Log.d(TAG_INFO, "Unrecognized request code $requestCode")
             }
         }
+    }
+
+    private fun setXLocation(){
+
+    }
+
+    private fun setOLocation(){
+
     }
 
     override fun onResume() {
