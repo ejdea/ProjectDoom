@@ -51,6 +51,21 @@ class CreateMaze : AppCompatActivity() {
         const val DETECTION_ERROR = 100
         const val app_folder = "app_height_maps"
         const val height_map_name = "mobile_height_map.raw"
+
+        var originalImageUri: Uri? = null
+        var manualCropMode: Boolean = false
+        var targetStartObject: Boolean = false
+        var targetEndObject: Boolean = false
+        var startIdentified: Boolean = false
+        var endIdentified: Boolean = false
+        var requestManualResult: Boolean = false
+
+        var mXTL: Point = Point()
+        var mXBR: Point = Point()
+        var mOTL: Point = Point()
+        var mOBR: Point = Point()
+
+        var processor:OCRProcessor? = null;
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -251,7 +266,6 @@ class CreateMaze : AppCompatActivity() {
 
     }
 
-
     private fun cropImage(){
         // Take picture with the camera or load an image from gallery. Then, crop image.
         // Reference: https://github.com/ArthurHub/Android-Image-Cropper
@@ -292,30 +306,88 @@ class CreateMaze : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
+
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                 if (resultCode != RESULT_OK) {
                     Log.d(TAG_INFO, "Error occurred when image cropping (Code $resultCode)")
                     finish()
                 }
+
                 // Get cropped image result
                 val result = CropImage.getActivityResult(data)
                 when (resultCode) {
                     Activity.RESULT_OK -> {
 
-                        var processor = OCRProcessor(result.cropRect.left, result.cropRect.right, result.cropRect.top, result.cropRect.bottom)
-                        if(!OCRProcessor.good)
-                        {
-                            val returnIntent = Intent()
-                            setResult(DETECTION_ERROR, returnIntent)
-                            returnIntent.putExtra("error_code", "1")
-                            finish()
-                            return
+                        // if automatic detection failed
+                        if(manualCropMode) {
+                            // if a result was returned through manual cropping
+                            if(requestManualResult && targetStartObject && !startIdentified)
+                            {
+                                setStartLocation(result.cropRect.left, result.cropRect.top, result.cropRect.right, result.cropRect.bottom)
+                                targetStartObject = false
+                                requestManualResult = false
+                            }
+                            if(requestManualResult && targetEndObject && !endIdentified)
+                            {
+                                setEndLocation(result.cropRect.left, result.cropRect.top, result.cropRect.right, result.cropRect.bottom)
+                                targetEndObject = false
+                                requestManualResult = false
+                            }
+                            //check if both locations have been found
+                            if(startIdentified && endIdentified){
+                                // both the start and end have been identified and absolute positions have been set
+                                processor!!.RunManualRoutine(mXTL, mXBR, mOTL, mOBR)
+                                mazeImageView.setImageBitmap(OCRProcessor.ocvImage.GetBitmap())
+
+                                //reset state for next session
+                                manualCropMode = false
+                                targetStartObject = false
+                                targetEndObject = false
+                                requestManualResult = false
+                                startIdentified = false
+                                endIdentified = false
+                                buildMazeButton.isEnabled = true
+                                buildMazeButton.isClickable = true
+                            }
+                            else if(!startIdentified) // start hasn't been identified
+                            {
+                                targetStartObject = true
+                                requestManualResult = true
+                                Toast.makeText(this,
+                                    "Automatic Detection failed: Please identify 'X'",
+                                    Toast.LENGTH_LONG).show()
+                                cropImage(originalImageUri!!)
+                            }
+                            else{   // end hasn't been identified
+                                targetEndObject = true
+                                requestManualResult = true
+                                Toast.makeText(this,
+                                    "Automatic Detection failed: Please identify 'O'",
+                                    Toast.LENGTH_LONG).show()
+                                cropImage(originalImageUri!!)
+                            }
                         }
-                        else
-                        {
-                            mazeImageView.setImageBitmap(OCRProcessor.ocvImage.GetBitmap());
-                            buildMazeButton.isEnabled = true
-                            buildMazeButton.isClickable = true
+                        else{
+                            // running in automatic detection mode at least once
+                            processor = OCRProcessor(result.cropRect.left, result.cropRect.right, result.cropRect.top, result.cropRect.bottom)
+                            if(!OCRProcessor.good)
+                            {
+                                //Start manual cropping
+                                manualCropMode = true
+                                targetStartObject = true
+                                requestManualResult = true
+
+                                Toast.makeText(this,
+                                    "Automatic Detection failed: Please identify 'X'",
+                                    Toast.LENGTH_LONG).show()
+                                cropImage(originalImageUri!!)
+                            }
+                            else
+                            {
+                                mazeImageView.setImageBitmap(OCRProcessor.ocvImage.GetBitmap());
+                                buildMazeButton.isEnabled = true
+                                buildMazeButton.isClickable = true
+                            }
                         }
                     }
                     else -> {
@@ -333,7 +405,23 @@ class CreateMaze : AppCompatActivity() {
                 }
 
                 val result = CropImage.getPickImageResultUri(this, data)
+                //set original image
                 OCRProcessor.originalImage = MediaStore.Images.Media.getBitmap(this.contentResolver, result)
+
+                // save a tmp version of this image to local file storage for later URI retrieval if manual cropping is needed
+                val filePath = getExternalFilesDir(null).toString() + "/tmp"
+                // Create parent directory for file object
+                val externalDir = File(filePath)
+                externalDir.mkdirs()
+                val file = File(filePath, "tmp.bmp")
+                val outFile = FileOutputStream(file)
+
+                // write bitmap to local storage for later retrieval
+                OCRProcessor.originalImage.compress(Bitmap.CompressFormat.PNG, 100, outFile)
+                outFile.flush()
+                outFile.close()
+
+                originalImageUri = Uri.fromFile(file)
 
                 //Init crop activity on selected uri
                 cropImage(result)
@@ -342,6 +430,24 @@ class CreateMaze : AppCompatActivity() {
                 Log.d(TAG_INFO, "Unrecognized request code $requestCode")
             }
         }
+    }
+
+    private fun setStartLocation(left:Int, top:Int, right:Int, bottom:Int){
+        // if result target was the start object and it hasn't been identified
+        mXTL.x = left
+        mXTL.y = top
+        mXBR.x = right
+        mXBR.y = bottom
+        startIdentified = true
+    }
+
+    private fun setEndLocation(left:Int, top:Int, right:Int, bottom:Int){
+        // if result target was the end object and it hasn't been identified
+        mOTL.x = left
+        mOTL.y = top
+        mOBR.x = right
+        mOBR.y = bottom
+        endIdentified = true
     }
 
     override fun onResume() {

@@ -155,6 +155,26 @@ public class OCRProcessor {
         }
     }
 
+    public void RunManualRoutine(Point xTL, Point xBR, Point oTL, Point oBR)
+    {
+        //manually set the abs values that the user selected
+        absXTL = xTL;
+        absXBR = xBR;
+        absOTL = oTL;
+        absOBR = oBR;
+
+        //remove the bounding boxes from the user values
+        removeBoundingBoxBmp(absXTL, absXBR);
+        removeBoundingBoxBmp(absOTL, absOBR);
+
+        //generate height map
+        transformAbsCoordsToCroppedCoords();
+        cleanImage(HEIGHTMAP_RESOLUTION, HEIGHTMAP_RESOLUTION);
+        positionData = getPositionData();
+
+        good = true;
+    }
+
     /**
      * Runs the current OCR method (Google's Firebase OCR)
      * Successful attempts are able to locate an 'x' or an 'o'
