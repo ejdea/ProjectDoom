@@ -155,7 +155,6 @@ class CreateMaze : AppCompatActivity() {
         val uploadTask = heightMapRef.putBytes(levelData.GetData())
         uploadTask.addOnFailureListener{
             // Unable to upload the file
-            // TODO: Add handler, but for now just restart process
             Log.d(TAG_INFO, "Upload failed!")
             cropImage()
 
