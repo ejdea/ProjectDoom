@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
  * @version 1.0
  * @since 07/15/2020
  *
- * Activity that controls authentication flow for email/passsword Firebase accounts
+ * Activity that controls authentication flow for email/password Firebase accounts
  */
 class AuthenticateActivity : AppCompatActivity(){
 
