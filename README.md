@@ -4,7 +4,7 @@ CS467: Capstone | Oregon State University | Summer 2020
 Authors: Martin Edmunds, Lee Taylor Rice, Edmund Dea
 <br />
 <br />
-Project Doom is an Android mobile game titled Doodle Maze. This app converts a hand drawn maze into a playable Unity game. The user must draw the maze on white, unlined paper and use either a black/blue pen or a dark pencil.
+Project Doom is an Android mobile game titled Doodle Maze. This app converts a hand drawn maze into a playable Unity game. The user must draw the maze on white, unlined paper and use either a black/blue pen or a dark pencil.<br/>
 <br/>
 ![Doodle Maze Demo](DoodleMazeDemo.gif)
 <br />
