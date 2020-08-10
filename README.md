@@ -9,7 +9,7 @@ Project Doom is an Android mobile game titled Doodle Maze. This app converts a h
 ![Doodle Maze Demo](DoodleMazeDemo.gif)
 <br />
 <br />
-Development Environment Setup  <br />
+<b>Development Environment Setup</b><br />
 1)	Install Git (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)  <br />
 
 2)	Android Studio (https://developer.android.com/studio/install)  <br />
