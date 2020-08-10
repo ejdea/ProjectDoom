@@ -47,7 +47,7 @@ public class StartScript : MonoBehaviour
     private const float min_scale_value = 1.5f;
     private const float max_scale_value = 5.0f;
     private const float PlayerObjectScaleFactor = 1.0f;
-    private const float EndObjectScaleFactor = 0.5f;
+    private const float ObjectScaleFactor = 0.5f;
     Color prev_color;
 
     // Start is called before the first frame update
@@ -140,9 +140,9 @@ public class StartScript : MonoBehaviour
         ScalePositions(ref eCoords);
 
         player.transform.position = new UnityEngine.Vector3(pCoords[0], 3.0f, pCoords[1]);
-        player.transform.localScale = new UnityEngine.Vector3(pScale[0], pScale[0], pScale[0]);
+        player.transform.localScale = new UnityEngine.Vector3(pScale[0] * ObjectScaleFactor, pScale[0] * ObjectScaleFactor, pScale[0] * ObjectScaleFactor);
         end.transform.position = new UnityEngine.Vector3(eCoords[0], 0.0f, eCoords[1]);
-        end.transform.localScale = new UnityEngine.Vector3(1.0f, eScale[0] * EndObjectScaleFactor, eScale[0] * EndObjectScaleFactor);
+        end.transform.localScale = new UnityEngine.Vector3(1.0f, eScale[0] * ObjectScaleFactor, eScale[0] * ObjectScaleFactor);
     }
 
     /**
