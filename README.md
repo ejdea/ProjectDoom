@@ -5,6 +5,8 @@ Authors: Martin Edmunds, Lee Taylor Rice, Edmund Dea
 <br />
 <br />
 Project Doom is an Android mobile game titled Doodle Maze. This app converts a hand drawn maze into a playable Unity game. The user must draw the maze on white, unlined paper and use either a black/blue pen or a dark pencil.
+<br/>
+![Doodle Maze Demo](DoodleMazeDemo.gif)
 <br />
 <br />
 Development Environment Setup  <br />
@@ -22,7 +24,7 @@ a.	Click on “Open an Existing Project”.  Android will prompt “Open File or
 b.	Enter in the path to the ProjectDoom\DoodleMaze in the Project Doom repository  <br />
 c.	Android Studio will open the Android component of Project Doom  <br />
 d.	Select OK  <br />
-e.	Connect a physical device with Android Debug Bridge enabled or setup an emulator in Android Studio under Tools  AVD Manager  Create Virtual Device  <br />
+e.	Connect a physical device with Android Debug Bridge enabled or setup an emulator in Android Studio under Tools -> AVD Manager -> Create Virtual Device  <br />
 f.	Select a Target device from the Toolbar (shown right in Figure 1)  <br />
 g.	To deploy the app to a device, click the green Play icon to build in the toolbar  <br />
 
