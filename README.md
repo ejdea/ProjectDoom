@@ -3,6 +3,7 @@ CS467: Capstone | Oregon State University | Summer 2020
 <br>
 Authors: Martin Edmunds, Lee Taylor Rice, Edmund Dea
 <br />
+<br />
 Development Environment Setup  <br />
 1)	Install Git (https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)  <br />
 
