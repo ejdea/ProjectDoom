@@ -142,7 +142,7 @@ public class StartScript : MonoBehaviour
         player.transform.position = new UnityEngine.Vector3(pCoords[0], 3.0f, pCoords[1]);
         player.transform.localScale = new UnityEngine.Vector3(pScale[0] * ObjectScaleFactor, pScale[0] * ObjectScaleFactor, pScale[0] * ObjectScaleFactor);
         end.transform.position = new UnityEngine.Vector3(eCoords[0], 0.0f, eCoords[1]);
-        end.transform.localScale = new UnityEngine.Vector3(1.0f, eScale[0] * ObjectScaleFactor, eScale[0] * ObjectScaleFactor);
+        end.transform.localScale = new UnityEngine.Vector3(eScale[0], eScale[0], eScale[0]);
     }
 
     /**
