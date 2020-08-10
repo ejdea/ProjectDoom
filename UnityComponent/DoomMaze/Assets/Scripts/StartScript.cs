@@ -108,28 +108,28 @@ public class StartScript : MonoBehaviour
     private void SetGameObjects(ref GameObject player, ref GameObject end)
     {
         //get midpoint coords from bounding box
-        int[] pCoords = GetBoundingBoxMidPoint(
+        int[] eCoords = GetBoundingBoxMidPoint(
             ModifyTerrain.ObjectPositionData[0], 
             ModifyTerrain.ObjectPositionData[1], 
             ModifyTerrain.ObjectPositionData[2], 
             ModifyTerrain.ObjectPositionData[3]
             );
         //get midpoint coords from bounding box
-        int[] eCoords = GetBoundingBoxMidPoint(
+        int[] pCoords = GetBoundingBoxMidPoint(
             ModifyTerrain.ObjectPositionData[4],
             ModifyTerrain.ObjectPositionData[5],
             ModifyTerrain.ObjectPositionData[6],
             ModifyTerrain.ObjectPositionData[7]
             );
 
-        int[] pScale = GetBoundingBoxWidth(
+        int[] eScale = GetBoundingBoxWidth(
             ModifyTerrain.ObjectPositionData[0],
             ModifyTerrain.ObjectPositionData[1],
             ModifyTerrain.ObjectPositionData[2],
             ModifyTerrain.ObjectPositionData[3]
             );
 
-        int[] eScale = GetBoundingBoxWidth(
+        int[] pScale = GetBoundingBoxWidth(
             ModifyTerrain.ObjectPositionData[4],
             ModifyTerrain.ObjectPositionData[5],
             ModifyTerrain.ObjectPositionData[6],
